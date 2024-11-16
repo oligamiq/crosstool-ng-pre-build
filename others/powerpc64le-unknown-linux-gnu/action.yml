@@ -13,4 +13,4 @@ runs:
       sudo apt update
       sudo apt install -y build-essential
       sudo apt install -y rpm2cpio cpio
-      bash '$GITHUB_ACTION_PATH/build-powerpc64le-toolchain.sh'
+      bash '${{ github.action_path }}/build-powerpc64le-toolchain.sh'
