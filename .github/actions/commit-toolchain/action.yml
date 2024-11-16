@@ -15,21 +15,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: clone
-      shell: bash
-      env:
-        GH_TOKEN: ${{ github.token }}
-      # uses: actions/checkout@v4
-      # with:
-      #   persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-      #   fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-      #   ref: ${{ inputs.version }}
-      #   path: "${{ github.workspace }}/update-toolchain"
-      run: |
-        gh repo clone ${{ github.repository }} "${{ github.workspace }}/update-toolchain" -- --depth=1 --branch ${{ inputs.version }}
-
     - name: upload toolchain
-      working-directory: "${{ github.workspace }}/update-toolchain"
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
@@ -43,6 +29,10 @@ runs:
 
         git add -A
         git commit -m "Add toolchains for ${{ inputs.target }} ${{ inputs.version }}"
-        git push
 
-        rm -rf "${{ github.workspace }}/update-toolchain"
+    - name: Push changes
+      shell: bash
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          branch: ${{ github.event.inputs.version }}
