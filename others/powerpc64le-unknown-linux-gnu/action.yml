@@ -10,8 +10,8 @@ runs:
     - name: install toolchain
       shell: bash
       run: |
-        apt-get update
-        apt-get install -y --no-install-recommends automake bison bzip2 ca-certificates cmake curl file flex g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends automake bison bzip2 ca-certificates cmake curl file flex g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
         sudo apt install -y build-essential
         sudo apt install -y rpm2cpio cpio
         bash '${{ github.action_path }}/build-powerpc64le-toolchain.sh'
