@@ -83,7 +83,7 @@ hide_output ../gcc-$GCC/configure                            \
   --disable-libsanitizer                         \
   --disable-libquadmath-support                  \
   --disable-lto
-hide_output hide_output make -j`nproc`
+hide_output make -j`nproc`
 hide_output sudo make install
 
 popd
