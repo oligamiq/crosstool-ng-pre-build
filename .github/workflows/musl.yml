@@ -20,18 +20,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.version }}
           fetch-depth: 0
 
       - name: adjust permissions
         uses: ./.github/actions/permission
+
+      - name: change branch
+        run: |
+          git switch ${{ github.event.inputs.version }}
 
       - name: curl from musl.cc
         run: |
           curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
           rm -rf aarch64-unknown-linux-musl
           mv aarch64-linux-musl-cross aarch64-unknown-linux-musl
-
 
       - name: upload toolchain
         run: |
