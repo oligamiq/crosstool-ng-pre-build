@@ -15,15 +15,21 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: clone
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+        ref: ${{ inputs.version }}
+        path: /tmp/crosstool-ng-pre-build
+
     - name: upload toolchain
+      working-directory: /tmp/crosstool-ng-pre-build
       shell: bash
       run: |
-        cd /tmp
-        git clone https://github.com/oligamiq/crosstool-ng-pre-build --depth 1 --branch ${{ inputs.version }} --single-branch
-        cd crosstool-ng-pre-build
         git switch ${{ inputs.version }}
-        git config --global user.email "nziq53@gmail.com"
-        git config --global user.name "oligamiq"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
 
         rm -rf "./${{ inputs.target }}"
         cp -r "/x-tools/${{ inputs.target }}" "./${{ inputs.target }}"
