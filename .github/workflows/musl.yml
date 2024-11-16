@@ -1,0 +1,46 @@
+name: Build toolchains for musl
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version of the toolchain to build'
+        required: true
+        default: 'v0.1.0'
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  cp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.version }}
+          fetch-depth: 0
+
+      - name: adjust permissions
+        uses: ./.github/actions/permission
+
+      - name: curl from musl.cc
+        run: |
+          curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
+          rm -rf aarch64-unknown-linux-musl
+          mv aarch64-linux-musl-cross aarch64-unknown-linux-musl
+
+
+      - name: upload toolchain
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add musl toolchain"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ github.token }}
+          branch: ${{ github.event.inputs.version }}

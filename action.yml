@@ -4,9 +4,21 @@ author: "oligamiq"
 description: |
   This action installs a cross-compilation toolchain on the runner.
 
+inputs:
+  loongarch64-unknown-linux-gnu:
+    description: 'The toolchain to install for loongarch64-unknown-linux-gnu.'
+    default: false
+    type: boolean
+
+  
+
 runs:
   using: 'composite'
   steps:
     shell: bash
     run: |
+      sudo apt update
+      sudo apt install -y build-essential
 
+
+      sudo apt install gcc-riscv64-linux-gnu g++-riscv64-linux-gnu libc6-dev-riscv64-cross
