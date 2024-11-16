@@ -1,0 +1,22 @@
+name: install test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  install-sparcv9-sun-solaris:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install
+        uses: ./others/sparcv9-sun-solaris
+
+  install-powerpc64le-unknown-linux-gnu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install
+        uses: ./others/powerpc64le-unknown-linux-gnu

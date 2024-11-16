@@ -1,0 +1,14 @@
+name: install cross-compilation toolchain for powerpc64le-unknown-linux-gnu
+author: "oligamiq"
+
+description: |
+  This action installs a cross-compilation toolchain on the runner with build.sh script.
+
+runs:
+  using: 'composite'
+  steps:
+    shell: bash
+    run: |
+      sudo apt update
+      sudo apt install -y build-essential
+      sudo apt install -y rpm2cpio cpio

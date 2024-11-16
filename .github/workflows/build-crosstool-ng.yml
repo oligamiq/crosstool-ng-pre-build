@@ -89,6 +89,8 @@ jobs:
         uses: ./.github/actions/permission
 
       - name: Build toolchains
+        env:
+          HOST_CFLAGS: "-O -fcommon"
         run: |
           cd /tmp
           rm -rf netbsd

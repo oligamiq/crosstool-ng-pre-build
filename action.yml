@@ -1,0 +1,12 @@
+name: install cross-compilation toolchain
+author: "oligamiq"
+
+description: |
+  This action installs a cross-compilation toolchain on the runner.
+
+runs:
+  using: 'composite'
+  steps:
+    shell: bash
+    run: |
+
