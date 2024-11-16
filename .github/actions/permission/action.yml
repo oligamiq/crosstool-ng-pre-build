@@ -1,0 +1,19 @@
+name: adjust permissions
+
+description: |
+  This action adjusts permissions on the runner.
+
+runs:
+  using: composite
+  steps:
+    - name: adjust permissions
+      shell: bash
+      run: |
+        sudo groupadd -r rustbuild && sudo useradd -m -r -g rustbuild rustbuild
+        sudo chown -R $(whoami) /usr/local
+        sudo mkdir -p /tmp
+        sudo chown -R $(whoami) /tmp
+        sudo mkdir -p /x-tools && sudo chown rustbuild:rustbuild /x-tools
+        sudo chmod 777 /x-tools
+        sudo apt update
+        sudo apt install -y rpm2cpio cpio

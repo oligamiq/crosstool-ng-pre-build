@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: adjust permissions
+        uses: ./.github/actions/permission
+
       - name: Setup crosstool-ng
         uses: ./.github/actions/setup-crosstool-ng
 
@@ -81,6 +84,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: adjust permissions
+        uses: ./.github/actions/permission
 
       - name: Build toolchains
         run: |
