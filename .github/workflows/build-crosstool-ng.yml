@@ -16,8 +16,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        target: ["loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu"]
+        target: ["loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu"]
 
     steps:
       - name: Checkout
@@ -26,6 +27,7 @@ jobs:
       - name: Setup crosstool-ng
         uses: ./.github/actions/setup-crosstool-ng
 
+      # https://github.com/rust-lang/rust/tree/46e8d20301cb4abe91ab0a4bea43bb085e1d4e4a/src/ci/docker/host-x86_64
       - name: Build toolchains
         run: |
           cd /tmp
@@ -69,15 +71,25 @@ jobs:
           sudo ln -s /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-ar
 
       - name: Upload toolchains
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: ${{ matrix.target }}
+
+  net-bsd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build toolchains
         run: |
-          git switch ${{ github.event.inputs.version }}
-          git config --global user.email "nziq53@gmail.com"
-          git config --global user.name "oligamiq"
+          cd /tmp
+          rm -rf netbsd
+          bash ${{ github.workspace }}/scripts/build-netbsd-toolchain.sh
 
-          rm -rf "${{ github.workspace }}/toolchains/${{ matrix.target }}"
-          cp -r "/x-tools/${{ matrix.target }}" "${{ github.workspace }}/toolchains/${{ matrix.target }}"
-
-          git add -A
-          git commit -m "Add toolchains for ${{ matrix.target }}"
-          git push
-
+      - name: Upload toolchains
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: x86_64-unknown-netbsd

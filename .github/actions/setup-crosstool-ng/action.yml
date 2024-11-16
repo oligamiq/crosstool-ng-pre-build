@@ -16,6 +16,8 @@ runs:
         sudo chown -R $(whoami) /tmp
         sudo mkdir -p /x-tools && sudo chown rustbuild:rustbuild /x-tools
         sudo chmod 777 /x-tools
+        sudo apt update
+        sudo apt install -y rpm2cpio cpio
 
     - name: install crosstool-ng
       env:

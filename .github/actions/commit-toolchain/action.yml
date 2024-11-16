@@ -1,0 +1,35 @@
+name: install crosstool-ng
+
+description: |
+  This action installs crosstool-ng on the runner.
+
+inputs:
+  version:
+    description: 'The version of the toolchain to install.'
+    required: true
+
+  target:
+    description: 'The toolchain to install.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: upload toolchain
+      shell: bash
+      run: |
+        cd /tmp
+        git clone https://github.com/oligamiq/crosstool-ng-pre-build --depth 1 --branch ${{ inputs.version }} --single-branch
+        cd crosstool-ng-pre-build
+        git switch ${{ inputs.version }}
+        git config --global user.email "nziq53@gmail.com"
+        git config --global user.name "oligamiq"
+
+        rm -rf "${{ github.workspace }}/toolchains/${{ inputs.target }}"
+        cp -r "/x-tools/${{ inputs.target }}" "${{ github.workspace }}/toolchains/${{ inputs.target }}"
+
+        git add -A
+        git commit -m "Add toolchains for ${{ inputs.target }} ${{ inputs.version }}"
+        git push
+
+        rm -rf /tmp/crosstool-ng-pre-build
