@@ -8,9 +8,9 @@ runs:
   using: 'composite'
   steps:
     - name: install toolchain
-    shell: bash
-    run: |
-      sudo apt update
-      sudo apt install -y build-essential
-      sudo apt install -y rpm2cpio cpio
-      bash '${{ github.action_path }}/build-powerpc64le-toolchain.sh'
+      shell: bash
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential
+        sudo apt install -y rpm2cpio cpio
+        bash '${{ github.action_path }}/build-powerpc64le-toolchain.sh'
