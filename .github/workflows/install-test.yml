@@ -13,11 +13,17 @@ jobs:
   install-sparcv9-sun-solaris:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
       - name: install
         uses: ./others/sparcv9-sun-solaris
 
   install-powerpc64le-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
       - name: install
         uses: ./others/powerpc64le-unknown-linux-gnu
