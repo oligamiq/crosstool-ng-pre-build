@@ -16,6 +16,7 @@ runs:
   using: composite
   steps:
     - name: clone
+      shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
       # uses: actions/checkout@v4
