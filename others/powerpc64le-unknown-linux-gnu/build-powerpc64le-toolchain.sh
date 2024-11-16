@@ -34,7 +34,7 @@ pushd $SYSROOT
 # Mirrored from centos_base above
 centos_base=https://ci-mirrors.rust-lang.org/rustc
 glibc_v=2.17-157-2020-11-25.el7
-kernel_v=3.`nproc`.0-514-2020-11-25.el7
+kernel_v=3.10.0-514-2020-11-25.el7
 for package in glibc{,-devel,-headers}-$glibc_v kernel-headers-$kernel_v; do
   curl $centos_base/$package.ppc64le.rpm | \
     rpm2cpio - | cpio -idm
