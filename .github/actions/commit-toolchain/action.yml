@@ -17,7 +17,7 @@ runs:
   steps:
     - name: clone
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ github.token }}
       # uses: actions/checkout@v4
       # with:
       #   persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
@@ -31,7 +31,7 @@ runs:
       working-directory: "${{ github.workspace }}/update-toolchain"
       shell: bash
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ github.token }}
       run: |
         git switch ${{ inputs.version }}
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
