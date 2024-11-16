@@ -1,0 +1,40 @@
+name: install crosstool-ng
+
+description: |
+  This action installs crosstool-ng on the runner.
+
+runs:
+  using: composite
+  steps:
+    # https://github.com/rust-lang/rust/blob/44f233f2519ce5d633c87c38014d03d8a5f0e810/src/ci/docker/scripts/crosstool-ng-git.sh
+    - name: adjust permissions
+      shell: bash
+      run: |
+        sudo groupadd -r rustbuild && sudo useradd -m -r -g rustbuild rustbuild
+        sudo chown -R $(whoami) /usr/local
+        sudo mkdir -p /tmp
+        sudo chown -R $(whoami) /tmp
+        sudo mkdir -p /x-tools && sudo chown rustbuild:rustbuild /x-tools
+        sudo chmod 777 /x-tools
+
+    - name: install crosstool-ng
+      env:
+        URL: https://github.com/crosstool-ng/crosstool-ng
+        REV: ed12fa68402f58e171a6f79500f73f4781fdc9e5
+      shell: bash
+      run: |
+        sudo apt update
+        sudo apt install -y flex automake bison bzip2 ca-certificates cmake curl file g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
+        cd /tmp
+        rm -rf crosstool-ng
+        mkdir crosstool-ng
+        cd crosstool-ng
+        git init
+        git fetch --depth=1 ${URL} ${REV}
+        git reset --hard FETCH_HEAD
+        ./bootstrap
+        ./configure --prefix=/usr/local
+        make -j$(nproc)
+        sudo make install
+        cd ..
+        rm -rf crosstool-ng

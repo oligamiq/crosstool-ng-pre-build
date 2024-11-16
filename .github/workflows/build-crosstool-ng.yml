@@ -1,0 +1,83 @@
+name: Build toolchains
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version of the toolchain to build'
+        required: true
+        default: 'v0.1.0'
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: ["loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup crosstool-ng
+        uses: ./.github/actions/setup-crosstool-ng
+
+      - name: Build toolchains
+        run: |
+          cd /tmp
+          cp '${{ github.workspace }}/configs/${{ matrix.target }}.defconfig' crosstool.defconfig
+          rm -rf build
+          bash -x '${{ github.workspace }}/scripts/crosstool-ng-build.sh'
+
+      - name: additional loongarch64-unknown-linux-gnu
+        if: matrix.target == 'loongarch64-linux-gnu'
+        run: |
+          # Prepare additional toolchain for loongarch64-unknown-none-gnu
+          cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-unknown-none/
+          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-gcc <<'EOF'
+          #!/usr/bin/env bash
+          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-gcc -ffreestanding -mabi=lp64d "$@"
+          EOF
+          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-gcc
+
+          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-g++ <<'EOF'
+          #!/usr/bin/env bash
+          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-g++ -ffreestanding -mabi=lp64d "$@"
+          EOF
+          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-g++
+
+          sudo ln -s /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-ar
+
+          # Prepare additional toolchain for loongarch64-unknown-none-softfloat
+          cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-unknown-none-softfloat/
+          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-gcc <<'EOF'
+          #!/usr/bin/env bash
+          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-gcc -ffreestanding -mabi=lp64s -mfpu=none "$@"
+          EOF
+          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-gcc
+
+          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-g++ <<'EOF'
+          #!/usr/bin/env bash
+          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-g++ -ffreestanding -mabi=lp64s -mfpu=none "$@"
+          EOF
+          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-g++
+
+          sudo ln -s /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-ar
+
+      - name: Upload toolchains
+        run: |
+          git switch ${{ github.event.inputs.version }}
+          git config --global user.email "nziq53@gmail.com"
+          git config --global user.name "oligamiq"
+
+          rm -rf "${{ github.workspace }}/toolchains/${{ matrix.target }}"
+          cp -r "/x-tools/${{ matrix.target }}" "${{ github.workspace }}/toolchains/${{ matrix.target }}"
+
+          git add -A
+          git commit -m "Add toolchains for ${{ matrix.target }}"
+          git push
+
