@@ -25,12 +25,6 @@ jobs:
       - name: adjust permissions
         uses: ./.github/actions/permission
 
-      - name: change branch
-        run: |
-          git pull
-          git branch -a
-          git switch ${{ github.event.inputs.version }}
-
       - name: build musl sysroot
         run: |
           cd /tmp
@@ -64,6 +58,12 @@ jobs:
           ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
           cd ${{ github.workspace }}
           cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
+
+      - name: change branch
+        run: |
+          git pull
+          git branch -a
+          git switch ${{ github.event.inputs.version }}
 
       - name: upload toolchain
         run: |
