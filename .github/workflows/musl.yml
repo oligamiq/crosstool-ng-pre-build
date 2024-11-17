@@ -61,6 +61,21 @@ jobs:
           cd /tmp
           rm -rf build
 
+      - name: build musl sysroot for i586
+        env:
+          CC: i686-linux-musl-gcc
+          CXX: i686-linux-musl-g++
+          CFLAGS: '-m32 -Wa,-mrelax-relocations=no'
+          CXXFLAGS: '-m32 -Wa,-mrelax-relocations=no'
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' i586 --target=i586
+          cd /tmp
+          rm -rf build
+
       - name: sysroot
         run: |
           rm -rf riscv64gc-unknown-linux-musl
@@ -69,12 +84,12 @@ jobs:
           sudo apt update
           sudo apt install -y rename
           rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
-          sudo ln -sf riscv64gc-linux-musl-cc riscv64gc-linux-musl-gcc
-          sudo ln -f riscv64gc-linux-musl-g++ riscv64gc-linux-musl-c++
+          sudo ln -sf riscv64gc-linux-musl-gcc riscv64gc-linux-musl-cc
+          sudo ln -f riscv64gc-linux-musl-c++ riscv64gc-linux-musl-g++
           version=$(ls riscv64gc-linux-musl-gcc-* | head -n 1 | sed 's/^riscv64gc-linux-musl-gcc-//')
           echo $version
-          sudo ln -f riscv64gc-linux-musl-gcc riscv64gc-linux-musl-gcc-$version
-          sudo ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
+          sudo ln -f riscv64gc-linux-musl-gcc-$version riscv64gc-linux-musl-gcc
+          sudo ln -f riscv64gc-linux-musl-ld riscv64gc-linux-musl-ld.bfd
           cd ${{ github.workspace }}
           cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
 
