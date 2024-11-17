@@ -59,6 +59,7 @@ jobs:
           mv /x-tools/riscv64-unknown-linux-gnu /x-tools/riscv64gc-unknown-linux-gnu
           cd /x-tools/riscv64gc-unknown-linux-gnu/bin
           rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
+          ln -sf riscv64gc-unknown-linux-gnu-cc riscv64gc-unknown-linux-gnu-gcc
 
       - name: additional loongarch64-unknown-linux-gnu
         if: matrix.target == 'loongarch64-linux-gnu'
