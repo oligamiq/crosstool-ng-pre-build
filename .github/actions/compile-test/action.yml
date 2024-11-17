@@ -1,0 +1,53 @@
+name: test compile
+
+description: |
+  Run the compile test for the toolchain.
+
+inputs:
+  target:
+    description: 'The toolchain to test.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: crate .c file
+      shell: bash
+      run: |
+        # Run hello world program
+        cat > hello.c <<EOF
+        #include <stdio.h>
+        int main() {
+          printf("Hello, world!\n");
+          return 0;
+        }
+        EOF
+
+    - name: compile
+      shell: bash
+      run: |
+        # Compile the program
+        ${{ inputs.target }}-gcc hello.c -o hello
+
+    - name: run
+      shell: bash
+      run: |
+        # Run the program
+        ./hello > output.txt
+
+    - name: check
+      shell: bash
+      run: |
+        # Check the output
+        if [ "$(cat output.txt)" != "Hello, world!" ]; then
+          echo "Test failed"
+          exit 1
+        fi
+        echo "Test passed"
+
+    - name: cleanup
+      shell: bash
+      run: |
+        # Cleanup
+        rm hello.c hello output.txt
+

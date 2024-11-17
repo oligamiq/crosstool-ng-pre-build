@@ -19,6 +19,11 @@ jobs:
       - name: install
         uses: ./others/sparcv9-sun-solaris
 
+      - name: test
+        uses: ./.github/actions/compile-test
+        with:
+          target: sparcv9-sun-solaris
+
   install-powerpc64le-unknown-linux-gnu:
     runs-on: ubuntu-latest
     steps:
@@ -27,3 +32,8 @@ jobs:
 
       - name: install
         uses: ./others/powerpc64le-unknown-linux-gnu
+
+      - name: test
+        uses: ./.github/actions/compile-test
+        with:
+          target: powerpc64le-unknown-linux-gnu

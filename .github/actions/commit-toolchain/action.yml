@@ -31,8 +31,11 @@ runs:
         rm -rf "./${{ inputs.target }}"
         cp -r "/x-tools/${{ inputs.target }}" "./${{ inputs.target }}"
 
+        git pull
         git add -A
         git commit -m "Add toolchains for ${{ inputs.target }} ${{ inputs.version }}"
+        # merge
+        git pull origin ${{ inputs.version }}
 
     - name: Push changes
       uses: ad-m/github-push-action@master
