@@ -31,8 +31,7 @@ runs:
         git commit -m "Add toolchains for ${{ inputs.target }} ${{ inputs.version }}"
 
     - name: Push changes
-      shell: bash
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ github.token }}
-          branch: ${{ github.event.inputs.version }}
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ github.token }}
+        branch: ${{ github.event.inputs.version }}
