@@ -38,7 +38,8 @@ jobs:
           ls -l
           ls -l /usr/bin
           ls -l /usr/local/bin
-          ls -l /usr/local/powerpc64le-unknown-linux-gnu/bin
+          ls -l /usr/local/powerpc64le-linux-gnu
+          ls -l /usr/local/powerpc64le-linux-gnu/bin
           which powerpc64le-linux-gnu-ar
           which powerpc64le-linux-gnu-gcc
           which powerpc64le-linux-gnu-g++
