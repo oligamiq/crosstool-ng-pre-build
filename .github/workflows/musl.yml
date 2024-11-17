@@ -27,7 +27,7 @@ jobs:
 
       - name: cp musl.sh
         run: |
-          cp /tmp/musl.sh /tmp/musl.sh
+          cp '${{ github.workspace }}/scripts/musl.sh' /tmp/musl.sh
 
       - name: change branch
         run: |
