@@ -144,12 +144,13 @@ jobs:
         run: |
           # only sysroot target
           rm -rf sysroot
-          mkdir -p sysroot
-          cp -r /musl-riscv64gc sysroot/riscv64gc
-          cp -r /musl-armv5te sysroot/armv5te
-          cp -r /musl-armv7 sysroot/armv7
-          cp -r /musl-armv7hf sysroot/armv7hf
-          cp -r /musl-i586 sysroot/i586
+          rm -rf musl-sysroot
+          mkdir -p musl-sysroot
+          cp -r /musl-riscv64gc musl-sysroot/riscv64gc
+          cp -r /musl-armv5te musl-sysroot/armv5te
+          cp -r /musl-armv7 musl-sysroot/armv7
+          cp -r /musl-armv7hf musl-sysroot/armv7hf
+          cp -r /musl-i586 musl-sysroot/i586
 
       - name: upload toolchain
         run: |
