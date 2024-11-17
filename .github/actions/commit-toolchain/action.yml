@@ -48,3 +48,7 @@ runs:
       with:
         github_token: ${{ github.token }}
         branch: ${{ github.event.inputs.version }}
+
+    - name: cleanup
+      run: |
+        git switch main

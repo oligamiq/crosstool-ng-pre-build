@@ -1,0 +1,33 @@
+name: rename built toolchain
+
+description: |
+  Rename the built toolchain to the target name.
+
+inputs:
+  target:
+    description: 'The toolchain to install.'
+    required: true
+
+  working-directory:
+    description: 'The working directory to rename the toolchain.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: rename
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        sudo apt update
+        sudo apt install -y rename
+        ls -l
+        rename 's/unknown-//' *
+        # PREFIX ex. loongarch64-unknown-linux-gnu -> loongarch64-linux-gnu
+        PREFIX=$(echo ${{ inputs.target }} | sed 's/unknown-//')
+        sudo ln -sf ${PREFIX}-gcc ${PREFIX}-cc
+        sudo ln -f ${PREFIX}-c++ ${PREFIX}-g++
+        version=$(ls ${PREFIX}-gcc-* | head -n 1 | sed "s/^${PREFIX}-gcc-//")
+        echo $version
+        sudo ln -f ${PREFIX}-gcc-$version ${PREFIX}-gcc
+        sudo ln -f ${PREFIX}-ld ${PREFIX}-ld.bfd
