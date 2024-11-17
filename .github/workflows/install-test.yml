@@ -33,6 +33,13 @@ jobs:
       - name: install
         uses: ./others/powerpc64le-unknown-linux-gnu
 
+      - name: ls
+        run: |
+          ls -l
+          ls -l /usr/bin
+          ls -l /usr/local/bin
+          which powerpc64le-unknown-linux-gnu-gcc
+
       - name: test
         uses: ./.github/actions/compile-test
         with:
