@@ -48,6 +48,11 @@ jobs:
           rm -rf arm-unknown-linux-musleabihf
           mv arm-linux-musleabihf-cross arm-unknown-linux-musleabihf
 
+          curl -L https://musl.cc/i686-linux-musl-cross.tgz | tar xz
+          rm -rf i686-unknown-linux-musl
+          mv i686-linux-musl-cross i686-unknown-linux-musl
+          echo '${{ github.workspace }}/i686-unknown-linux-musl/bin' >> $GITHUB_PATH
+
       - name: build musl sysroot for riscv64gc
         env:
           CC: riscv64-linux-musl-gcc
