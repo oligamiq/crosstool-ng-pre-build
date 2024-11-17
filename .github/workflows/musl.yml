@@ -27,6 +27,8 @@ jobs:
 
       - name: change branch
         run: |
+          git pull
+          git branch -a
           git switch ${{ github.event.inputs.version }}
 
       - name: curl from musl.cc
@@ -34,6 +36,7 @@ jobs:
           curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
           rm -rf aarch64-unknown-linux-musl
           mv aarch64-linux-musl-cross aarch64-unknown-linux-musl
+
 
       - name: upload toolchain
         run: |
