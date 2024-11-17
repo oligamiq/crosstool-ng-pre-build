@@ -51,8 +51,7 @@ runs:
         rm -rf crosstool-ng
         mkdir crosstool-ng
         cd crosstool-ng
-        URL="https://github.com/crosstool-ng/crosstool-ng/archive/crosstool-ng-$CT_NG.tar.gz"
-        curl -Lf $url | tar xzf -
+        curl -Lf https://github.com/crosstool-ng/crosstool-ng/archive/crosstool-ng-$CT_NG.tar.gz | tar xzf -
         cd crosstool-ng-crosstool-ng-$CT_NG
         # https://github.com/crosstool-ng/crosstool-ng/issues/1832
         # "download source of zlib is invalid now"
