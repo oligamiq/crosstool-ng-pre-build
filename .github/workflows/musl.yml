@@ -25,16 +25,6 @@ jobs:
       - name: adjust permissions
         uses: ./.github/actions/permission
 
-      - name: build musl sysroot
-        run: |
-          cd /tmp
-          rm -rf build
-          mkdir build
-          cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' riscv64gc
-          cd /tmp
-          rm -rf build
-
       - name: curl from musl.cc
         run: |
           curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
@@ -44,21 +34,7 @@ jobs:
           curl -L https://musl.cc/riscv64-linux-musl-cross.tgz | tar xz
           rm -rf riscv64-unknown-linux-musl
           mv riscv64-linux-musl-cross riscv64-unknown-linux-musl
-
-          rm -rf riscv64gc-unknown-linux-musl
-          cp -r riscv64-unknown-linux-musl riscv64gc-unknown-linux-musl
-          cd riscv64gc-unknown-linux-musl/bin
-          sudo apt update
-          sudo apt install -y rename
-          rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
-          ln -sf riscv64gc-linux-musl-cc riscv64gc-linux-musl-gcc
-          ln -f riscv64gc-linux-musl-g++ riscv64gc-linux-musl-c++
-          version=$(ls | grep riscv64gc-linux-musl-gcc | sed -e 's/^riscv64gc-linux-musl-gcc-//')
-          echo $version
-          ln -f riscv64gc-linux-musl-gcc riscv64gc-linux-musl-gcc-$version
-          ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
-          cd ${{ github.workspace }}
-          cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
+          echo '`pwd`/riscv64-unknown-linux-musl/bin' >> $GITHUB_PATH
 
           curl -L https://musl.cc/x86_64-linux-musl-cross.tgz | tar xz
           rm -rf x86_64-unknown-linux-musl
@@ -71,6 +47,36 @@ jobs:
           curl -L https://musl.cc/arm-linux-musleabihf-cross.tgz | tar xz
           rm -rf arm-unknown-linux-musleabihf
           mv arm-linux-musleabihf-cross arm-unknown-linux-musleabihf
+
+      - name: build musl sysroot for riscv64gc
+        env:
+          CC: riscv64-linux-musl-gcc
+          CXX: riscv64-linux-musl-g++
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' riscv64gc
+          cd /tmp
+          rm -rf build
+
+      - name: sysroot
+        run: |
+          rm -rf riscv64gc-unknown-linux-musl
+          cp -r riscv64-unknown-linux-musl riscv64gc-unknown-linux-musl
+          cd riscv64gc-unknown-linux-musl/bin
+          sudo apt update
+          sudo apt install -y rename
+          rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
+          ln -sf riscv64gc-linux-musl-cc riscv64gc-linux-musl-gcc
+          ln -f riscv64gc-linux-musl-g++ riscv64gc-linux-musl-c++
+          version=$(ls riscv64gc-linux-musl-gcc-* | sed 's/^riscv64gc-linux-musl-gcc-//')
+          echo $version
+          ln -f riscv64gc-linux-musl-gcc riscv64gc-linux-musl-gcc-$version
+          ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
+          cd ${{ github.workspace }}
+          cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
 
       - name: change branch
         run: |
