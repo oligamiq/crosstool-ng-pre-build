@@ -60,6 +60,7 @@ jobs:
           cd /x-tools/riscv64gc-unknown-linux-gnu/bin
           sudo apt update
           sudo apt install -y rename
+          ls -l
           rename 's/^riscv64-linux-gcc/riscv64gc-linux-gcc/' riscv64-linux-gcc-*
           sudo ln -sf riscv64gc-linux-gnu-cc riscv64gc-linux-gnu-gcc
           sudo ln -f riscv64gc-linux-gnu-g++ riscv64gc-linux-gnu-c++
