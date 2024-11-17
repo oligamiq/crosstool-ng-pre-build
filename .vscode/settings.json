@@ -1,6 +1,7 @@
 {
-    "cSpell.words": [
-        "crosstool"
-    ],
-    "editor.tabSize": 2
+  "cSpell.words": [
+    "aarch",
+    "crosstool"
+  ],
+  "editor.tabSize": 2
 }
