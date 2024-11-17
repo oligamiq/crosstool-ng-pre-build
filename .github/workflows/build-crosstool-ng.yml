@@ -93,6 +93,20 @@ jobs:
 
           sudo ln -s /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-ar
 
+      - name: Upload toolchains for loongarch64-unknown-none
+        if: matrix.target == 'loongarch64-unknown-linux-gnu'
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: loongarch64-unknown-none
+
+      - name: Upload toolchains for loongarch64-unknown-none-softfloat
+        if: matrix.target == 'loongarch64-unknown-linux-gnu'
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: loongarch64-unknown-none-softfloat
+
       - name: Upload toolchains
         uses: ./.github/actions/commit-toolchain
         with:
