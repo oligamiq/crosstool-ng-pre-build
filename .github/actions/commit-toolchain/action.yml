@@ -33,6 +33,12 @@ runs:
 
         git pull
         git add -A
+
+        if git diff --cached --exit-code; then
+          echo "No changes to commit."
+          exit 0
+        fi
+
         git commit -m "Add toolchains for ${{ inputs.target }} ${{ inputs.version }}"
         # merge
         git pull origin ${{ inputs.version }}
