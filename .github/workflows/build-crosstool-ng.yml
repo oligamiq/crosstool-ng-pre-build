@@ -41,7 +41,7 @@ jobs:
       - name: Setup crosstool-ng
         uses: ./.github/actions/setup-crosstool-ng
         with:
-          is-stable: ${{ bool(matrix.target == 'aarch64-unknown-linux-gnu') }}
+          is-stable: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && true || false }}
 
       # https://github.com/rust-lang/rust/tree/46e8d20301cb4abe91ab0a4bea43bb085e1d4e4a/src/ci/docker/host-x86_64
       - name: Build toolchains
