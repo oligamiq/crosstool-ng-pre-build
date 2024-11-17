@@ -72,6 +72,7 @@ jobs:
           CC: arm-linux-musleabi-gcc
           CXX: arm-linux-musleabi-g++
           AR: arm-linux-musleabi-ar
+          RANLIB: arm-linux-musleabi-ranlib
           CFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
           CXXFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
         run: |
@@ -80,6 +81,21 @@ jobs:
           mkdir build
           cd build
           bash -x '${{ github.workspace }}/scripts/musl.sh' armv5te --target=armv5te
+          cd /tmp
+          rm -rf build
+
+      - name: build musl sysroot for armv7
+        env:
+          CC: arm-linux-musleabi-gcc
+          CXX: arm-linux-musleabi-g++
+          CFLAGS: '-march=armv7-a'
+          CXXFLAGS: '-march=armv7-a'
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' armv7
           cd /tmp
           rm -rf build
 
@@ -100,21 +116,12 @@ jobs:
 
       - name: sysroot
         run: |
-          rm -rf riscv64gc-unknown-linux-musl
-          cp -r riscv64-unknown-linux-musl riscv64gc-unknown-linux-musl
-          cd riscv64gc-unknown-linux-musl/bin
-          sudo apt update
-          sudo apt install -y rename
-          rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
-          sudo ln -sf riscv64gc-linux-musl-gcc riscv64gc-linux-musl-cc
-          sudo ln -f riscv64gc-linux-musl-c++ riscv64gc-linux-musl-g++
-          version=$(ls riscv64gc-linux-musl-gcc-* | head -n 1 | sed 's/^riscv64gc-linux-musl-gcc-//')
-          echo $version
-          sudo ln -f riscv64gc-linux-musl-gcc-$version riscv64gc-linux-musl-gcc
-          sudo ln -f riscv64gc-linux-musl-ld riscv64gc-linux-musl-ld.bfd
-          cd ${{ github.workspace }}
-          ls -l /musl-riscv64gc
-          cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
+          # only sysroot target
+          mkdir -p sysroot
+          cp -r /musl-riscv64gc sysroot/riscv64gc
+          cp -r /musl-armv5te sysroot/armv5te
+          cp -r /musl-i586 sysroot/i586
+
 
       - name: change branch
         run: |
