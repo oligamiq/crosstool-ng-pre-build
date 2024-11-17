@@ -15,6 +15,8 @@ runs:
   steps:
     # https://github.com/rust-lang/rust/blob/44f233f2519ce5d633c87c38014d03d8a5f0e810/src/ci/docker/scripts/crosstool-ng-git.sh
     - name: install
+      shell: bash
+      run: |
         sudo apt update
         sudo apt install -y flex automake bison bzip2 ca-certificates cmake curl file g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
 
@@ -41,6 +43,7 @@ runs:
 
     - name: install crosstool-ng stable
       if: ${{ inputs.is-stable }}
+      shell: bash
       env:
         CT_NG: "1.26.0"
       run: |
