@@ -61,42 +61,42 @@ jobs:
           sudo apt update
           sudo apt install -y rename
           rename 's/^riscv64-linux-gcc/riscv64gc-linux-gcc/' riscv64-linux-gcc-*
-          ln -sf riscv64gc-unknown-linux-gnu-cc riscv64gc-unknown-linux-gnu-gcc
+          ln -sf riscv64gc-linux-gnu-cc riscv64gc-linux-gnu-gcc
 
       - name: additional loongarch64-unknown-linux-gnu
         if: matrix.target == 'loongarch64-unknown-linux-gnu'
         run: |
           # Prepare additional toolchain for loongarch64-unknown-none-gnu
           cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-unknown-none/
-          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-gcc <<'EOF'
+          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-none-gcc <<'EOF'
           #!/usr/bin/env bash
-          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-gcc -ffreestanding -mabi=lp64d "$@"
+          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-linux-gnu-gcc -ffreestanding -mabi=lp64d "$@"
           EOF
-          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-gcc
+          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-none-gcc
 
-          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-g++ <<'EOF'
+          cat > /x-tools/loongarch64-unknown-none/bin/loongarch64-none-g++ <<'EOF'
           #!/usr/bin/env bash
-          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-g++ -ffreestanding -mabi=lp64d "$@"
+          exec /x-tools/loongarch64-unknown-none/bin/loongarch64-linux-gnu-g++ -ffreestanding -mabi=lp64d "$@"
           EOF
-          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-g++
+          sudo chmod +x /x-tools/loongarch64-unknown-none/bin/loongarch64-none-g++
 
-          sudo ln -s /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none/bin/loongarch64-unknown-none-ar
+          sudo ln -s /x-tools/loongarch64-unknown-none/bin/loongarch64-linux-gnu-ar /x-tools/loongarch64-unknown-none/bin/loongarch64-none-ar
 
           # Prepare additional toolchain for loongarch64-unknown-none-softfloat
-          cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-unknown-none-softfloat/
-          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-gcc <<'EOF'
+          cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-none-softfloat/
+          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-none-softfloat-gcc <<'EOF'
           #!/usr/bin/env bash
-          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-gcc -ffreestanding -mabi=lp64s -mfpu=none "$@"
+          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-linux-gnu-gcc -ffreestanding -mabi=lp64s -mfpu=none "$@"
           EOF
-          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-gcc
+          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-none-softfloat-gcc
 
-          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-g++ <<'EOF'
+          cat > /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-none-softfloat-g++ <<'EOF'
           #!/usr/bin/env bash
-          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-g++ -ffreestanding -mabi=lp64s -mfpu=none "$@"
+          exec /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-linux-gnu-g++ -ffreestanding -mabi=lp64s -mfpu=none "$@"
           EOF
-          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-g++
+          sudo chmod +x /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-none-softfloat-g++
 
-          sudo ln -s /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-linux-gnu-ar /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-unknown-none-softfloat-ar
+          sudo ln -s /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-linux-gnu-ar /x-tools/loongarch64-unknown-none-softfloat/bin/loongarch64-none-softfloat-ar
 
       - name: Upload toolchains for loongarch64-unknown-none
         if: matrix.target == 'loongarch64-unknown-linux-gnu'

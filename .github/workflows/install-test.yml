@@ -43,9 +43,8 @@ jobs:
           which powerpc64le-linux-gnu-ar
           which powerpc64le-linux-gnu-gcc
           which powerpc64le-linux-gnu-g++
-          which vjn
 
       - name: test
         uses: ./.github/actions/compile-test
         with:
-          target: powerpc64le-unknown-linux-gnu
+          target: powerpc64le-linux-gnu
