@@ -50,6 +50,8 @@ jobs:
             tar -czf "x-tools/${target}.tar.gz" "${target}"
           done
 
+          echo "x-tools"
+
           # sysroot
           mkdir -p sysroot
           TARGETS=(
@@ -57,7 +59,7 @@ jobs:
             "riscv64gc"
           )
           for target in "${TARGETS[@]}"; do
-            tar -czf "sysroot/${target}-unknown-linux-musl.tar.gz" "${target}"
+            tar -czf "sysroot/${target}-unknown-linux-musl.tar.gz" "musl-sysroot/${target}"
           done
 
           TARGETS=(
@@ -65,14 +67,14 @@ jobs:
             "armv7"
           )
           for target in "${TARGETS[@]}"; do
-            tar -czf "sysroot/${target}-unknown-linux-musleabi.tar.gz" "${target}"
+            tar -czf "sysroot/${target}-unknown-linux-musleabi.tar.gz" "musl-sysroot/${target}"
           done
 
           TARGETS=(
             "armv7hf"
           )
           for target in "${TARGETS[@]}"; do
-            tar -czf "sysroot/${target}-unknown-linux-musleabihf.tar.gz" "${target}"
+            tar -czf "sysroot/${target}-unknown-linux-musleabihf.tar.gz" "musl-sysroot/${target}"
           done
 
       - name: upload release
