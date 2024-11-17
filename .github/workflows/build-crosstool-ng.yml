@@ -62,7 +62,7 @@ jobs:
           ln -sf riscv64gc-unknown-linux-gnu-cc riscv64gc-unknown-linux-gnu-gcc
 
       - name: additional loongarch64-unknown-linux-gnu
-        if: matrix.target == 'loongarch64-linux-gnu'
+        if: matrix.target == 'loongarch64-unknown-linux-gnu'
         run: |
           # Prepare additional toolchain for loongarch64-unknown-none-gnu
           cp -r /x-tools/loongarch64-unknown-linux-gnu/ /x-tools/loongarch64-unknown-none/
