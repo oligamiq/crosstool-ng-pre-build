@@ -54,6 +54,7 @@ jobs:
           ln -sf riscv64gc-linux-musl-cc riscv64gc-linux-musl-gcc
           ln -f riscv64gc-linux-musl-g++ riscv64gc-linux-musl-c++
           version=$(ls -l | grep riscv64gc-linux-musl-gcc | sed -e 's/^riscv64gc-linux-musl-gcc-//')
+          echo $version
           ln -f riscv64gc-linux-musl-gcc riscv64gc-linux-musl-gcc-$version
           ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
           cd ${{ github.workspace }}
