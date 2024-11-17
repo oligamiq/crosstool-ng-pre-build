@@ -69,13 +69,12 @@ jobs:
 
       - name: build musl sysroot for armv5te
         env:
-          CC: arm-linux-gnueabi-gcc
-          CXX: arm-linux-gnueabi-g++
+          CC: arm-linux-musleabi-gcc
+          CXX: arm-linux-musleabi-g++
+          AR: arm-linux-musleabi-ar
           CFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
           CXXFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
         run: |
-          sudo apt update
-          sudo apt install -y gcc-arm-linux-gnueabi g++-arm-linux-gnueabi
           cd /tmp
           rm -rf build
           mkdir build
