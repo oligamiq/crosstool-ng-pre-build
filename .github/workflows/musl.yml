@@ -43,6 +43,7 @@ jobs:
           curl -L https://musl.cc/arm-linux-musleabi-cross.tgz | tar xz
           rm -rf arm-unknown-linux-musleabi
           mv arm-linux-musleabi-cross arm-unknown-linux-musleabi
+          echo '${{ github.workspace }}/arm-unknown-linux-musleabi/bin' >> $GITHUB_PATH
 
           curl -L https://musl.cc/arm-linux-musleabihf-cross.tgz | tar xz
           rm -rf arm-unknown-linux-musleabihf
@@ -63,6 +64,19 @@ jobs:
           mkdir build
           cd build
           bash -x '${{ github.workspace }}/scripts/musl.sh' riscv64gc
+          cd /tmp
+          rm -rf build
+
+      - name: build musl sysroot for armv5te
+        env:
+          CC: arm-linux-musleabi-gcc
+          CXX: arm-linux-musleabi-g++
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' armv5te --target=armv5te
           cd /tmp
           rm -rf build
 
@@ -96,6 +110,7 @@ jobs:
           sudo ln -f riscv64gc-linux-musl-gcc-$version riscv64gc-linux-musl-gcc
           sudo ln -f riscv64gc-linux-musl-ld riscv64gc-linux-musl-ld.bfd
           cd ${{ github.workspace }}
+          ls -l /musl-riscv64gc
           cp -r /musl-riscv64gc ./risv64gc-unknown-linux-musl/test-root
 
       - name: change branch
