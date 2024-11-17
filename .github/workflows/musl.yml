@@ -99,6 +99,21 @@ jobs:
           cd /tmp
           rm -rf build
 
+      - name: build musl sysroot for armv7hf
+        env:
+          CC: arm-linux-musleabihf-gcc
+          CXX: arm-linux-musleabihf-g++
+          CFLAGS: "-march=armv7-a+fp"
+          CXXFLAGS: "-march=armv7-a+fp"
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' armv7hf
+          cd /tmp
+          rm -rf build
+
       - name: build musl sysroot for i586
         env:
           CC: i686-linux-musl-gcc
@@ -120,8 +135,9 @@ jobs:
           mkdir -p sysroot
           cp -r /musl-riscv64gc sysroot/riscv64gc
           cp -r /musl-armv5te sysroot/armv5te
+          cp -r /musl-armv7 sysroot/armv7
+          cp -r /musl-armv7hf sysroot/armv7hf
           cp -r /musl-i586 sysroot/i586
-
 
       - name: change branch
         run: |
