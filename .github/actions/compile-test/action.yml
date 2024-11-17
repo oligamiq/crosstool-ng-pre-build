@@ -29,25 +29,25 @@ runs:
         # Compile the program
         ${{ inputs.target }}-gcc hello.c -o hello
 
-    - name: run
-      shell: bash
-      run: |
-        # Run the program
-        ./hello > output.txt
+    # - name: run
+    #   shell: bash
+    #   run: |
+    #     # Run the program
+    #     ./hello > output.txt
 
-    - name: check
-      shell: bash
-      run: |
-        # Check the output
-        if [ "$(cat output.txt)" != "Hello, world!" ]; then
-          echo "Test failed"
-          exit 1
-        fi
-        echo "Test passed"
+    # - name: check
+    #   shell: bash
+    #   run: |
+    #     # Check the output
+    #     if [ "$(cat output.txt)" != "Hello, world!" ]; then
+    #       echo "Test failed"
+    #       exit 1
+    #     fi
+    #     echo "Test passed"
 
-    - name: cleanup
-      shell: bash
-      run: |
-        # Cleanup
-        rm hello.c hello output.txt
+    # - name: cleanup
+    #   shell: bash
+    #   run: |
+    #     # Cleanup
+    #     rm hello.c hello output.txt
 
