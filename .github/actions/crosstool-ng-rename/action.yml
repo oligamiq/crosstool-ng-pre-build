@@ -22,7 +22,7 @@ runs:
         sudo apt update
         sudo apt install -y rename
         ls -l
-        rename 's/unknown-//' *
+        sudo rename 's/unknown-//' *
         # PREFIX ex. loongarch64-unknown-linux-gnu -> loongarch64-linux-gnu
         PREFIX=$(echo ${{ inputs.target }} | sed 's/unknown-//')
         sudo ln -sf ${PREFIX}-gcc ${PREFIX}-cc

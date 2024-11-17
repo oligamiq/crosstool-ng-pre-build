@@ -1,7 +1,37 @@
 {
   "cSpell.words": [
     "aarch",
-    "crosstool"
+    "androideabi",
+    "armebv7",
+    "armv5",
+    "armv7",
+    "crosstool",
+    "cuda",
+    "eabi",
+    "eabihf",
+    "emscripten",
+    "fortanix",
+    "gnueabi",
+    "gnueabihf",
+    "illumos",
+    "imac",
+    "imafc",
+    "loongarch64",
+    "musleabi",
+    "musleabihf",
+    "nvptx64",
+    "ohos",
+    "riscv32",
+    "riscv64",
+    "softfloat",
+    "sparcv9",
+    "thumbv6",
+    "thumbv7",
+    "thumbv8",
+    "uefi",
+    "wasip1",
+    "wasip2",
+    "gnux32"
   ],
   "editor.tabSize": 2
 }
