@@ -31,12 +31,32 @@ jobs:
           git branch -a
           git switch ${{ github.event.inputs.version }}
 
+      - name: build musl sysroot
+        run: |
+          cd /tmp
+          rm -rf build
+          mkdir build
+          cd build
+          bash -x '${{ github.workspace }}/scripts/musl.sh' riscv64gc
+          cd /tmp
+          rm -rf build
+
       - name: curl from musl.cc
         run: |
           curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
           rm -rf aarch64-unknown-linux-musl
           mv aarch64-linux-musl-cross aarch64-unknown-linux-musl
 
+          curl -L https://musl.cc/riscv64-linux-musl-cross.tgz | tar xz
+          rm -rf riscv64-unknown-linux-musl
+          mv riscv64-linux-musl-cross riscv64-unknown-linux-musl
+
+          rm -rf riscv64-unknown-linux-musl
+          cp -r riscv64-unknown-linux-musl riscv64gc-unknown-linux-musl
+          sudo apt update
+          sudo apt install -y rename
+          rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
+          ln -sf riscv64gc-unknown-linux-gnu-cc riscv64gc-unknown-linux-gnu-gcc
 
       - name: upload toolchain
         run: |
