@@ -132,6 +132,7 @@ jobs:
       - name: sysroot
         run: |
           # only sysroot target
+          rm -rf sysroot
           mkdir -p sysroot
           cp -r /musl-riscv64gc sysroot/riscv64gc
           cp -r /musl-armv5te sysroot/armv5te
