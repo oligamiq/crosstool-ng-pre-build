@@ -53,7 +53,7 @@ jobs:
           rename 's/^riscv64-linux-musl/riscv64gc-linux-musl/' riscv64-linux-musl-*
           ln -sf riscv64gc-linux-musl-cc riscv64gc-linux-musl-gcc
           ln -f riscv64gc-linux-musl-g++ riscv64gc-linux-musl-c++
-          version=$(ls -l | grep riscv64gc-linux-musl-gcc | sed -e 's/^riscv64gc-linux-musl-gcc-//')
+          version=$(ls | grep riscv64gc-linux-musl-gcc | sed -e 's/^riscv64gc-linux-musl-gcc-//')
           echo $version
           ln -f riscv64gc-linux-musl-gcc riscv64gc-linux-musl-gcc-$version
           ln -f risv64gc-linux-musl-ld.bfd riscv64gc-linux-musl-ld
@@ -64,6 +64,13 @@ jobs:
           rm -rf x86_64-unknown-linux-musl
           mv x86_64-linux-musl-cross x86_64-unknown-linux-musl
 
+          curl -L https://musl.cc/arm-linux-musleabi-cross.tgz | tar xz
+          rm -rf arm-unknown-linux-musleabi
+          mv arm-linux-musleabi-cross arm-unknown-linux-musleabi
+
+          curl -L https://musl.cc/arm-linux-musleabihf-cross.tgz | tar xz
+          rm -rf arm-unknown-linux-musleabihf
+          mv arm-linux-musleabihf-cross arm-unknown-linux-musleabihf
 
       - name: change branch
         run: |
