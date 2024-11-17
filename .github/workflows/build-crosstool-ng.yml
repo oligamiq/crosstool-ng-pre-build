@@ -61,7 +61,11 @@ jobs:
           sudo apt update
           sudo apt install -y rename
           rename 's/^riscv64-linux-gcc/riscv64gc-linux-gcc/' riscv64-linux-gcc-*
-          ln -sf riscv64gc-linux-gnu-cc riscv64gc-linux-gnu-gcc
+          sudo ln -sf riscv64gc-linux-gnu-cc riscv64gc-linux-gnu-gcc
+          sudo ln -f riscv64gc-linux-gnu-g++ riscv64gc-linux-gnu-c++
+          version=$(ls riscv64gc-linux-gnu-gcc-* | head -n 1 | sed 's/^riscv64gc-linux-gnu-gcc-//')
+          echo $version
+          sudo ln -f riscv64gc-linux-gnu-gcc riscv64gc-linux-gnu-gcc-$version
 
       - name: additional loongarch64-unknown-linux-gnu
         if: matrix.target == 'loongarch64-unknown-linux-gnu'
