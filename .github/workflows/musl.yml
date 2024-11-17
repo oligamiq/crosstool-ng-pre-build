@@ -25,6 +25,16 @@ jobs:
       - name: adjust permissions
         uses: ./.github/actions/permission
 
+      - name: cp musl.sh
+        run: |
+          cp /tmp/musl.sh /tmp/musl.sh
+
+      - name: change branch
+        run: |
+          git pull
+          git branch -a
+          git switch ${{ github.event.inputs.version }}
+
       - name: curl from musl.cc
         run: |
           curl -L https://musl.cc/aarch64-linux-musl-cross.tgz | tar xz
@@ -48,6 +58,7 @@ jobs:
           curl -L https://musl.cc/arm-linux-musleabihf-cross.tgz | tar xz
           rm -rf arm-unknown-linux-musleabihf
           mv arm-linux-musleabihf-cross arm-unknown-linux-musleabihf
+          echo '${{ github.workspace }}/arm-unknown-linux-musleabihf/bin' >> $GITHUB_PATH
 
           curl -L https://musl.cc/i686-linux-musl-cross.tgz | tar xz
           rm -rf i686-unknown-linux-musl
@@ -63,7 +74,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' riscv64gc
+          bash -x /tmp/musl.sh riscv64gc
           cd /tmp
           rm -rf build
 
@@ -80,7 +91,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' armv5te --target=armv5te
+          bash -x /tmp/musl.sh armv5te --target=armv5te
           cd /tmp
           rm -rf build
 
@@ -95,7 +106,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' armv7
+          bash -x /tmp/musl.sh armv7
           cd /tmp
           rm -rf build
 
@@ -110,7 +121,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' armv7hf
+          bash -x /tmp/musl.sh armv7hf
           cd /tmp
           rm -rf build
 
@@ -125,7 +136,7 @@ jobs:
           rm -rf build
           mkdir build
           cd build
-          bash -x '${{ github.workspace }}/scripts/musl.sh' i586 --target=i586
+          bash -x /tmp/musl.sh i586 --target=i586
           cd /tmp
           rm -rf build
 
@@ -139,12 +150,6 @@ jobs:
           cp -r /musl-armv7 sysroot/armv7
           cp -r /musl-armv7hf sysroot/armv7hf
           cp -r /musl-i586 sysroot/i586
-
-      - name: change branch
-        run: |
-          git pull
-          git branch -a
-          git switch ${{ github.event.inputs.version }}
 
       - name: upload toolchain
         run: |
