@@ -18,11 +18,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.version }}
 
       - name: adjust permissions
         uses: ./.github/actions/permission
+
+      - name: switch branch
+        run: |
+          git pull
+          git branch -a
+          git switch ${{ github.event.inputs.version }}
 
       - name: create release
         run: |
