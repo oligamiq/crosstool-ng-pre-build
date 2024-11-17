@@ -50,5 +50,6 @@ runs:
         branch: ${{ github.event.inputs.version }}
 
     - name: cleanup
+      shell: bash
       run: |
         git switch main
