@@ -13,10 +13,12 @@
     "fortanix",
     "gnueabi",
     "gnueabihf",
+    "gnux32",
     "illumos",
     "imac",
     "imafc",
     "loongarch64",
+    "macabi",
     "musleabi",
     "musleabihf",
     "nvptx64",
@@ -30,8 +32,7 @@
     "thumbv8",
     "uefi",
     "wasip1",
-    "wasip2",
-    "gnux32"
+    "wasip2"
   ],
   "editor.tabSize": 2
 }
