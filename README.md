@@ -24,5 +24,8 @@ On building rustc with musl target, it require musl-root.
 Provides a pre-built GCC toolchain that runs on x86_64 Linux systems for cross-compilation to various targets.
 If you need a toolchain for architectures other than x86_64, please open an issue.
 
+## compile check
+Compile check is done, but it is not guaranteed to work.
+
 ## Related Projects
 - https://musl.cc/

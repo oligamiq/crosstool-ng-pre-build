@@ -38,7 +38,11 @@ jobs:
           ls -l
           ls -l /usr/bin
           ls -l /usr/local/bin
-          which powerpc64le-unknown-linux-gnu-gcc
+          ls -l /usr/local/powerpc64le-unknown-linux-gnu/bin
+          which powerpc64le-linux-gnu-ar
+          which powerpc64le-linux-gnu-gcc
+          which powerpc64le-linux-gnu-g++
+          which vjn
 
       - name: test
         uses: ./.github/actions/compile-test
