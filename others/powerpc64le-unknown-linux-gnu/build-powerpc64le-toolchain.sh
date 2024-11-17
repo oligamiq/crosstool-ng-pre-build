@@ -84,7 +84,7 @@ hide_output ../gcc-$GCC/configure                            \
   --disable-libquadmath-support                  \
   --disable-lto
 hide_output make -j`nproc`
-hide_output sudo make install
+sudo make install
 
 popd
 rm -rf gcc-$TARGET
