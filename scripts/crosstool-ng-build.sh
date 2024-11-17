@@ -27,6 +27,6 @@ mkdir build
 cd build
 cp ../crosstool.defconfig .config
 ct-ng olddefconfig
-hide_output ct-ng build
+ct-ng build
 cd ..
 rm -rf build
