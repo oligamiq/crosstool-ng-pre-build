@@ -17,6 +17,7 @@ runs:
   steps:
     - name: upload toolchain
       shell: bash
+      working-directory: '${{ github.workspace }}'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
