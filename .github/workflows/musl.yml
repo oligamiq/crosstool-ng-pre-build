@@ -71,6 +71,8 @@ jobs:
         env:
           CC: arm-linux-musleabi-gcc
           CXX: arm-linux-musleabi-g++
+          CFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
+          CXXFLAGS: "-march=armv5te -marm -mfloat-abi=soft"
         run: |
           cd /tmp
           rm -rf build
