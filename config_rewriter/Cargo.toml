@@ -1,0 +1,22 @@
+[package]
+name = "config_rewriter"
+version = "0.1.0"
+edition = "2021"
+default-run = "config_rewriter"
+
+[dependencies]
+toml_edit = "0.22"
+anyhow = "1.0"
+strum = { version = "0.26", features = ["derive"] }
+clap = { version = "4.5", features = ["derive"] }
+minreq = { version = "2.12.0", features = ["https"] }
+pbr = "1.1.1"
+tar = "0.4.43"
+inflate = "0.4.5"
+flate2 = "1.0.35"
+elevate = "0.6.1"
+# si-scale = "0.2.3"
+
+[[bin]]
+name = "config_rewriter"
+path = "src/main.rs"
