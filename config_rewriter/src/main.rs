@@ -20,197 +20,197 @@ pub mod utils;
 use color_eyre::eyre::{ContextCompat, Result};
 
 fn main() -> Result<()> {
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer())
-        .with(
-            EnvFilter::builder()
-                .with_default_directive(LevelFilter::INFO.into())
-                .from_env_lossy(),
-        )
-        .init();
+  tracing_subscriber::registry()
+    .with(tracing_subscriber::fmt::layer())
+    .with(
+      EnvFilter::builder()
+        .with_default_directive(LevelFilter::INFO.into())
+        .from_env_lossy(),
+    )
+    .init();
 
-    color_eyre::install()?;
+  color_eyre::install()?;
 
-    let CanonicalArgs {
-        file,
-        targets,
-        llvm_targets,
-        only_llvm,
-        install,
-        clean,
-    } = cmd::CanonicalArgs::parse_and_check()?;
+  let CanonicalArgs {
+    file,
+    targets,
+    llvm_targets,
+    only_llvm,
+    install,
+    clean,
+  } = cmd::CanonicalArgs::parse_and_check()?;
 
-    if install || clean {
-        let install_or_clean = if install { "installing" } else { "cleaning" };
-        #[allow(unused_variables)]
-        let warn_msg = format!(
-            "elevating root permissions because {install_or_clean} toolchains requires root..."
-        );
+  if install || clean {
+    let install_or_clean = if install { "installing" } else { "cleaning" };
+    #[allow(unused_variables)]
+    let warn_msg =
+      format!("elevating root permissions because {install_or_clean} toolchains requires root...");
 
-        #[cfg(any(target_os = "linux", target_os = "macos"))]
-        {
-            let check = elevate::check();
-            match check {
-                elevate::RunningAs::Root => {}
-                elevate::RunningAs::Suid => {
-                    log::warn!("{warn_msg}");
-                    elevate::escalate_if_needed().expect("Failed to acquire root");
-                }
-                elevate::RunningAs::User => {
-                    log::warn!("{warn_msg}");
-                    elevate::escalate_if_needed().expect("Failed to acquire root");
-                }
-            }
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    {
+      let check = elevate::check();
+      match check {
+        elevate::RunningAs::Root => {}
+        elevate::RunningAs::Suid => {
+          log::warn!("{warn_msg}");
+          elevate::escalate_if_needed().expect("Failed to acquire root");
         }
-
-        #[cfg(not(any(target_os = "linux", target_os = "macos")))]
-        unimplemented!("install is not implemented yet");
+        elevate::RunningAs::User => {
+          log::warn!("{warn_msg}");
+          elevate::escalate_if_needed().expect("Failed to acquire root");
+        }
+      }
     }
 
-    if !clean {
-        let file = file.with_context(|| "require --file <FILE>")?;
+    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    unimplemented!("install is not implemented yet");
+  }
 
-        let file_data = std::fs::read_to_string(&file)?;
-        let mut doc = file_data.parse::<DocumentMut>().expect("invalid doc");
+  if !clean {
+    let file = file.with_context(|| "require --file <FILE>")?;
 
-        doc["llvm"]["targets"] = llvm_targets
-            .iter()
-            .filter(|x| !x.is_experimental())
-            .map(|x| x.to_string())
-            .fold("".to_string(), |acc, x| {
-                if acc.is_empty() {
-                    x
-                } else {
-                    format!("{};{}", acc, x)
-                }
-            })
-            .into();
+    let file_data = std::fs::read_to_string(&file)?;
+    let mut doc = file_data.parse::<DocumentMut>().expect("invalid doc");
 
-        doc["llvm"]["experimental-targets"] = llvm_targets
-            .iter()
-            .filter(|x| x.is_experimental())
-            .map(|x| x.to_string())
-            .fold("".to_string(), |acc, x| {
-                if acc.is_empty() {
-                    x
-                } else {
-                    format!("{};{}", acc, x)
-                }
-            })
-            .into();
-
-        if only_llvm {
-            std::fs::write(&file, doc.to_string())?;
-            return Ok(());
+    doc["llvm"]["targets"] = llvm_targets
+      .iter()
+      .filter(|x| !x.is_experimental())
+      .map(|x| x.to_string())
+      .fold("".to_string(), |acc, x| {
+        if acc.is_empty() {
+          x
+        } else {
+          format!("{};{}", acc, x)
         }
+      })
+      .into();
 
-        for target in targets.iter() {
-            match target {
-                cmd::Target::LinuxTargets(linux_targets) => linux_targets.rewrite_doc(&mut doc)?,
-                cmd::Target::WindowsTargets(windows_targets) => todo!(),
-                cmd::Target::MacTargets(mac_targets) => todo!(),
-            }
+    doc["llvm"]["experimental-targets"] = llvm_targets
+      .iter()
+      .filter(|x| x.is_experimental())
+      .map(|x| x.to_string())
+      .fold("".to_string(), |acc, x| {
+        if acc.is_empty() {
+          x
+        } else {
+          format!("{};{}", acc, x)
         }
+      })
+      .into();
 
-        //     match targets {
-        //                     OS::Linux => {
-        //                         doc["target"]["aarch64-unknown-linux-musl"]["musl-root"] =
-        //                             "/musl-aarch64/aarch64-linux-musl".into();
-        //                         doc["target"]["loongarch64-unknown-linux-musl"]["musl-root"] = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into();
-        //                         doc["target"]["riscv64gc-unknown-linux-musl"]["musl-root"] =
-        //                             "/musl-riscv64gc".into();
-        //                         doc["target"]["x86_64-unknown-linux-musl"]["musl-root"] =
-        //                             "/musl-x86_64/x86_64-linux-musl".into();
-        //                         doc["target"]["arm-unknown-linux-musleabi"]["musl-root"] =
-        //                             "/musl-arm/arm-linux-musleabi".into();
-        //                         doc["target"]["arm-unknown-linux-musleabihf"]["musl-root"] =
-        //                             "/musl-armhf/arm-linux-musleabihf".into();
-        //                         doc["target"]["armv5te-unknown-linux-musleabi"]["musl-root"] =
-        //                             "/musl-armv5te".into();
-        //                         doc["target"]["armv7-unknown-linux-musleabi"]["musl-root"] =
-        //                             "/musl-armv7".into();
-        //                         doc["target"]["armv7-unknown-linux-musleabihf"]["musl-root"] =
-        //                             "/musl-armv7hf".into();
-        //                         doc["target"]["i586-unknown-linux-musl"]["musl-root"] = "/musl-i586".into();
-        //                         doc["target"]["i686-unknown-linux-musl"]["musl-root"] =
-        //                             "/musl-i686/i686-linux-musl".into();
-        //                         doc["target"]["wasm32-wasip2"] = doc["target"]["wasm32-wasip1"].clone();
-
-        //                         doc["target"]["riscv64gc-unknown-linux-musl"]["cc"] =
-        //                             "riscv64-linux-gnu-gcc".into();
-        //                         doc["target"]["riscv64gc-unknown-linux-musl"]["cxx"] =
-        //                             "riscv64-linux-gnu-g++".into();
-        //                         doc["target"]["riscv64gc-unknown-linux-musl"]["ar"] =
-        //                             "riscv64-linux-gnu-ar".into();
-        //                         doc["target"]["riscv64gc-unknown-linux-musl"]["linker"] =
-        //                             "riscv64-linux-gnu-gcc".into();
-        //                     }
-        //                     OS::Windows => todo!(),
-        //                     OS::Mac => todo!(),
-        //                     OS::False => todo!(),
-        //                 }
-        //             }
-        //         }
-        //         Targets::WasmAndX64Linux => {
-        //             doc["llvm"]["targets"] = "WebAssembly;X86".into();
-        //             doc["llvm"]["experimental-targets"] = "".into();
-
-        //             doc["build"]["target"] = vec![
-        //                 "wasm32-unknown-unknown",
-        //                 "wasm32-wasip1",
-        //                 "wasm32-wasip2",
-        //                 "wasm32-wasip1-threads",
-        //                 "wasm32v1-none",
-        //                 "x86_64-unknown-linux-gnu",
-        //             ]
-        //             .to_item();
-        //         }
-        //     }
-
-        std::fs::write(file, doc.to_string())?;
+    if only_llvm {
+      std::fs::write(&file, doc.to_string())?;
+      return Ok(());
     }
 
-    if install {
-        let threads = targets
-            .iter()
-            .map(|x| match x {
-                cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(),
-                cmd::Target::WindowsTargets(windows_targets) => todo!(),
-                cmd::Target::MacTargets(mac_targets) => todo!(),
-            })
-            .collect::<color_eyre::Result<Vec<_>>>()?;
-
-        log::info!("Waiting for install threads to finish...");
-        for thread in threads {
-            thread.join().expect("Failed to join thread")?;
-        }
+    for target in targets.iter() {
+      match target {
+        cmd::Target::LinuxTargets(linux_targets) => linux_targets.rewrite_doc(&mut doc)?,
+        cmd::Target::WindowsTargets(windows_targets) => todo!(),
+        cmd::Target::MacTargets(mac_targets) => todo!(),
+      }
     }
 
-    if clean {
-        targets
-            .iter()
-            .map(|x| match x {
-                cmd::Target::LinuxTargets(linux_targets) => linux_targets.clean(),
-                cmd::Target::WindowsTargets(windows_targets) => todo!(),
-                cmd::Target::MacTargets(mac_targets) => todo!(),
-            })
-            .collect::<color_eyre::Result<Vec<_>>>()?;
-    }
+    //     match targets {
+    //                     OS::Linux => {
+    //                         doc["target"]["aarch64-unknown-linux-musl"]["musl-root"] =
+    //                             "/musl-aarch64/aarch64-linux-musl".into();
+    //                         doc["target"]["loongarch64-unknown-linux-musl"]["musl-root"] = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into();
+    //                         doc["target"]["riscv64gc-unknown-linux-musl"]["musl-root"] =
+    //                             "/musl-riscv64gc".into();
+    //                         doc["target"]["x86_64-unknown-linux-musl"]["musl-root"] =
+    //                             "/musl-x86_64/x86_64-linux-musl".into();
+    //                         doc["target"]["arm-unknown-linux-musleabi"]["musl-root"] =
+    //                             "/musl-arm/arm-linux-musleabi".into();
+    //                         doc["target"]["arm-unknown-linux-musleabihf"]["musl-root"] =
+    //                             "/musl-armhf/arm-linux-musleabihf".into();
+    //                         doc["target"]["armv5te-unknown-linux-musleabi"]["musl-root"] =
+    //                             "/musl-armv5te".into();
+    //                         doc["target"]["armv7-unknown-linux-musleabi"]["musl-root"] =
+    //                             "/musl-armv7".into();
+    //                         doc["target"]["armv7-unknown-linux-musleabihf"]["musl-root"] =
+    //                             "/musl-armv7hf".into();
+    //                         doc["target"]["i586-unknown-linux-musl"]["musl-root"] = "/musl-i586".into();
+    //                         doc["target"]["i686-unknown-linux-musl"]["musl-root"] =
+    //                             "/musl-i686/i686-linux-musl".into();
+    //                         doc["target"]["wasm32-wasip2"] = doc["target"]["wasm32-wasip1"].clone();
 
-    Ok(())
+    //                         doc["target"]["riscv64gc-unknown-linux-musl"]["cc"] =
+    //                             "riscv64-linux-gnu-gcc".into();
+    //                         doc["target"]["riscv64gc-unknown-linux-musl"]["cxx"] =
+    //                             "riscv64-linux-gnu-g++".into();
+    //                         doc["target"]["riscv64gc-unknown-linux-musl"]["ar"] =
+    //                             "riscv64-linux-gnu-ar".into();
+    //                         doc["target"]["riscv64gc-unknown-linux-musl"]["linker"] =
+    //                             "riscv64-linux-gnu-gcc".into();
+    //                     }
+    //                     OS::Windows => todo!(),
+    //                     OS::Mac => todo!(),
+    //                     OS::False => todo!(),
+    //                 }
+    //             }
+    //         }
+    //         Targets::WasmAndX64Linux => {
+    //             doc["llvm"]["targets"] = "WebAssembly;X86".into();
+    //             doc["llvm"]["experimental-targets"] = "".into();
+
+    //             doc["build"]["target"] = vec![
+    //                 "wasm32-unknown-unknown",
+    //                 "wasm32-wasip1",
+    //                 "wasm32-wasip2",
+    //                 "wasm32-wasip1-threads",
+    //                 "wasm32v1-none",
+    //                 "x86_64-unknown-linux-gnu",
+    //             ]
+    //             .to_item();
+    //         }
+    //     }
+
+    std::fs::write(file, doc.to_string())?;
+  }
+
+  if install {
+    let threads = targets
+      .iter()
+      .map(|x| match x {
+        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(),
+        cmd::Target::WindowsTargets(windows_targets) => todo!(),
+        cmd::Target::MacTargets(mac_targets) => todo!(),
+      })
+      .collect::<color_eyre::Result<Vec<_>>>()?;
+
+    log::info!("Waiting for install threads to finish...");
+    for thread in threads {
+      thread.join().expect("Failed to join thread")?;
+    }
+  }
+
+  if clean {
+    targets
+      .iter()
+      .map(|x| match x {
+        cmd::Target::LinuxTargets(linux_targets) => linux_targets.clean(),
+        cmd::Target::WindowsTargets(windows_targets) => todo!(),
+        cmd::Target::MacTargets(mac_targets) => todo!(),
+      })
+      .collect::<color_eyre::Result<Vec<_>>>()?;
+  }
+
+  Ok(())
 }
 
 pub trait ToItem {
-    fn to_item(&self) -> Item;
+  fn to_item(&self) -> Item;
 }
 
 impl<T: AsRef<str>> ToItem for Vec<T> {
-    fn to_item(&self) -> Item {
-        let item: Value = Value::Array(
-            self.iter()
-                .map(|x| x.as_ref().to_string())
-                .collect::<Array>(),
-        );
-        item.into()
-    }
+  fn to_item(&self) -> Item {
+    let item: Value = Value::Array(
+      self
+        .iter()
+        .map(|x| x.as_ref().to_string())
+        .collect::<Array>(),
+    );
+    item.into()
+  }
 }
