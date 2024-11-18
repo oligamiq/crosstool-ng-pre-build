@@ -29,6 +29,8 @@ jobs:
           "i686-unknown-linux-gnu",
           "arm-unknown-linux-gnueabi",
           "arm-unknown-linux-gnueabihf",
+          "armv7-unknown-linux-gnueabihf",
+          "s390x-unknown-linux-gnu",
         ]
 
     steps:
@@ -55,12 +57,6 @@ jobs:
           rm -rf build
           bash -x '${{ github.workspace }}/scripts/crosstool-ng-build.sh'
 
-      - uses: ./.github/actions/crosstool-ng-rename
-        if: matrix.target != 'riscv64gc-unknown-linux-gnu'
-        with:
-          target: ${{ matrix.target }}
-          working-directory: /x-tools/${{ matrix.target }}/bin
-
       - name: Build toolchains for riscv64gc-unknown-linux-gnu
         if: matrix.target == 'riscv64gc-unknown-linux-gnu'
         run: |
@@ -71,12 +67,20 @@ jobs:
           bash -x '${{ github.workspace }}/scripts/crosstool-ng-build.sh'
           rm -rf /tmp/patches
           mv /x-tools/riscv64-unknown-linux-gnu /x-tools/riscv64gc-unknown-linux-gnu
+          cd /x-tools/riscv64gc-unknown-linux-gnu/bin
+          mv riscv64-unknown-linux-gnu-* riscv64gc-unknown-linux-gnu-*
+
+      - name: Build toolchains for s390x-unknown-linux-gnu
+        if: matrix.target == 's390x-unknown-linux-gnu'
+        run: |
+          mv /x-tools/s390x-ibm-linux-gnu /x-tools/s390x-unknown-linux-gnu
+          cd /x-tools/s390x-unknown-linux-gnu/bin
+          mv s390x-ibm-linux-gnu-* s390x-unknown-linux-gnu-*
 
       - uses: ./.github/actions/crosstool-ng-rename
-        if: matrix.target == 'riscv64gc-unknown-linux-gnu'
         with:
-          target: riscv64-unknown-linux-gnu
-          working-directory: /x-tools/riscv64gc-unknown-linux-gnu/bin
+          target: ${{ matrix.target }}
+          working-directory: /x-tools/${{ matrix.target }}/bin
 
       - name: Upload toolchains
         uses: ./.github/actions/commit-toolchain

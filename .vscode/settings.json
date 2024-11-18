@@ -9,6 +9,7 @@
     "canonicalized",
     "crosstool",
     "cuda",
+    "defconfig",
     "eabi",
     "eabihf",
     "emscripten",
