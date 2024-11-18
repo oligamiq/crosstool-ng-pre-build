@@ -74,7 +74,7 @@ jobs:
           done
 
           TARGETS=(
-            "armv7hf"
+            "armv7" # armv7hf
           )
           for target in "${TARGETS[@]}"; do
             tar -czf "sysroot/${target}-unknown-linux-musleabihf.tar.gz" "musl-sysroot/${target}"
