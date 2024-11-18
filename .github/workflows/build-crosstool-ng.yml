@@ -68,14 +68,14 @@ jobs:
           rm -rf /tmp/patches
           mv /x-tools/riscv64-unknown-linux-gnu /x-tools/riscv64gc-unknown-linux-gnu
           cd /x-tools/riscv64gc-unknown-linux-gnu/bin
-          mv riscv64-unknown-linux-gnu-* riscv64gc-unknown-linux-gnu-*
+          rename 's/riscv64-unknown-linux-gnu/riscv64gc-unknown-linux-gnu/' riscv64-unknown-linux-gnu-*
 
       - name: Build toolchains for s390x-unknown-linux-gnu
         if: matrix.target == 's390x-unknown-linux-gnu'
         run: |
           mv /x-tools/s390x-ibm-linux-gnu /x-tools/s390x-unknown-linux-gnu
           cd /x-tools/s390x-unknown-linux-gnu/bin
-          mv s390x-ibm-linux-gnu-* s390x-unknown-linux-gnu-*
+          rename 's/s390x-ibm-linux-gnu/s390x-unknown-linux-gnu/' s390x-ibm-linux-gnu-*
 
       - uses: ./.github/actions/crosstool-ng-rename
         with:
