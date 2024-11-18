@@ -9,6 +9,11 @@ freebsd_version=12.3
 triple=$arch-unknown-freebsd12
 sysroot=/usr/local/$triple
 
+sudo chown -R "$(id -u):$(id -g)" /usr/local
+sudo chmod -R u+w /usr/local
+sudo chown -R "$(id -u):$(id -g)" $sysroot
+sudo chmod -R u+w $sysroot
+
 hide_output() {
   set +x
   local on_err="
