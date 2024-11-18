@@ -11,8 +11,6 @@ sysroot=/usr/local/$triple
 
 sudo chown -R "$(id -u):$(id -g)" /usr/local
 sudo chmod -R u+w /usr/local
-sudo chown -R "$(id -u):$(id -g)" $sysroot
-sudo chmod -R u+w $sysroot
 
 hide_output() {
   set +x
@@ -61,6 +59,9 @@ done
 for lib in c++ c_nonshared compiler_rt execinfo gcc pthread rt ssp_nonshared procstat devstat kvm memstat; do
   files_to_extract=("${files_to_extract[@]}" "./usr/lib/lib${lib}.*")
 done
+
+sudo chown -R "$(id -u):$(id -g)" $sysroot
+sudo chmod -R u+w $sysroot
 
 # Originally downloaded from:
 # URL=https://download.freebsd.org/ftp/releases/${freebsd_arch}/${freebsd_version}-RELEASE/base.txz
