@@ -7,8 +7,7 @@ inputs:
   is-stable:
     description: 'use stable version'
     required: false
-    type: boolean
-    default: false
+    default: 'false'
 
 runs:
   using: composite
@@ -21,7 +20,7 @@ runs:
         sudo apt install -y flex automake bison bzip2 ca-certificates cmake curl file g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
 
     - name: install crosstool-ng
-      if: ${{ !inputs.is-stable }}
+      if: ${{ inputs.is-stable == 'false' }}
       env:
         URL: https://github.com/crosstool-ng/crosstool-ng
         REV: ed12fa68402f58e171a6f79500f73f4781fdc9e5
@@ -42,7 +41,7 @@ runs:
         rm -rf crosstool-ng
 
     - name: install crosstool-ng stable
-      if: ${{ inputs.is-stable }}
+      if: ${{ inputs.is-stable == 'true' }}
       shell: bash
       env:
         CT_NG: "1.26.0"
