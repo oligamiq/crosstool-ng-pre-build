@@ -1,4 +1,4 @@
-use std::{io::Stdout, thread::JoinHandle};
+use std::{fs::create_dir_all, io::Stdout, thread::JoinHandle};
 
 use pbr::ProgressBar;
 
@@ -21,8 +21,7 @@ impl Install for LinuxTargets {
       match sl {
         LinuxTargets::x86_64_unknown_linux_gnu => {
           log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
-        },
-        LinuxTargets::aarch64_unknown_linux_musl => todo!(),
+        }
         LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
         LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
         LinuxTargets::armv7_unknown_linux_gnueabihf => todo!(),
@@ -120,13 +119,38 @@ impl Install for LinuxTargets {
       Ok(())
     });
 
+    // If an error occurs here, this line will panic and swallow the error, so be careful.
     receiver.recv()?;
 
     Ok(thread)
   }
 }
 
+pub fn save_cache(file_data: Vec<u8>, file_name: &str) -> color_eyre::Result<()> {
+  let path = format!("/x-tools/cache/{}", file_name);
+  let path = std::path::Path::new(&path);
+  create_dir_all(path.parent().unwrap())?;
+  std::fs::write(path, file_data)?;
+
+  Ok(())
+}
+
+pub fn check_cache(file_name: &str) -> color_eyre::Result<Vec<u8>> {
+  let path = format!("/x-tools/cache/{}", file_name);
+  let path = std::path::Path::new(&path);
+  let data = std::fs::read(path)?;
+
+  Ok(data)
+}
+
 pub fn download_from_url(url: &str) -> color_eyre::Result<Vec<u8>> {
+  let file_name = url.split('/').last().unwrap();
+  if let Ok(data) = check_cache(file_name) {
+    log::info!("Using cached file {}", file_name);
+
+    return Ok(data);
+  }
+
   let mut pb_and_len: Option<(ProgressBar<Stdout>, u64)> = None;
   let lazy = minreq::get(url).send_lazy()?;
   let len = lazy
@@ -157,6 +181,8 @@ pub fn download_from_url(url: &str) -> color_eyre::Result<Vec<u8>> {
   if let Some((ref mut pb, _)) = pb_and_len {
     pb.finish();
   }
+
+  save_cache(buffer.clone(), file_name)?;
 
   Ok(buffer)
 }
@@ -213,9 +239,7 @@ pub mod normal {
     Ok(())
   }
 
-  pub fn check_compile_test_c(
-    tool_prefix: &str,
-  ) -> color_eyre::Result<()> {
+  pub fn check_compile_test_c(tool_prefix: &str) -> color_eyre::Result<()> {
     let code = r#"
       #include <stdio.h>
       int main() {
@@ -243,9 +267,7 @@ pub mod normal {
     Ok(())
   }
 
-  pub fn check_compile_test_cpp(
-    tool_prefix: &str,
-  ) -> color_eyre::Result<()> {
+  pub fn check_compile_test_cpp(tool_prefix: &str) -> color_eyre::Result<()> {
     let code = r#"
       #include <iostream>
       int main() {

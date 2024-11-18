@@ -194,6 +194,13 @@ fn main() -> Result<()> {
         cmd::Target::MacTargets(mac_targets) => todo!(),
       })
       .collect::<color_eyre::Result<Vec<_>>>()?;
+
+    // clean cache
+    let cache_dir = "/x-tools/cache";
+    if let Err(e) = std::fs::remove_dir_all(cache_dir) {
+      log::warn!("{:?} doesn't exist, skipping", cache_dir);
+      Err(e)?;
+    }
   }
 
   Ok(())

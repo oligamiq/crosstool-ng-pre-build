@@ -13,8 +13,7 @@ impl Clean for LinuxTargets {
     match self {
       LinuxTargets::x86_64_unknown_linux_gnu => {
         log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
-      },
-      LinuxTargets::aarch64_unknown_linux_musl => todo!(),
+      }
       LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
       LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
       LinuxTargets::armv7_unknown_linux_gnueabihf => todo!(),

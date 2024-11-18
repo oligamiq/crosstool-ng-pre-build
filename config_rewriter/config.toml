@@ -15,3 +15,10 @@ cxx = "i686-linux-gnu-g++"
 ar = "i686-linux-gnu-ar"
 ranlib = "i686-linux-gnu-ranlib"
 linker = "i686-linux-gnu-gcc"
+
+[target.aarch64-unknown-linux-musl]
+cc = "aarch64-linux-musl-gcc"
+cxx = "aarch64-linux-musl-g++"
+ar = "aarch64-linux-musl-ar"
+ranlib = "aarch64-linux-musl-ranlib"
+linker = "aarch64-linux-musl-gcc"
