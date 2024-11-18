@@ -68,6 +68,7 @@ jobs:
           which x86_64-unknown-freebsd12-ar
           which x86_64-unknown-freebsd12-clang
           which x86_64-unknown-freebsd12-clang++
+          tree /usr/local/x86_64-unknown-freebsd12
 
       - name: test
         uses: ./.github/actions/compile-test
