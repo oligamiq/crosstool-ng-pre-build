@@ -100,6 +100,8 @@ sysroot)
 
 binutils)
         download_file "/tmp/$BINUTILS_TAR" "$BINUTILS_URL" "$BINUTILS_SUM"
+        sudo mkdir -p /ws
+        sudo chown "$USER" /ws
         mkdir -p /ws/src/binutils
         cd /ws/src/binutils
         tar -xjf "/tmp/$BINUTILS_TAR"
