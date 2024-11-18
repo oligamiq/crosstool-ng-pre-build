@@ -13,4 +13,4 @@ runs:
         sudo apt-get update
         sudo apt install -y build-essential
         sudo apt install -y clang make ninja-build file curl ca-certificates python3 git cmake sudo bzip2 xz-utils texinfo wget libssl-dev pkg-config
-        bash '${{ github.action_path }}/freebsd-toolchain.sh' x86_64
+        bash '${{ github.action_path }}/../toolchains/freebsd-toolchain.sh' x86_64

@@ -21,7 +21,7 @@ runs:
         rm -rf solaris
         rm -rf gcc
         rm -rf /usr/local/sparcv9-sun-solaris2.10
-        bash '${{ github.action_path }}/build-solaris-toolchain.sh' sparcv9 sparcv9 solaris-sparc sun
+        bash '${{ github.action_path }}/../toolchains/build-solaris-toolchain.sh' sparcv9 sparcv9 solaris-sparc sun
         cd /
         rm -rf ~/build/
         sudo ln -sf /usr/local/bin/sparcv9-sun-solaris2.10-gcc /usr/local/bin/sparcv9-sun-solaris-gcc
