@@ -1,0 +1,16 @@
+name: install cross-compilation toolchain for x86_64-unknown-freebsd
+author: "oligamiq"
+
+description: |
+  This action installs a cross-compilation toolchain on the runner with build.sh script.
+
+runs:
+  using: 'composite'
+  steps:
+    - name: install toolchain
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt install -y build-essential
+        sudo apt install -y clang make ninja-build file curl ca-certificates python3 git cmake sudo bzip2 xz-utils texinfo wget libssl-dev pkg-config
+        bash '${{ github.action_path }}/freebsd-toolchain.sh' x86_64
