@@ -17,6 +17,8 @@ pub mod utils;
 // cargo run -- -f config.toml --target aarch64-unknown-linux-gnu --install
 // cargo run -- --target aarch64-unknown-linux-gnu --clean
 
+// cargo run -- -f config.toml --tier 1 --os linux --install -t aarch64-unknown-linux-musl
+
 use color_eyre::eyre::{ContextCompat, Result};
 
 fn main() -> Result<()> {

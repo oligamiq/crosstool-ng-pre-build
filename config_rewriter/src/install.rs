@@ -21,6 +21,7 @@ impl Install for LinuxTargets {
       match sl {
         LinuxTargets::x86_64_unknown_linux_gnu => {
           log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
+          sender.send(())?;
         }
         LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
         LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
