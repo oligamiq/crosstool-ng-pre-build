@@ -9,10 +9,10 @@ pub struct Args {
   #[arg(short, long, help = "Path to the config.toml file")]
   pub file: Option<String>,
 
-  #[arg(short, long, help = "Tier to set, one of 1, 2, 2-host, 2-no-host, all")]
+  #[arg(long, help = "Tier to set, one of 1, 2, 2-host, 2-no-host, all")]
   pub tier: Vec<Tier>,
 
-  #[arg(long, help = "set target toolchain")]
+  #[arg(short, long, help = "set target toolchain")]
   pub target: Vec<Target>,
 
   #[arg(short, long, help = "target OS, one of linux, windows, mac")]

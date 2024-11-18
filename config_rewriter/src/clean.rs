@@ -1,6 +1,6 @@
-use std::fs::{canonicalize, symlink_metadata};
+use std::fs::symlink_metadata;
 
-use color_eyre::eyre::Context;
+use color_eyre::eyre::{Context, Ok};
 
 use crate::{targets::LinuxTargets, utils::TOOLS};
 
@@ -11,8 +11,9 @@ pub trait Clean {
 impl Clean for LinuxTargets {
   fn clean(&self) -> color_eyre::Result<()> {
     match self {
-      LinuxTargets::i686_unknown_linux_gnu => todo!(),
-      LinuxTargets::x86_64_unknown_linux_gnu => todo!(),
+      LinuxTargets::x86_64_unknown_linux_gnu => {
+        log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
+      },
       LinuxTargets::aarch64_unknown_linux_musl => todo!(),
       LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
       LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
@@ -118,9 +119,27 @@ impl Clean for LinuxTargets {
         if let Err(_) = std::fs::remove_dir_all(&toolchain_dir) {
           log::warn!("{:?} doesn't exist, skipping", toolchain_dir);
         }
+
+        // check if the toolchain is installed
+        check_install_cmd(&tool_prefix)?;
       }
     }
 
     Ok(())
   }
+}
+
+pub fn check_install_cmd(tool_prefix: &str) -> color_eyre::Result<()> {
+  for tool in TOOLS.iter() {
+    let cmd = format!("{tool_prefix}-{tool}");
+    if let Result::Ok(path) = which::which(&cmd) {
+      if path == std::path::PathBuf::from(format!("/usr/local/bin/{tool_prefix}-{tool}")) {
+        panic!("Clean failed, toolchain is still installed");
+      } else {
+        log::warn!("{:?} isn't installed by this script, skipping", path);
+      }
+    }
+  }
+
+  Ok(())
 }

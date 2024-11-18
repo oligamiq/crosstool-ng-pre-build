@@ -1,5 +1,5 @@
 [llvm]
-targets = "AArch64"
+targets = "AArch64;X86"
 experimental-targets = ""
 
 [target.aarch64-unknown-linux-gnu]
@@ -8,3 +8,10 @@ cxx = "aarch64-linux-gnu-g++"
 ar = "aarch64-linux-gnu-ar"
 ranlib = "aarch64-linux-gnu-ranlib"
 linker = "aarch64-linux-gnu-gcc"
+
+[target.i686-unknown-linux-gnu]
+cc = "i686-linux-gnu-gcc"
+cxx = "i686-linux-gnu-g++"
+ar = "i686-linux-gnu-ar"
+ranlib = "i686-linux-gnu-ranlib"
+linker = "i686-linux-gnu-gcc"

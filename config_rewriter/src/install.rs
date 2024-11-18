@@ -17,9 +17,11 @@ impl Install for LinuxTargets {
     let (sender, receiver) = std::sync::mpsc::channel::<()>();
 
     let thread = std::thread::spawn(move || -> color_eyre::Result<()> {
-      // #[cfg(target_os = "linux")]
+      #[cfg(target_os = "linux")]
       match sl {
-        LinuxTargets::x86_64_unknown_linux_gnu => todo!(),
+        LinuxTargets::x86_64_unknown_linux_gnu => {
+          log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
+        },
         LinuxTargets::aarch64_unknown_linux_musl => todo!(),
         LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
         LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
@@ -109,6 +111,9 @@ impl Install for LinuxTargets {
           normal::unpack_tarball_archive(body)?;
           let tool_prefix = name.replace("-unknown-", "-");
           normal::install_toolchain(&format!("/x-tools/{name}/bin/"), &tool_prefix)?;
+          normal::check_install_cmd(&tool_prefix)?;
+          normal::check_compile_test_c(&tool_prefix)?;
+          normal::check_compile_test_cpp(&tool_prefix)?;
         }
       }
 
@@ -204,6 +209,66 @@ pub mod normal {
         panic!("{} is not installed correctly", cmd);
       }
     }
+
+    Ok(())
+  }
+
+  pub fn check_compile_test_c(
+    tool_prefix: &str,
+  ) -> color_eyre::Result<()> {
+    let code = r#"
+      #include <stdio.h>
+      int main() {
+        printf("Hello, World!\n");
+        return 0;
+      }
+    "#;
+
+    let path = std::path::Path::new("/tmp/test.c");
+    std::fs::write(path, code)?;
+
+    let cmd = format!("{tool_prefix}-gcc");
+    let output = std::process::Command::new(cmd)
+      .arg("/tmp/test.c")
+      .arg("-o")
+      .arg("/tmp/test")
+      .output()?;
+
+    if !output.status.success() {
+      panic!("Failed to compile test.c");
+    }
+
+    std::fs::remove_file("/tmp/test")?;
+
+    Ok(())
+  }
+
+  pub fn check_compile_test_cpp(
+    tool_prefix: &str,
+  ) -> color_eyre::Result<()> {
+    let code = r#"
+      #include <iostream>
+      int main() {
+        std::cout << "Hello, World!" << std::endl;
+        return 0;
+      }
+    "#;
+
+    let path = std::path::Path::new("/tmp/test.cpp");
+    std::fs::write(path, code)?;
+
+    let cmd = format!("{tool_prefix}-g++");
+    let output = std::process::Command::new(cmd)
+      .arg("/tmp/test.cpp")
+      .arg("-o")
+      .arg("/tmp/test")
+      .output()?;
+
+    if !output.status.success() {
+      panic!("Failed to compile test.cpp");
+    }
+
+    std::fs::remove_file("/tmp/test")?;
 
     Ok(())
   }

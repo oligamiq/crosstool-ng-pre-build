@@ -10,7 +10,9 @@ pub trait RewriteDoc {
 impl RewriteDoc for LinuxTargets {
   fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()> {
     match self {
-      LinuxTargets::x86_64_unknown_linux_gnu => todo!(),
+      LinuxTargets::x86_64_unknown_linux_gnu => {
+        log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
+      },
       LinuxTargets::aarch64_unknown_linux_musl => todo!(),
       LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
       LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
