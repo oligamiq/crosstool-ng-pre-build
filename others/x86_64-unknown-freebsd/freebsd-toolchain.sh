@@ -34,7 +34,7 @@ cd binutils-build
 hide_output ../binutils-${binutils_version}/configure \
   --target="$triple" --with-sysroot="$sysroot"
 hide_output make -j"$(getconf _NPROCESSORS_ONLN)"
-hide_output make install
+hide_output sudo make install
 cd ../..
 rm -rf binutils
 
