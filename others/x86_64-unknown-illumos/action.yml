@@ -1,0 +1,19 @@
+name: install cross-compilation toolchain for x86_64-unknown-illumos
+author: "oligamiq"
+
+description: |
+  This action installs a cross-compilation toolchain on the runner with build.sh script.
+
+runs:
+  using: 'composite'
+  steps:
+    - name: install toolchain
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt install -y build-essential automake bison bzip2 ca-certificates cmake curl file flex g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
+        sudo apt install -y libgmp-dev libmpfr-dev libmpc-dev
+        bash '${{ github.action_path }}/illumos-toolchain.sh' x86_64 sysroot
+        bash '${{ github.action_path }}/illumos-toolchain.sh' x86_64 binutils
+        bash '${{ github.action_path }}/illumos-toolchain.sh' x86_64 gcc
+        echo '/opt/illumos/x86_64/bin/' >> $GITHUB_PATH
