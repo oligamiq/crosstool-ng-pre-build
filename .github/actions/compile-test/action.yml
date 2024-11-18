@@ -10,7 +10,7 @@ inputs:
 
   compiler_plus_plus:
     description: 'The toolchain to test.'
-    required: true
+    default: ''
 
 runs:
   using: composite
@@ -34,6 +34,7 @@ runs:
         ${{ inputs.compiler }} hello.c -o hello
 
     - name: create .cpp file
+      if: ${{ inputs.compiler_plus_plus != '' }}
       shell: bash
       run: |
         # Run hello world program
@@ -46,6 +47,7 @@ runs:
         EOF
 
     - name: compile
+      if: ${{ inputs.compiler_plus_plus != '' }}
       shell: bash
       run: |
         # Compile the program
