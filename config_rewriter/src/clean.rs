@@ -1,15 +1,17 @@
-use toml_edit::{DocumentMut, Item};
-use tracing::instrument;
+use std::fs::{canonicalize, symlink_metadata};
 
-use crate::targets::LinuxTargets;
+use color_eyre::eyre::Context;
 
-pub trait RewriteDoc {
-    fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()>;
+use crate::{targets::LinuxTargets, utils::TOOLS};
+
+pub trait Clean {
+    fn clean(&self) -> color_eyre::Result<()>;
 }
 
-impl RewriteDoc for LinuxTargets {
-    fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()> {
+impl Clean for LinuxTargets {
+    fn clean(&self) -> color_eyre::Result<()> {
         match self {
+            LinuxTargets::i686_unknown_linux_gnu => todo!(),
             LinuxTargets::x86_64_unknown_linux_gnu => todo!(),
             LinuxTargets::aarch64_unknown_linux_musl => todo!(),
             LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
@@ -92,56 +94,28 @@ impl RewriteDoc for LinuxTargets {
             LinuxTargets::x86_64_unknown_uefi => todo!(),
             _ => {
                 let name = self.to_name();
-                inner_table(doc, "target", &name);
-                let target = &mut doc["target"][&name];
-                let prefix = name.replace("-unknown-", "-");
-                let place = format!("target.{name}");
-                target.check_and_rewrite(&place, "cc", format!("{}-gcc", prefix).into())?;
-                target.check_and_rewrite(&place, "cxx", format!("{}-g++", prefix).into())?;
-                target.check_and_rewrite(&place, "ar", format!("{}-ar", prefix).into())?;
-                target.check_and_rewrite(&place, "ranlib", format!("{}-ranlib", prefix).into())?;
-                target.check_and_rewrite(&place, "linker", format!("{}-gcc", prefix).into())?;
+                let tool_prefix = name.replace("-unknown-", "-");
+                for tool in TOOLS {
+                    let path = format!("/usr/local/bin/{tool_prefix}-{tool}");
+                    let path = std::path::Path::new(&path);
+                    if !(std::fs::exists(&path)?) {
+                        log::warn!("{:?} doesn't exist, skipping", path);
+                        continue;
+                    }
+                    let metadata = symlink_metadata(path)
+                        .with_context(|| format!("Failed to get metadata for {:?}", path))?;
+                    if metadata.is_symlink() {
+                        std::fs::remove_file(&path)
+                            .with_context(|| format!("Failed to remove symlink {:?}", path))?;
+                    } else {
+                        log::warn!("{:?} is not a symlink, it isn't installed by this script so it won't be removed", path);
+                    }
+                }
+                let toolchain_dir = format!("/x-tools/{}", name);
+                if let Err(_) = std::fs::remove_dir_all(&toolchain_dir) {
+                    log::warn!("{:?} doesn't exist, skipping", toolchain_dir);
+                }
             }
-        }
-
-        Ok(())
-    }
-}
-
-pub fn inner_table(doc: &mut DocumentMut, key: &str, second_key: &str) {
-    if let Some(table) = doc.get(key) {
-        if table.get(second_key).is_none() {
-            doc[key][second_key] = toml_edit::Item::Table(toml_edit::Table::new());
-        }
-    } else {
-        let mut table = toml_edit::Table::new();
-        table.set_implicit(true);
-        table.insert(second_key, toml_edit::Item::Table(toml_edit::Table::new()));
-        doc[key] = toml_edit::Item::Table(table);
-    }
-}
-
-pub trait CheckAndRewrite {
-    fn check_and_rewrite(
-        &mut self,
-        place: &str,
-        key: &str,
-        item: toml_edit::Item,
-    ) -> color_eyre::Result<()>;
-}
-
-impl CheckAndRewrite for Item {
-    fn check_and_rewrite(
-        &mut self,
-        place: &str,
-        key: &str,
-        item: toml_edit::Item,
-    ) -> color_eyre::Result<()> {
-        if self.get(key).is_none() {
-            self[key] = item;
-        } else {
-            log::warn!("[{place}]: {key} already exists, but will be overwritten");
-            self[key] = item;
         }
 
         Ok(())

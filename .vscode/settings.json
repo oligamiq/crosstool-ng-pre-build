@@ -5,6 +5,8 @@
     "armebv7",
     "armv5",
     "armv7",
+    "canonicalize",
+    "canonicalized",
     "crosstool",
     "cuda",
     "eabi",

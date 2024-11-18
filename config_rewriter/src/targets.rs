@@ -1,5 +1,4 @@
 use strum::{EnumIter, EnumString, IntoEnumIterator};
-use toml_edit::DocumentMut;
 
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, Eq, PartialEq, EnumString, strum::Display, EnumIter)]
@@ -102,7 +101,7 @@ impl LinuxTargets {
         name
     }
 
-    pub fn from_name(name: &str) -> anyhow::Result<Self> {
+    pub fn from_name(name: &str) -> color_eyre::Result<Self> {
         let name = name.replace("-", "_");
         let name = name.replace(".", "_");
         Ok(name.parse()?)
@@ -160,7 +159,7 @@ impl WindowsTargets {
         name
     }
 
-    pub fn from_name(name: &str) -> anyhow::Result<Self> {
+    pub fn from_name(name: &str) -> color_eyre::Result<Self> {
         let name = name.replace("-", "_");
         Ok(name.parse()?)
     }
@@ -212,7 +211,7 @@ impl MacTargets {
         name
     }
 
-    pub fn from_name(name: &str) -> anyhow::Result<Self> {
+    pub fn from_name(name: &str) -> color_eyre::Result<Self> {
         let name = name.replace("-", "_");
         Ok(name.parse()?)
     }

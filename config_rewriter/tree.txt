@@ -1,0 +1,114 @@
+config_rewriter v0.1.0 (/mnt/c/Users/nziq5/Documents/projects/crosstool-ng-pre-build/config_rewriter)
+├── anyhow v1.0.93
+├── clap v4.5.21
+│   ├── clap_builder v4.5.21
+│   │   ├── anstream v0.6.18
+│   │   │   ├── anstyle v1.0.10
+│   │   │   ├── anstyle-parse v0.2.6
+│   │   │   │   └── utf8parse v0.2.2
+│   │   │   ├── anstyle-query v1.1.2
+│   │   │   ├── colorchoice v1.0.3
+│   │   │   ├── is_terminal_polyfill v1.70.1
+│   │   │   └── utf8parse v0.2.2
+│   │   ├── anstyle v1.0.10
+│   │   ├── clap_lex v0.7.3
+│   │   └── strsim v0.11.1
+│   └── clap_derive v4.5.18 (proc-macro)
+│       ├── heck v0.5.0
+│       ├── proc-macro2 v1.0.89
+│       │   └── unicode-ident v1.0.13
+│       ├── quote v1.0.37
+│       │   └── proc-macro2 v1.0.89 (*)
+│       └── syn v2.0.87
+│           ├── proc-macro2 v1.0.89 (*)
+│           ├── quote v1.0.37 (*)
+│           └── unicode-ident v1.0.13
+├── elevate v0.6.1
+│   ├── libc v0.2.164
+│   └── log v0.4.22
+├── flate2 v1.0.35
+│   ├── crc32fast v1.4.2
+│   │   └── cfg-if v1.0.0
+│   └── miniz_oxide v0.8.0
+│       └── adler2 v2.0.0
+├── inflate v0.4.5
+│   └── adler32 v1.2.0
+├── minreq v2.12.0
+│   ├── log v0.4.22
+│   ├── once_cell v1.20.2
+│   ├── rustls v0.21.12
+│   │   ├── log v0.4.22
+│   │   ├── ring v0.17.8
+│   │   │   ├── cfg-if v1.0.0
+│   │   │   ├── getrandom v0.2.15
+│   │   │   │   ├── cfg-if v1.0.0
+│   │   │   │   └── libc v0.2.164
+│   │   │   ├── spin v0.9.8
+│   │   │   └── untrusted v0.9.0
+│   │   │   [build-dependencies]
+│   │   │   └── cc v1.2.1
+│   │   │       └── shlex v1.3.0
+│   │   ├── rustls-webpki v0.101.7
+│   │   │   ├── ring v0.17.8 (*)
+│   │   │   └── untrusted v0.9.0
+│   │   └── sct v0.7.1
+│   │       ├── ring v0.17.8 (*)
+│   │       └── untrusted v0.9.0
+│   ├── rustls-webpki v0.101.7 (*)
+│   └── webpki-roots v0.25.4
+├── pbr v1.1.1
+│   ├── crossbeam-channel v0.5.13
+│   │   └── crossbeam-utils v0.8.20
+│   └── libc v0.2.164
+├── strum v0.26.3
+│   └── strum_macros v0.26.4 (proc-macro)
+│       ├── heck v0.5.0
+│       ├── proc-macro2 v1.0.89 (*)
+│       ├── quote v1.0.37 (*)
+│       ├── rustversion v1.0.18 (proc-macro)
+│       └── syn v2.0.87 (*)
+├── tar v0.4.43
+│   ├── filetime v0.2.25
+│   │   ├── cfg-if v1.0.0
+│   │   └── libc v0.2.164
+│   ├── libc v0.2.164
+│   └── xattr v1.3.1
+│       ├── linux-raw-sys v0.4.14
+│       └── rustix v0.38.40
+│           ├── bitflags v2.6.0
+│           └── linux-raw-sys v0.4.14
+├── toml_edit v0.22.22
+│   ├── indexmap v2.6.0
+│   │   ├── equivalent v1.0.1
+│   │   └── hashbrown v0.15.1
+│   ├── toml_datetime v0.6.8
+│   └── winnow v0.6.20
+├── tracing-subscriber v0.3.18
+│   ├── matchers v0.1.0
+│   │   └── regex-automata v0.1.10
+│   │       └── regex-syntax v0.6.29
+│   ├── nu-ansi-term v0.46.0
+│   │   └── overload v0.1.1
+│   ├── once_cell v1.20.2
+│   ├── regex v1.11.0
+│   │   ├── regex-automata v0.4.8
+│   │   │   └── regex-syntax v0.8.5
+│   │   └── regex-syntax v0.8.5
+│   ├── sharded-slab v0.1.7
+│   │   └── lazy_static v1.5.0
+│   ├── thread_local v1.1.8
+│   │   ├── cfg-if v1.0.0
+│   │   └── once_cell v1.20.2
+│   ├── tracing v0.1.40
+│   │   ├── pin-project-lite v0.2.14
+│   │   └── tracing-core v0.1.32
+│   │       └── once_cell v1.20.2
+│   ├── tracing-core v0.1.32 (*)
+│   └── tracing-log v0.2.0
+│       ├── log v0.4.22
+│       ├── once_cell v1.20.2
+│       └── tracing-core v0.1.32 (*)
+└── which v7.0.0
+    ├── either v1.13.0
+    ├── home v0.5.9
+    └── rustix v0.38.40 (*)

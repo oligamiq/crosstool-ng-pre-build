@@ -1,4 +1,5 @@
 use clap::Parser;
+use color_eyre::eyre::eyre;
 
 use crate::targets::{LinuxTargets, MacTargets, WindowsTargets};
 
@@ -6,43 +7,58 @@ use crate::targets::{LinuxTargets, MacTargets, WindowsTargets};
 #[command(version, about, long_about = None)]
 pub struct Args {
     #[arg(short, long, help = "Path to the config.toml file")]
-    pub file: String,
+    pub file: Option<String>,
+
     #[arg(short, long, help = "Tier to set, one of 1, 2, 2-host, 2-no-host, all")]
     pub tier: Vec<Tier>,
+
     #[arg(long, help = "set target toolchain")]
     pub target: Vec<Target>,
+
     #[arg(short, long, help = "target OS, one of linux, windows, mac")]
     pub os: Vec<OS>,
+
     #[arg(
         short,
         long,
         help = "LLVM target. If required, auto-detect will be used"
     )]
     pub llvm_targets: Vec<LLVMTargets>,
+
     #[arg(long, help = "If you build dist separately, you can change only llvm")]
     pub only_llvm: bool,
+
     #[arg(long, help = "install the toolchain")]
     pub install: bool,
+
+    #[arg(long, help = "Clean installed toolchains")]
+    pub clean: bool,
 }
 
 pub struct CanonicalArgs {
-    pub file: String,
+    pub file: Option<String>,
     pub targets: Vec<Target>,
     pub llvm_targets: Vec<LLVMTargets>,
     pub only_llvm: bool,
     pub install: bool,
+    pub clean: bool,
 }
 
 impl CanonicalArgs {
-    pub fn parse_and_check() -> anyhow::Result<CanonicalArgs> {
+    pub fn parse_and_check() -> color_eyre::Result<CanonicalArgs> {
         let args = Args::parse();
 
         let Args {
             file,
             only_llvm,
             install,
+            clean,
             ..
         } = args;
+
+        if install && clean {
+            Err(eyre!("Cannot install and clean at the same time"))?;
+        }
 
         let targets = args
             .target
@@ -72,7 +88,7 @@ impl CanonicalArgs {
                         }
                     }),
             )
-            .collect::<anyhow::Result<Vec<Target>>>()?;
+            .collect::<color_eyre::Result<Vec<Target>>>()?;
 
         let targets = targets.into_iter().fold(Vec::new(), |mut acc, target| {
             if !acc.contains(&target) {
@@ -82,7 +98,7 @@ impl CanonicalArgs {
         });
 
         if targets.is_empty() {
-            anyhow::bail!("No targets specified");
+            Err(eyre!("No targets specified"))?;
         }
 
         let llvm_targets = args
@@ -94,7 +110,7 @@ impl CanonicalArgs {
                     .iter()
                     .map(|target| LLVMTargets::detect_target(target)),
             )
-            .collect::<anyhow::Result<Vec<LLVMTargets>>>()?;
+            .collect::<color_eyre::Result<Vec<LLVMTargets>>>()?;
 
         let llvm_targets = llvm_targets
             .into_iter()
@@ -111,6 +127,7 @@ impl CanonicalArgs {
             llvm_targets,
             only_llvm,
             install,
+            clean,
         })
     }
 }
@@ -140,24 +157,24 @@ pub enum OS {
 }
 
 impl OS {
-    pub fn check_os(&self) -> anyhow::Result<()> {
+    pub fn check_os(&self) -> color_eyre::Result<()> {
         match self {
             OS::Linux => {
                 #[cfg(not(target_os = "linux"))]
                 {
-                    anyhow::bail!("This is not a Linux system, Only Linux is supported");
+                    Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
                 }
             }
             OS::Windows => {
                 #[cfg(not(target_os = "linux"))]
                 {
-                    anyhow::bail!("This is not a Linux system, Only Linux is supported");
+                    Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
                 }
             }
             OS::Mac => {
                 #[cfg(not(target_os = "macos"))]
                 {
-                    anyhow::bail!("This is not a Mac system, Only Mac is supported");
+                    Err(eyre!("This is not a Mac system, Only Mac is supported",))?;
                 }
             }
         }
@@ -220,7 +237,7 @@ impl Target {
 }
 
 impl std::str::FromStr for Target {
-    type Err = anyhow::Error;
+    type Err = color_eyre::Report;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if let Ok(target) = LinuxTargets::from_name(s) {
@@ -230,7 +247,7 @@ impl std::str::FromStr for Target {
         } else if let Ok(target) = MacTargets::from_name(s) {
             Ok(Target::MacTargets(target))
         } else {
-            anyhow::bail!("Invalid target: {}", s)
+            Err(eyre!(format!("Unknown target: {}", s)))
         }
     }
 }
@@ -288,7 +305,7 @@ pub enum LLVMTargets {
 }
 
 impl LLVMTargets {
-    pub fn detect_target(target: &Target) -> anyhow::Result<Self> {
+    pub fn detect_target(target: &Target) -> color_eyre::Result<Self> {
         let name = target.to_string();
 
         if name.contains("aarch64") {
@@ -326,7 +343,7 @@ impl LLVMTargets {
         } else if name.contains("csky") {
             Ok(LLVMTargets::CSKY)
         } else {
-            anyhow::bail!("Unknown target: {}", name)
+            Err(eyre!("Unknown target: {}", name))
         }
     }
 
