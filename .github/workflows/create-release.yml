@@ -44,6 +44,9 @@ jobs:
             "riscv64gc-unknown-linux-gnu"
             "x86_64-unknown-linux-musl"
             "x86_64-unknown-netbsd"
+            "aarch64-unknown-linux-gnu"
+            "i586-unknown-linux-gnu"
+            "i686-unknown-linux-gnu"
           )
           mkdir -p x-tools
           for target in "${TARGETS[@]}"; do
