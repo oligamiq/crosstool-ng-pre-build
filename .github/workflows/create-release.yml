@@ -84,7 +84,7 @@ jobs:
             "armv7" # armv7hf
           )
           for target in "${TARGETS[@]}"; do
-            mv "${target}" "${target}-unknown-linux-musleabihf"
+            mv "${target}hf" "${target}-unknown-linux-musleabihf"
             tar -czf "../sysroot/${target}-unknown-linux-musleabihf.tar.gz" "${target}-unknown-linux-musleabihf"
           done
 
