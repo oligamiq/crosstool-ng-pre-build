@@ -14,21 +14,15 @@ impl Clean for LinuxTargets {
       LinuxTargets::x86_64_unknown_linux_gnu => {
         log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
       }
-      LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
-      LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
-      LinuxTargets::armv7_unknown_linux_gnueabihf => todo!(),
-      LinuxTargets::loongarch64_unknown_linux_gnu => todo!(),
-      LinuxTargets::loongarch64_unknown_linux_musl => todo!(),
-      LinuxTargets::powerpc_unknown_linux_gnu => todo!(),
-      LinuxTargets::powerpc64_unknown_linux_gnu => todo!(),
-      LinuxTargets::powerpc64le_unknown_linux_gnu => todo!(),
-      LinuxTargets::riscv64gc_unknown_linux_gnu => todo!(),
-      LinuxTargets::riscv64gc_unknown_linux_musl => todo!(),
-      LinuxTargets::s390x_unknown_linux_gnu => todo!(),
-      LinuxTargets::x86_64_unknown_freebsd => todo!(),
-      LinuxTargets::x86_64_unknown_illumos => todo!(),
-      LinuxTargets::x86_64_unknown_linux_musl => todo!(),
-      LinuxTargets::x86_64_unknown_netbsd => todo!(),
+      LinuxTargets::powerpc64le_unknown_linux_gnu => {
+        log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
+      }
+      LinuxTargets::x86_64_unknown_freebsd => {
+        log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
+      }
+      LinuxTargets::x86_64_unknown_illumos => {
+        log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
+      }
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),
       LinuxTargets::aarch64_unknown_linux_ohos => todo!(),

@@ -12,21 +12,24 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::x86_64_unknown_linux_gnu => {
         log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
       }
-      LinuxTargets::arm_unknown_linux_gnueabi => todo!(),
-      LinuxTargets::arm_unknown_linux_gnueabihf => todo!(),
-      LinuxTargets::armv7_unknown_linux_gnueabihf => todo!(),
-      LinuxTargets::loongarch64_unknown_linux_gnu => todo!(),
-      LinuxTargets::loongarch64_unknown_linux_musl => todo!(),
-      LinuxTargets::powerpc_unknown_linux_gnu => todo!(),
-      LinuxTargets::powerpc64_unknown_linux_gnu => todo!(),
-      LinuxTargets::powerpc64le_unknown_linux_gnu => todo!(),
-      LinuxTargets::riscv64gc_unknown_linux_gnu => todo!(),
-      LinuxTargets::riscv64gc_unknown_linux_musl => todo!(),
-      LinuxTargets::s390x_unknown_linux_gnu => todo!(),
-      LinuxTargets::x86_64_unknown_freebsd => todo!(),
-      LinuxTargets::x86_64_unknown_illumos => todo!(),
-      LinuxTargets::x86_64_unknown_linux_musl => todo!(),
-      LinuxTargets::x86_64_unknown_netbsd => todo!(),
+      LinuxTargets::x86_64_unknown_freebsd => {
+        let name = self.to_name();
+        inner_table(doc, "target", &name);
+        let target = &mut doc["target"][&name];
+        let place = format!("target.{name}");
+        target.check_and_rewrite(&place, "ar", format!("x86_64-unknown-freebsd12-ar").into())?;
+        target.check_and_rewrite(
+          &place,
+          "cc",
+          format!("x86_64-unknown-freebsd12-clang").into(),
+        )?;
+        target.check_and_rewrite(
+          &place,
+          "cxx",
+          format!("x86_64-unknown-freebsd12-clang++").into(),
+        )?;
+      }
+
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),
       LinuxTargets::aarch64_unknown_linux_ohos => todo!(),
@@ -96,11 +99,11 @@ impl RewriteDoc for LinuxTargets {
         let target = &mut doc["target"][&name];
         let prefix = name.replace("-unknown-", "-");
         let place = format!("target.{name}");
-        target.check_and_rewrite(&place, "cc", format!("{}-gcc", prefix).into())?;
-        target.check_and_rewrite(&place, "cxx", format!("{}-g++", prefix).into())?;
-        target.check_and_rewrite(&place, "ar", format!("{}-ar", prefix).into())?;
-        target.check_and_rewrite(&place, "ranlib", format!("{}-ranlib", prefix).into())?;
-        target.check_and_rewrite(&place, "linker", format!("{}-gcc", prefix).into())?;
+        target.check_and_rewrite(&place, "cc", format!("{prefix}-gcc").into())?;
+        target.check_and_rewrite(&place, "cxx", format!("{prefix}-g++").into())?;
+        target.check_and_rewrite(&place, "ar", format!("{prefix}-ar").into())?;
+        target.check_and_rewrite(&place, "ranlib", format!("{prefix}-ranlib").into())?;
+        target.check_and_rewrite(&place, "linker", format!("{prefix}-gcc").into())?;
       }
     }
 

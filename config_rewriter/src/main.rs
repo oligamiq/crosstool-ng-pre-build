@@ -1,3 +1,5 @@
+use std::thread::JoinHandle;
+
 use clean::Clean as _;
 use cmd::CanonicalArgs;
 use install::Install as _;
@@ -16,8 +18,8 @@ pub mod utils;
 // cargo run -- --only-llvm --tier all --os linux --file ./config.toml
 // cargo run -- -f config.toml --target aarch64-unknown-linux-gnu --install
 // cargo run -- --target aarch64-unknown-linux-gnu --clean
-
 // cargo run -- -f config.toml --tier 1 --os linux --install -t aarch64-unknown-linux-musl
+// cargo run -- -f config.toml --tier 1 --tier 2-host --os linux --exclude powerpc64le-unknown-linux-gnu --exclude x86_64-unknown-freebsd --exclude x86_64-unknown-illumos --clean
 
 use color_eyre::eyre::{ContextCompat, Result};
 
@@ -172,19 +174,51 @@ fn main() -> Result<()> {
   }
 
   if install {
-    let threads = targets
-      .iter()
-      .map(|x| match x {
-        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(),
+    let (err_sender, err_receiver) = std::sync::mpsc::channel();
+
+    let check_err = |threads: Vec<JoinHandle<()>>| -> color_eyre::Result<Vec<JoinHandle<()>>> {
+      match err_receiver.try_recv() {
+        Ok(e) => {
+          log::info!("Error occurred, waiting for install threads to finish...");
+          log::error!("{:?}", e);
+          for thread in threads {
+            thread
+              .join()
+              .map_err(|e| color_eyre::eyre::eyre!("{:?}", e))?;
+          }
+          Err(e)?
+        }
+        Err(std::sync::mpsc::TryRecvError::Disconnected) => {
+          log::info!("Error occurred, waiting for install threads to finish...");
+          log::error!("{:?}", std::sync::mpsc::TryRecvError::Disconnected);
+          for thread in threads {
+            thread
+              .join()
+              .map_err(|e| color_eyre::eyre::eyre!("{:?}", e))?;
+          }
+          Err(std::sync::mpsc::TryRecvError::Disconnected)?
+        }
+        Err(std::sync::mpsc::TryRecvError::Empty) => Ok(threads),
+      }
+    };
+
+    let mut threads = vec![];
+    for target in &targets {
+      threads.push(match target {
+        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(err_sender.clone()),
         cmd::Target::WindowsTargets(windows_targets) => todo!(),
         cmd::Target::MacTargets(mac_targets) => todo!(),
-      })
-      .collect::<color_eyre::Result<Vec<_>>>()?;
+      }?);
+
+      threads = check_err(threads)?;
+    }
 
     log::info!("Waiting for install threads to finish...");
     for thread in threads {
-      thread.join().expect("Failed to join thread")?;
+      thread.join().expect("Failed to join thread");
     }
+
+    check_err(vec![])?;
   }
 
   if clean {
@@ -200,8 +234,12 @@ fn main() -> Result<()> {
     // clean cache
     let cache_dir = "/x-tools/cache";
     if let Err(e) = std::fs::remove_dir_all(cache_dir) {
-      log::warn!("{:?} doesn't exist, skipping", cache_dir);
-      Err(e)?;
+      match e.kind() {
+        std::io::ErrorKind::NotFound => {
+          log::warn!("{:?} doesn't exist, skipping", cache_dir);
+        }
+        _ => Err(e)?,
+      }
     }
   }
 
