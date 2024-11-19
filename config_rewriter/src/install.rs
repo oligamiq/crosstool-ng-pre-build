@@ -456,7 +456,7 @@ pub mod normal {
       log::error!("Failed to compile test file with c compiler");
       log::error!("stdout: {}", String::from_utf8(output.stdout).unwrap());
       log::error!("stderr: {}", String::from_utf8(output.stderr).unwrap());
-      panic!("Failed to compile test file with c compiler");
+      Err(color_eyre::eyre::eyre!("Failed to compile test file with c compiler"))?;
     }
 
     std::fs::remove_file(&c_file_path)?;
