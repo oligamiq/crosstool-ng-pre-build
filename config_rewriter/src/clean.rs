@@ -20,9 +20,6 @@ impl Clean for LinuxTargets {
       LinuxTargets::x86_64_unknown_freebsd => {
         log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
       }
-      LinuxTargets::x86_64_unknown_illumos => {
-        log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
-      }
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),
       LinuxTargets::aarch64_unknown_linux_ohos => todo!(),

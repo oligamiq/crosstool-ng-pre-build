@@ -76,28 +76,3 @@ jobs:
           compiler: x86_64-unknown-freebsd12-clang
           # This is failing
           # compiler_plus_plus: x86_64-unknown-freebsd12-clang++
-
-  install-x86_64-unknown-illumos:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: install
-        uses: ./others/x86_64-unknown-illumos
-
-      - name: ls
-        run: |
-          ls -l
-          ls -l /usr/bin
-          ls -l /usr/local/bin
-          ls -l /opt/illumos/x86_64/bin
-          which x86_64-illumos-ar
-          which x86_64-illumos-gcc
-          which x86_64-illumos-g++
-
-      - name: test
-        uses: ./.github/actions/compile-test
-        with:
-          compiler: x86_64-illumos-gcc
-          compiler_plus_plus: x86_64-illumos-g++

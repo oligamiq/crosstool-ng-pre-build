@@ -82,74 +82,6 @@ impl Install for LinuxTargets {
             }
             std::fs::remove_dir_all(&prefix)?;
           }
-          LinuxTargets::x86_64_unknown_illumos => {
-            log::warn!("Install by tar.gz has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.");
-            apt_install(vec![
-              "build-essential",
-              "automake",
-              "bison",
-              "bzip2",
-              "ca-certificates",
-              "cmake",
-              "curl",
-              "file",
-              "flex",
-              "g++",
-              "gawk",
-              "gdb",
-              "git",
-              "gperf",
-              "help2man",
-              "libncurses-dev",
-              "libssl-dev",
-              "libtool-bin",
-              "make",
-              "ninja-build",
-              "patch",
-              "pkg-config",
-              "python3",
-              "rsync",
-              "sudo",
-              "texinfo",
-              "unzip",
-              "wget",
-              "xz-utils",
-              "libgmp-dev",
-              "libmpfr-dev",
-              "libmpc-dev",
-            ])?;
-            sender.send(())?;
-            let prefix = format!("/tmp/build/{}", sl.to_name());
-            std::fs::create_dir_all(&prefix)?;
-            std::fs::write(format!("{prefix}/install.sh"), build_illumos_toolchain_sh())?;
-            let cmd = Command::new("bash")
-              .arg(format!("{prefix}/install.sh"))
-              .arg("x86_64")
-              .arg("sysroot")
-              .output()?;
-            if !cmd.status.success() {
-              panic!("Failed to install toolchain");
-            }
-            let cmd = Command::new("bash")
-              .arg(format!("{prefix}/install.sh"))
-              .arg("x86_64")
-              .arg("binutils")
-              .output()?;
-            if !cmd.status.success() {
-              panic!("Failed to install toolchain");
-            }
-            let cmd = Command::new("bash")
-              .arg(format!("{prefix}/install.sh"))
-              .arg("x86_64")
-              .arg("gcc")
-              .output()?;
-            if !cmd.status.success() {
-              panic!("Failed to install toolchain");
-            }
-            std::fs::remove_dir_all(&prefix)?;
-            add_path_on_gh_actions("/opt/illumos/x86_64/bin/")?;
-          }
-
           LinuxTargets::aarch64_unknown_fuchsia => todo!(),
           LinuxTargets::aarch64_linux_android => todo!(),
           LinuxTargets::aarch64_unknown_linux_ohos => todo!(),
@@ -225,9 +157,13 @@ impl Install for LinuxTargets {
 
             let crosstool_ng = || -> color_eyre::Result<()> {
               let tool_prefix = name.replace("-unknown-", "-");
+              log::info!("Installing toolchain for {}", name);
               normal::install_toolchain(&format!("/x-tools/{name}/bin/"), &tool_prefix)?;
+              log::info!("Checking if the toolchain[{name}] is installed correctly");
               normal::check_install_cmd(&tool_prefix)?;
+              log::info!("Checking if the toolchain[{name}] can compile a simple C program");
               normal::check_compile_test_c(&tool_prefix)?;
+              log::info!("Checking if the toolchain[{name}] can compile a simple C++ program");
               normal::check_compile_test_cpp(&tool_prefix)?;
 
               Ok(())
