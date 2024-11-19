@@ -117,3 +117,27 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
           target: x86_64-unknown-netbsd
+
+  illumos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: adjust permissions
+        uses: ./.github/actions/permission
+
+      - name: Build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt install -y build-essential automake bison bzip2 ca-certificates cmake curl file flex g++ gawk gdb git gperf help2man libncurses-dev libssl-dev libtool-bin make ninja-build patch pkg-config python3 rsync sudo texinfo unzip wget xz-utils
+          sudo apt install -y libgmp-dev libmpfr-dev libmpc-dev
+          bash ${{ github.workspace }}/scripts/build-illumos-toolchain.sh x86_64 sysroot
+          bash ${{ github.workspace }}/scripts/build-illumos-toolchain.sh x86_64 binutils
+          bash ${{ github.workspace }}/scripts/build-illumos-toolchain.sh x86_64 gcc
+
+      - name: Upload toolchains
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: x86_64-unknown-illumos
