@@ -51,6 +51,7 @@ jobs:
             "s390x-unknown-linux-gnu"
             "x86_64-unknown-linux-musl"
             "x86_64-unknown-netbsd"
+            "x86_64-unknown-illumos"
           )
           mkdir -p x-tools
           for target in "${TARGETS[@]}"; do
