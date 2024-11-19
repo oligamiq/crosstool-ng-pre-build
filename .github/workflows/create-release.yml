@@ -32,9 +32,15 @@ jobs:
         run: |
           # targets
           TARGETS=(
+            "aarch64-unknown-linux-gnu"
             "aarch64-unknown-linux-musl"
+            "arm-unknown-linux-gnueabi"
+            "arm-unknown-linux-gnueabihf"
             "arm-unknown-linux-musleabi"
             "arm-unknown-linux-musleabihf"
+            "armv7-unknown-linux-gnueabihf"
+            "i586-unknown-linux-gnu"
+            "i686-unknown-linux-gnu"
             "i686-unknown-linux-musl"
             "loongarch64-unknown-linux-gnu"
             "loongarch64-unknown-linux-musl"
@@ -42,11 +48,9 @@ jobs:
             "powerpc64-unknown-linux-gnu"
             "riscv64-unknown-linux-musl"
             "riscv64gc-unknown-linux-gnu"
+            "s390x-unknown-linux-gnu"
             "x86_64-unknown-linux-musl"
             "x86_64-unknown-netbsd"
-            "aarch64-unknown-linux-gnu"
-            "i586-unknown-linux-gnu"
-            "i686-unknown-linux-gnu"
           )
           mkdir -p x-tools
           for target in "${TARGETS[@]}"; do
