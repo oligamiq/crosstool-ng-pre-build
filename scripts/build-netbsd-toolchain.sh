@@ -103,23 +103,26 @@ cd ../..
 
 rm -rf usr
 
-mv /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc-orig
-cat > /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc <<'EOF'
+# rename
+sudo rename 's/x86_64--netbsd/x86_64-netbsd/' /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-*
+
+mv /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc-orig
+cat > /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc <<'EOF'
 #!/usr/bin/env bash
-exec /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc-orig --sysroot=/x-tools/x86_64-unknown-netbsd/sysroot "$@"
+exec /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc-orig --sysroot=/x-tools/x86_64-unknown-netbsd/sysroot "$@"
 EOF
 
-mv /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++ /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++-orig
-cat > /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++ <<'EOF'
+mv /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++ /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++-orig
+cat > /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++ <<'EOF'
 #!/usr/bin/env bash
-exec /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++-orig --sysroot=/x-tools/x86_64-unknown-netbsd/sysroot "$@"
+exec /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++-orig --sysroot=/x-tools/x86_64-unknown-netbsd/sysroot "$@"
 EOF
 
-GCC_SHA1=`sha1sum -b /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc-orig | cut -d' ' -f1`
-GPP_SHA1=`sha1sum -b /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++-orig | cut -d' ' -f1`
+GCC_SHA1=`sha1sum -b /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc-orig | cut -d' ' -f1`
+GPP_SHA1=`sha1sum -b /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++-orig | cut -d' ' -f1`
 
-echo "# $GCC_SHA1" >> /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc
-echo "# $GPP_SHA1" >> /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++
+echo "# $GCC_SHA1" >> /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc
+echo "# $GPP_SHA1" >> /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++
 
-chmod +x /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-gcc
-chmod +x /x-tools/x86_64-unknown-netbsd/bin/x86_64--netbsd-g++
+chmod +x /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-gcc
+chmod +x /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++

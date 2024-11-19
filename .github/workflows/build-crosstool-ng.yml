@@ -108,11 +108,9 @@ jobs:
         run: |
           cd /tmp
           rm -rf netbsd
-          bash ${{ github.workspace }}/scripts/build-netbsd-toolchain.sh
           sudo apt update
           sudo apt install -y rename
-          cd /x-tools/x86_64-unknown-netbsd/bin
-          sudo rename 's/x86_64--netbsd/x86_64-netbsd/' x86_64--netbsd-*
+          bash ${{ github.workspace }}/scripts/build-netbsd-toolchain.sh
 
       - name: Upload toolchains
         uses: ./.github/actions/commit-toolchain
