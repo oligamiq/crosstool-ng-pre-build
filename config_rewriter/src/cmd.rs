@@ -15,6 +15,9 @@ pub struct Args {
   #[arg(short, long, help = "set target toolchain")]
   pub target: Vec<Target>,
 
+  #[arg(long, help = "exclude target toolchain")]
+  pub exclude: Vec<Target>,
+
   #[arg(short, long, help = "target OS, one of linux, windows, mac")]
   pub os: Vec<OS>,
 
@@ -98,6 +101,12 @@ impl CanonicalArgs {
       }
       acc
     });
+
+    // exclude targets
+    let targets = targets
+      .into_iter()
+      .filter(|target| !args.exclude.contains(target))
+      .collect::<Vec<_>>();
 
     if targets.is_empty() {
       Err(eyre!("No targets specified"))?;
