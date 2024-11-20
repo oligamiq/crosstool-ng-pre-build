@@ -170,8 +170,8 @@ jobs:
 
       - uses: ./.github/actions/crosstool-ng-rename
         with:
-          target: ${{ matrix.target }}
-          working-directory: /x-tools/${{ matrix.target }}/bin
+          target: x86_64-unknown-freebsd
+          working-directory: /x-tools/x86_64-unknown-freebsd/bin
 
       - name: Upload toolchains
         uses: ./.github/actions/commit-toolchain
