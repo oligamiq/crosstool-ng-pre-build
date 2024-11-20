@@ -18,6 +18,8 @@ Compile check on c, c++.
 
 ## TODO
 - [] Check downloaded files by signature.
+- [] Refactor the error handling.
+- [] Handle ctrl-c and safely exit.
 
 ## Related Projects
 - https://musl.cc/

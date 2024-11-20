@@ -152,6 +152,33 @@ impl Install for LinuxTargets {
   }
 }
 
+fn install_fuchsia(
+  arch: &str,
+  sender: Sender<()>,
+) -> color_eyre::Result<()> {
+  #[allow(non_camel_case_types)]
+  #[derive(strum::EnumString)]
+  enum FuchsiaArch {
+    aarch64,
+    x86_64,
+  }
+  let fuchsia_arch = arch.parse::<FuchsiaArch>()?;
+
+  let name = "xxxxxx-unknown-fuchsia";
+  let url = format!("https://github.com/oligamiq/toolchain-for-building-rustc/releases/download/{CONTENT_VERSION}-release/{name}.tar.gz");
+  let body = download_from_url(&url)?;
+
+  sender.send(())?;
+
+  save_cache(&body, &format!("{name}.tar.gz"))?;
+
+  normal::unpack_tarball_archive(body, &name)?;
+
+  todo!();
+
+  Ok(())
+}
+
 fn check_musl_libc(folder: &str) -> color_eyre::Result<bool> {
   let path = format!("{folder}/libc.a");
   let path = std::path::Path::new(&path);
