@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+exec /x-tools/x86_64-unknown-netbsd/bin/x86_64-netbsd-g++-orig --sysroot=/x-tools/x86_64-unknown-netbsd/sysroot "$@"
+# 07896c83499e4df621d1674dbcf5c5881459465f

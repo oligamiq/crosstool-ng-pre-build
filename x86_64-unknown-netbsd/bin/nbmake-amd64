@@ -1,0 +1,26 @@
+#! /usr/bin/sh
+# Set proper variables to allow easy "make" building of a NetBSD subtree.
+# Generated from:  $NetBSD: build.sh,v 1.333 2019/06/07 15:49:20 sborrill Exp $
+# with these arguments: -j4 -m amd64 tools
+#
+
+BSHELL=/usr/bin/sh; export BSHELL
+BUILDSEED=NetBSD-9; export BUILDSEED
+CONFIG_SHELL=/usr/bin/sh; export CONFIG_SHELL
+DESTDIR=/tmp/netbsd/usr/src/obj/destdir.amd64; export DESTDIR
+HOST_SH=/usr/bin/sh; export HOST_SH
+unset INFODIR
+LC_ALL=C; export LC_ALL
+unset LESSCHARSET
+MACHINE=amd64; export MACHINE
+MACHINE_ARCH='x86_64'; export MACHINE_ARCH
+MAKEFLAGS='-de -m /tmp/netbsd/usr/src/share/mk  MKOBJDIRS=yes'; export MAKEFLAGS
+MAKEWRAPPERMACHINE=amd64; export MAKEWRAPPERMACHINE
+MKARZERO=yes; export MKARZERO
+NETBSDSRCDIR=/tmp/netbsd/usr/src; export NETBSDSRCDIR
+RELEASEDIR=/tmp/netbsd/usr/src/obj/releasedir; export RELEASEDIR
+unset TERMINFO
+TOOLDIR='/x-tools/x86_64-unknown-netbsd'; export TOOLDIR
+USETOOLS=yes; export USETOOLS
+
+exec "${TOOLDIR}/bin/nbmake" ${1+"$@"}
