@@ -196,6 +196,7 @@ jobs:
 
   solaris:
     runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'sparcv9-sun-solaris')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
