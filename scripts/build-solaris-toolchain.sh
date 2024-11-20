@@ -132,7 +132,8 @@ hide_output ../gcc-$GCC/configure \
   --disable-libquadmath-support   \
   --disable-shared                \
   --prefix=$PREFIX                \
-  --with-sysroot=$SYSROOT
+  --with-sysroot=$SYSROOT         \
+  --disable-lto
 
 hide_output make -j`nproc`
 hide_output make install
