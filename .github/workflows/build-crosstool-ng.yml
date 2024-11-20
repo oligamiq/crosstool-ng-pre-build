@@ -34,6 +34,7 @@ on:
           "x86_64-unknown-illumos",
           "x86_64-unknown-freebsd",
           "sparcv9-sun-solaris",
+          "powerpc64le-unknown-linux-gnu",
         ]'
 
 permissions:
@@ -220,6 +221,7 @@ jobs:
           bash ${{ github.workspace }}/scripts/build-solaris-toolchain.sh sparcv9 sparcv9 solaris-sparc sun
           cd /
           rm -rf ~/build/
+          ls -l "${ github.workspace }"
           mv /x-tools/sparcv9-sun-solaris2.10 /x-tools/sparcv9-sun-solaris
           cd /x-tools/sparcv9-sun-solaris/bin
           sudo rename 's/sparcv9-sun-solaris2.10/sparcv9-sun-solaris/' sparcv9-sun-solaris2.10-*
@@ -234,3 +236,35 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
           target: sparcv9-sun-solaris
+
+  powerpc64le:
+    runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'powerpc64le-unknown-linux-gnu')
+    steps:
+      - names: Checkout
+        uses: actions/checkout@v4
+
+      - name: adjust permissions
+        uses: ./.github/actions/permission
+
+      - name: Build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt install -y build-essential
+          sudo apt install -y rpm2cpio cpio
+          mkdir -p ~/build
+          cd ~/build
+          bash ${{ github.workspace }}/toolchains/build-powerpc64le-toolchain.sh
+          cd /
+          rm -rf ~/build/
+
+      - uses: ./.github/actions/crosstool-ng-rename
+        with:
+          target: powerpc64le-unknown-linux-gnu
+          working-directory: /x-tools/powerpc64le-unknown-linux-gnu/bin
+
+      - name: Upload toolchains
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: powerpc64le-unknown-linux-gnu

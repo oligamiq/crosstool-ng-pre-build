@@ -30,6 +30,11 @@ SYSROOT="$PREFIX/sysroot"
 # (upstream ppc64le support wasn't added until 2.19, which el7 backported.)
 sudo mkdir -p $SYSROOT
 sudo chown `whoami` $SYSROOT
+sudo chmod u+w $SYSROOT
+sudo mkdir -p $PREFIX
+sudo chown `whoami` $PREFIX
+sudo chmod u+w $PREFIX
+sudo chmod u+w /x-tools
 pushd $SYSROOT
 
 # centos_base=http://vault.centos.org/altarch/7.3.1611/os/ppc64le/Packages/
