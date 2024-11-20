@@ -22,6 +22,11 @@ jobs:
       - name: adjust permissions
         uses: ./.github/actions/permission
 
+      # This is big so we cannot cache it on github commit
+      - name: Build toolchain
+        run: |
+          bash ${{ github.workspace }}/scripts/build-fuchsia-toolchain.sh
+
       - name: switch branch
         run: |
           git pull
@@ -58,9 +63,12 @@ jobs:
             # "xxxxxx-unknown-fuchsia"
           )
           mkdir -p x-tools
+
           for target in "${TARGETS[@]}"; do
             tar -czf "x-tools/${target}.tar.gz" "${target}"
           done
+
+          tar -czf "x-tools/xxxxxx-unknown-fuchsia.tar.gz" "/x-tools/xxxxxx-unknown-fuchsia"
 
           echo "x-tools"
 
@@ -92,6 +100,7 @@ jobs:
             mv "${target}hf" "${target}-unknown-linux-musleabihf"
             tar -czf "../sysroot/${target}-unknown-linux-musleabihf.tar.gz" "${target}-unknown-linux-musleabihf"
           done
+
 
       - name: upload release
         uses: ncipollo/release-action@v1
