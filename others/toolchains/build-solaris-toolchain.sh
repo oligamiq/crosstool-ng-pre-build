@@ -119,8 +119,7 @@ hide_output ../gcc-$GCC/configure \
   --disable-libcilkrts            \
   --disable-libada                \
   --disable-libsanitizer          \
-  --disable-libquadmath-support   \
-  --disable-lto
+  --disable-libquadmath-support
 
 hide_output make -j`nproc`
 hide_output sudo make install

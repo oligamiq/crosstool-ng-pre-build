@@ -30,7 +30,7 @@ GCC=6.5.0
 
 TARGET=${ARCH}-${MANUFACTURER}-solaris2.10
 
-PREFIX="/x-tools/$ARCH-unknown-solaris2.10"
+PREFIX="/x-tools/$TARGET"
 SYSROOT="$PREFIX/sysroot"
 
 mkdir -p $PREFIX
@@ -130,7 +130,6 @@ hide_output ../gcc-$GCC/configure \
   --disable-libada                \
   --disable-libsanitizer          \
   --disable-libquadmath-support   \
-  --disable-lto                   \
   --disable-shared                \
   --prefix=$PREFIX                \
   --with-sysroot=$SYSROOT
