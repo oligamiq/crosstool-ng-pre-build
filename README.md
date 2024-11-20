@@ -8,10 +8,12 @@ musl targets are copied from https://musl.cc/
 ## Usage
 
 
-
-
 ## compile check
 Compile check is done, but it is not guaranteed to work.
+Compile check on c, c++.
+
+## TODO
+- [] Check downloaded files by signature.
 
 ## Related Projects
 - https://musl.cc/

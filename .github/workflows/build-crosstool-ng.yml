@@ -35,6 +35,7 @@ on:
           "x86_64-unknown-freebsd",
           "sparcv9-sun-solaris",
           "powerpc64le-unknown-linux-gnu",
+          "xxxxxx-unknown-fuchsia",
         ]'
 
 permissions:
@@ -263,3 +264,23 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
           target: powerpc64le-unknown-linux-gnu
+
+  fuchsia:
+    runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'xxxxxx-unknown-fuchsia')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: adjust permissions
+        uses: ./.github/actions/permission
+
+      - name: Build toolchain
+        run: |
+          bash ${{ github.workspace }}/scripts/build-fuchsia-toolchain.sh
+
+      - name: Upload toolchains
+        uses: ./.github/actions/commit-toolchain
+        with:
+          version: ${{ github.event.inputs.version }}
+          target: xxxxxx-unknown-fuchsia
