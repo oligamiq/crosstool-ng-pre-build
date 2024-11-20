@@ -241,7 +241,7 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.inputs.others-targets, 'powerpc64le-unknown-linux-gnu')
     steps:
-      - names: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: adjust permissions
