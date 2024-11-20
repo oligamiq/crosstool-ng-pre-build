@@ -258,11 +258,6 @@ jobs:
           cd /
           rm -rf ~/build/
 
-      - uses: ./.github/actions/crosstool-ng-rename
-        with:
-          target: powerpc64le-unknown-linux-gnu
-          working-directory: /x-tools/powerpc64le-unknown-linux-gnu/bin
-
       - name: Upload toolchains
         uses: ./.github/actions/commit-toolchain
         with:
