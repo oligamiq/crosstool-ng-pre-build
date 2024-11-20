@@ -54,6 +54,10 @@ download_divided() {
   rm "$fname"
 }
 
+export CFLAGS='-Os -s'
+export CXXFLAGS='-Os -s'
+export LDFLAGS='-s'
+
 mkdir netbsd
 cd netbsd
 

@@ -48,6 +48,9 @@ cd binutils
 curl -L https://ftp.gnu.org/gnu/binutils/binutils-${binutils_version}.tar.bz2 | tar xjf -
 mkdir binutils-build
 cd binutils-build
+export CFLAGS='-Os -s'
+export CXXFLAGS='-Os -s'
+export LDFLAGS='-s'
 hide_output ../binutils-${binutils_version}/configure \
   --target="$triple" --with-sysroot="$sysroot" --prefix="$prefix"
 hide_output make -j`nproc`

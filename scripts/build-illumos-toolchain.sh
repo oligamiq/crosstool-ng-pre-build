@@ -109,6 +109,9 @@ binutils)
 
         mkdir -p /ws/build/binutils
         cd /ws/build/binutils
+        export CFLAGS='-Os -s'
+        export CXXFLAGS='-Os -s'
+        export LDFLAGS='-s'
         "/ws/src/binutils/$BINUTILS_BASE/configure" \
             --prefix="$PREFIX" \
             --target="$BUILD_TARGET" \

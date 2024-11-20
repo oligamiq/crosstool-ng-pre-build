@@ -57,6 +57,9 @@ mkdir binutils-$TARGET
 pushd binutils-$TARGET
 curl https://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS.tar.xz | tar xJf -
 mkdir binutils-build
+export CFLAGS='-Os -s'
+export CXXFLAGS='-Os -s'
+export LDFLAGS='-s'
 cd binutils-build
 hide_output ../binutils-$BINUTILS/configure --target=$TARGET --with-sysroot=$SYSROOT --prefix=$PREFIX
 hide_output make -j`nproc`
