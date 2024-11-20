@@ -137,6 +137,9 @@ gcc)
         export CXXFLAGS='-fPIC'
         export CXXFLAGS_FOR_TARGET='-fPIC'
         export CFLAGS_FOR_TARGET='-fPIC'
+        export CFLAGS="-Os -s $CFLAGS"
+        export CXXFLAGS="-Os -s $CXXFLAGS"
+        export LDFLAGS="-s"
         "/ws/src/gcc/$GCC_BASE/configure" \
             --prefix="$PREFIX" \
             --target="$BUILD_TARGET" \
@@ -154,7 +157,8 @@ gcc)
             --disable-libsanitizer \
             --disable-libquadmath-support \
             --disable-shared \
-            --enable-tls
+            --enable-tls     \
+            --enable-lto
 
         make -j "$JOBS"
 

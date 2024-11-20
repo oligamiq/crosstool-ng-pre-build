@@ -73,6 +73,9 @@ hide_output ./contrib/download_prerequisites
 
 mkdir ../gcc-build
 cd ../gcc-build
+export CFLAGS="-Os -s"
+export CXXFLAGS="-Os -s"
+export LDFLAGS="-s"
 hide_output ../gcc-$GCC/configure                            \
   --enable-languages=c,c++                       \
   --target=$TARGET                               \
@@ -91,7 +94,9 @@ hide_output ../gcc-$GCC/configure                            \
   --disable-libquadmath-support                  \
   --with-gnu-as                                  \
   --with-gnu-ld                                  \
-  --prefix=$PREFIX
+  --prefix=$PREFIX                               \
+  --enable-lto
+
 
 hide_output make -j`nproc`
 make install

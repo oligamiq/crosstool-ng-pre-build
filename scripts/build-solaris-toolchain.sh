@@ -115,6 +115,9 @@ cd gcc-$GCC
 
 mkdir ../gcc-build
 cd ../gcc-build
+export CFLAGS="-Os -s"
+export CXXFLAGS="-Os -s"
+export LDFLAGS="-s"
 hide_output ../gcc-$GCC/configure \
   --enable-languages=c,c++        \
   --target=$TARGET                \
@@ -133,7 +136,7 @@ hide_output ../gcc-$GCC/configure \
   --disable-shared                \
   --prefix=$PREFIX                \
   --with-sysroot=$SYSROOT         \
-  --disable-lto
+  --enable-lto
 
 hide_output make -j`nproc`
 hide_output make install

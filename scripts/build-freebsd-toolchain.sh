@@ -137,6 +137,9 @@ export CXXFLAGS='-fPIC'
 export CXXFLAGS_FOR_TARGET='-fPIC'
 export CFLAGS_FOR_TARGET='-fPIC'
 export GCC_NO_EXECUTABLES=1
+export CFLAGS="-Os -s $CFLAGS"
+export CXXFLAGS="-Os -s $CXXFLAGS"
+export LDFLAGS="-s"
 hide_output ../configure \
   --target="$triple" \
   --prefix="$prefix" \
@@ -154,8 +157,8 @@ hide_output ../configure \
   --disable-multilib \
   --disable-libsanitizer \
   --disable-libquadmath-support \
-  --disable-shared
-  # --disable-lto
+  --disable-shared \
+  --enable-lto
 
 hide_output make -j`nproc`
 hide_output make install

@@ -118,7 +118,7 @@ jobs:
 
       - name: Build toolchains
         env:
-          HOST_CFLAGS: "-O -fcommon"
+          HOST_CFLAGS: "-Os -fcommon"
         run: |
           cd /tmp
           rm -rf netbsd
