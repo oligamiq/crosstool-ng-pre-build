@@ -29,7 +29,6 @@ impl RewriteDoc for LinuxTargets {
       //     format!("x86_64-unknown-freebsd12-clang++").into(),
       //   )?;
       // }
-
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),
       LinuxTargets::aarch64_unknown_linux_ohos => todo!(),

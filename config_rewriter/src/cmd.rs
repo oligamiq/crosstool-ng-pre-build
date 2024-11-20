@@ -36,6 +36,9 @@ pub struct Args {
 
   #[arg(long, help = "Clean installed toolchains")]
   pub clean: bool,
+
+  #[arg(long, help = "No cache")]
+  pub no_cache: bool,
 }
 
 pub struct CanonicalArgs {
@@ -45,6 +48,7 @@ pub struct CanonicalArgs {
   pub only_llvm: bool,
   pub install: bool,
   pub clean: bool,
+  pub no_cache: bool,
 }
 
 impl CanonicalArgs {
@@ -56,6 +60,7 @@ impl CanonicalArgs {
       only_llvm,
       install,
       clean,
+      no_cache,
       ..
     } = args;
 
@@ -139,6 +144,7 @@ impl CanonicalArgs {
       only_llvm,
       install,
       clean,
+      no_cache,
     })
   }
 }

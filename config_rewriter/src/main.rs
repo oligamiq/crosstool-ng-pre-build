@@ -42,6 +42,7 @@ fn main() -> Result<()> {
     only_llvm,
     install,
     clean,
+    no_cache,
   } = cmd::CanonicalArgs::parse_and_check()?;
 
   if install || clean {
@@ -70,8 +71,8 @@ fn main() -> Result<()> {
     unimplemented!("install is not implemented yet");
   }
 
-  if !clean {
-    let file = file.with_context(|| "require --file <FILE>")?;
+  if !clean && file.is_some() {
+    let file = file.as_ref().unwrap();
 
     let file_data = std::fs::read_to_string(&file)?;
     let mut doc = file_data.parse::<DocumentMut>().expect("invalid doc");
@@ -205,7 +206,7 @@ fn main() -> Result<()> {
     let mut threads = vec![];
     for target in &targets {
       threads.push(match target {
-        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(err_sender.clone()),
+        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(err_sender.clone(), no_cache),
         cmd::Target::WindowsTargets(windows_targets) => todo!(),
         cmd::Target::MacTargets(mac_targets) => todo!(),
       }?);

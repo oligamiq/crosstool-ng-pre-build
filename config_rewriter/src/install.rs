@@ -9,21 +9,25 @@ use crate::targets::LinuxTargets;
 const CONTENT_VERSION: &str = "v0.1.0";
 
 pub trait Install {
-  fn install(&self, error_sender: Sender<color_eyre::Report>)
-    -> color_eyre::Result<JoinHandle<()>>;
+  fn install(
+    &self,
+    error_sender: Sender<color_eyre::Report>,
+    no_cache: bool,
+  ) -> color_eyre::Result<JoinHandle<()>>;
 }
 
 impl Install for LinuxTargets {
   fn install(
     &self,
     error_sender: Sender<color_eyre::Report>,
+    no_cache: bool,
   ) -> color_eyre::Result<JoinHandle<()>> {
     let sl = self.clone();
 
     let (sender, receiver) = std::sync::mpsc::channel::<()>();
 
     let thread = std::thread::spawn(move || {
-      fn install_inner(sl: &LinuxTargets, sender: Sender<()>) -> color_eyre::Result<()> {
+      fn install_inner(sl: &LinuxTargets, sender: Sender<()>, no_cache: bool) -> color_eyre::Result<()> {
         #[cfg(target_os = "linux")]
         match sl {
           LinuxTargets::x86_64_unknown_linux_gnu => {
@@ -152,7 +156,11 @@ impl Install for LinuxTargets {
 
             sender.send(())?;
 
-            save_cache(&body, &format!("{name}.tar.gz"))?;
+            if no_cache {
+              log::info!("Skipping cache saving");
+            } else {
+              save_cache(&body, &format!("{name}.tar.gz"))?;
+            }
             normal::unpack_tarball_archive(body, &name)?;
 
             let crosstool_ng = || -> color_eyre::Result<()> {
@@ -184,7 +192,7 @@ impl Install for LinuxTargets {
         Ok(())
       }
 
-      if let Err(e) = install_inner(&sl, sender) {
+      if let Err(e) = install_inner(&sl, sender, no_cache) {
         error_sender.send(e).unwrap();
       }
     });
@@ -384,7 +392,9 @@ pub mod normal {
       log::error!("Failed to compile test file with c compiler");
       log::error!("stdout: {}", String::from_utf8(output.stdout).unwrap());
       log::error!("stderr: {}", String::from_utf8(output.stderr).unwrap());
-      Err(color_eyre::eyre::eyre!("Failed to compile test file with c compiler"))?;
+      Err(color_eyre::eyre::eyre!(
+        "Failed to compile test file with c compiler"
+      ))?;
     }
 
     std::fs::remove_file(&c_file_path)?;
