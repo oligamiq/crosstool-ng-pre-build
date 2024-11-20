@@ -161,6 +161,7 @@ jobs:
           mkdir build
           cd build
           bash ${{ github.workspace }}/scripts/build-freebsd-toolchain.sh x86_64
+          cd "${GITHUB_WORKSPACE}"
           rm -rf build
           sudo apt install -y rename
           mv /x-tools/x86_64-unknown-freebsd12 /x-tools/x86_64-unknown-freebsd
