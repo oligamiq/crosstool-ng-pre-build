@@ -221,7 +221,7 @@ jobs:
           bash ${{ github.workspace }}/scripts/build-solaris-toolchain.sh sparcv9 sparcv9 solaris-sparc sun
           cd /
           rm -rf ~/build/
-          ls -l "${ github.workspace }"
+          ls -l "${{ github.workspace }}"
           mv /x-tools/sparcv9-sun-solaris2.10 /x-tools/sparcv9-sun-solaris
           cd /x-tools/sparcv9-sun-solaris/bin
           sudo rename 's/sparcv9-sun-solaris2.10/sparcv9-sun-solaris/' sparcv9-sun-solaris2.10-*
