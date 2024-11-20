@@ -33,6 +33,9 @@ TARGET=${ARCH}-${MANUFACTURER}-solaris2.10
 PREFIX="/x-tools/$ARCH-unknown-solaris2.10"
 SYSROOT="$PREFIX/sysroot"
 
+mkdir -p $PREFIX
+mkdir -p $SYSROOT
+
 # First up, build binutils
 mkdir binutils
 cd binutils
