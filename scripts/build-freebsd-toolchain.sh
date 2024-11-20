@@ -157,7 +157,5 @@ hide_output ../configure \
   --disable-shared
   # --disable-lto
 
-# hide_output make -j`nproc`
-# hide_output make install
-make -j`nproc`
-make install
+hide_output make -j`nproc`
+hide_output make install
