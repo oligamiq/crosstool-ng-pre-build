@@ -12,23 +12,23 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::x86_64_unknown_linux_gnu => {
         log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
       }
-      LinuxTargets::x86_64_unknown_freebsd => {
-        let name = self.to_name();
-        inner_table(doc, "target", &name);
-        let target = &mut doc["target"][&name];
-        let place = format!("target.{name}");
-        target.check_and_rewrite(&place, "ar", format!("x86_64-unknown-freebsd12-ar").into())?;
-        target.check_and_rewrite(
-          &place,
-          "cc",
-          format!("x86_64-unknown-freebsd12-clang").into(),
-        )?;
-        target.check_and_rewrite(
-          &place,
-          "cxx",
-          format!("x86_64-unknown-freebsd12-clang++").into(),
-        )?;
-      }
+      // LinuxTargets::x86_64_unknown_freebsd => {
+      //   let name = self.to_name();
+      //   inner_table(doc, "target", &name);
+      //   let target = &mut doc["target"][&name];
+      //   let place = format!("target.{name}");
+      //   target.check_and_rewrite(&place, "ar", format!("x86_64-unknown-freebsd12-ar").into())?;
+      //   target.check_and_rewrite(
+      //     &place,
+      //     "cc",
+      //     format!("x86_64-unknown-freebsd12-clang").into(),
+      //   )?;
+      //   target.check_and_rewrite(
+      //     &place,
+      //     "cxx",
+      //     format!("x86_64-unknown-freebsd12-clang++").into(),
+      //   )?;
+      // }
 
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),

@@ -26,6 +26,16 @@ on:
           "s390x-unknown-linux-gnu",
         ]'
 
+      others-targets:
+        description: 'targets to build'
+        required: true
+        default: '[
+          "x86_64-unknown-netbsd",
+          "x86_64-unknown-illumos",
+          "x86_64-unknown-freebsd",
+          "sparcv9-sun-solaris",
+        ]'
+
 permissions:
   packages: write
   contents: write
@@ -33,6 +43,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # if none of the targets are in the list, the job will be skipped
+    if: ${{ github.event.inputs.targets != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -95,6 +107,7 @@ jobs:
 
   net-bsd:
     runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'x86_64-unknown-netbsd')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,6 +133,7 @@ jobs:
 
   illumos:
     runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'x86_64-unknown-illumos')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -144,6 +158,7 @@ jobs:
 
   freebsd:
     runs-on: ubuntu-latest
+    if: contains(github.event.inputs.others-targets, 'x86_64-unknown-freebsd')
     steps:
       - name: Checkout
         uses: actions/checkout@v4

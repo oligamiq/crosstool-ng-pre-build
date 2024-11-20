@@ -50,29 +50,3 @@ jobs:
         with:
           compiler: powerpc64le-linux-gnu-gcc
           compiler_plus_plus: powerpc64le-linux-gnu-g++
-
-  install-x86_64-unknown-freebsd:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: install
-        uses: ./others/x86_64-unknown-freebsd
-
-      - name: ls
-        run: |
-          ls -l
-          ls -l /usr/bin
-          ls -l /usr/local/bin
-          which x86_64-unknown-freebsd12-ar
-          which x86_64-unknown-freebsd12-clang
-          which x86_64-unknown-freebsd12-clang++
-          tree /usr/local/x86_64-unknown-freebsd12
-
-      - name: test
-        uses: ./.github/actions/compile-test
-        with:
-          compiler: x86_64-unknown-freebsd12-clang
-          # This is failing
-          # compiler_plus_plus: x86_64-unknown-freebsd12-clang++
