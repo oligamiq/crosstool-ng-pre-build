@@ -94,7 +94,9 @@ patch -p0  << 'EOF'
 EOF
 
 sudo mkdir                  $SYSROOT/usr
+sudo chown -R $USER:$USER   $SYSROOT/usr
 sudo mv usr/include         $SYSROOT/usr/include
+mkdir -p                    $SYSROOT/lib
 sudo mv usr/lib/$LIB_ARCH/* $SYSROOT/lib
 sudo mv     lib/$LIB_ARCH/* $SYSROOT/lib
 
