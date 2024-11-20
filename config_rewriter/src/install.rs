@@ -34,24 +34,6 @@ impl Install for LinuxTargets {
             log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
             sender.send(())?;
           }
-          // LinuxTargets::powerpc64le_unknown_linux_gnu => {
-          //   log::warn!("Install by tar.gz has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.");
-          //   apt_install(vec!["build-essential", "rpm2cpio", "cpio"])?;
-          //   sender.send(())?;
-          //   let prefix = format!("/tmp/build/{}", sl.to_name());
-          //   std::fs::create_dir_all(&prefix)?;
-          //   std::fs::write(
-          //     format!("{prefix}/install.sh"),
-          //     build_powerpc64le_toolchain_sh(),
-          //   )?;
-          //   let cmd = Command::new("bash")
-          //     .arg(format!("{prefix}/install.sh"))
-          //     .output()?;
-          //   if !cmd.status.success() {
-          //     panic!("Failed to install toolchain");
-          //   }
-          //   std::fs::remove_dir_all(&prefix)?;
-          // }
           LinuxTargets::aarch64_unknown_fuchsia => todo!(),
           LinuxTargets::aarch64_linux_android => todo!(),
           LinuxTargets::aarch64_unknown_linux_ohos => todo!(),
@@ -168,41 +150,6 @@ impl Install for LinuxTargets {
 
     Ok(thread)
   }
-}
-
-fn build_powerpc64le_toolchain_sh() -> &'static str {
-  include_str!("../../others/toolchains/build-powerpc64le-toolchain.sh")
-}
-
-fn build_solaris_toolchain_sh() -> &'static str {
-  include_str!("../../others/toolchains/build-solaris-toolchain.sh")
-}
-
-fn apt_install(packages: Vec<&str>) -> color_eyre::Result<()> {
-  let cmd = Command::new("apt-get").arg("update").output()?;
-  if !cmd.status.success() {
-    panic!("Failed to update apt");
-  }
-  let install_cmd = Command::new("apt")
-    .arg("install")
-    .arg("-y")
-    .args(packages)
-    .output()?;
-  if !install_cmd.status.success() {
-    panic!("Failed to install build-essential and rpm2cpio");
-  }
-
-  Ok(())
-}
-
-fn add_path_on_gh_actions(bin_path: &str) -> color_eyre::Result<()> {
-  if let Ok(path) = std::env::var("GITHUB_PATH") {
-    let env = std::fs::read_to_string(&path)?;
-    let env = format!("{env}\n{bin_path}");
-    std::fs::write(path, env)?;
-  }
-
-  Ok(())
 }
 
 fn check_musl_libc(folder: &str) -> color_eyre::Result<bool> {

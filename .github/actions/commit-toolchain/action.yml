@@ -22,7 +22,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
       run: |
         git branch -a
-        git pull
+        git fetch origin ${{ inputs.version }}
         git branch -a
         git switch ${{ inputs.version }}
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -31,7 +31,7 @@ runs:
         rm -rf "./${{ inputs.target }}"
         cp -r "/x-tools/${{ inputs.target }}" "./${{ inputs.target }}"
 
-        git pull
+        git pull origin ${{ inputs.version }}
         git add -A
 
         if git diff --cached --exit-code; then
