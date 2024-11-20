@@ -34,52 +34,18 @@ impl Install for LinuxTargets {
             log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
             sender.send(())?;
           }
-          LinuxTargets::powerpc64le_unknown_linux_gnu => {
-            log::warn!("Install by tar.gz has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.");
-            apt_install(vec!["build-essential", "rpm2cpio", "cpio"])?;
-            sender.send(())?;
-            let prefix = format!("/tmp/build/{}", sl.to_name());
-            std::fs::create_dir_all(&prefix)?;
-            std::fs::write(
-              format!("{prefix}/install.sh"),
-              build_powerpc64le_toolchain_sh(),
-            )?;
-            let cmd = Command::new("bash")
-              .arg(format!("{prefix}/install.sh"))
-              .output()?;
-            if !cmd.status.success() {
-              panic!("Failed to install toolchain");
-            }
-            std::fs::remove_dir_all(&prefix)?;
-          }
-          // LinuxTargets::x86_64_unknown_freebsd => {
+          // LinuxTargets::powerpc64le_unknown_linux_gnu => {
           //   log::warn!("Install by tar.gz has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.");
-          //   apt_install(vec![
-          //     "build-essential",
-          //     "clang",
-          //     "make",
-          //     "ninja-build",
-          //     "file",
-          //     "curl",
-          //     "ca-certificates",
-          //     "python3",
-          //     "git",
-          //     "cmake",
-          //     "sudo",
-          //     "bzip2",
-          //     "xz-utils",
-          //     "texinfo",
-          //     "wget",
-          //     "libssl-dev",
-          //     "pkg-config",
-          //   ])?;
+          //   apt_install(vec!["build-essential", "rpm2cpio", "cpio"])?;
           //   sender.send(())?;
           //   let prefix = format!("/tmp/build/{}", sl.to_name());
           //   std::fs::create_dir_all(&prefix)?;
-          //   std::fs::write(format!("{prefix}/install.sh"), build_freebsd_toolchain_sh())?;
+          //   std::fs::write(
+          //     format!("{prefix}/install.sh"),
+          //     build_powerpc64le_toolchain_sh(),
+          //   )?;
           //   let cmd = Command::new("bash")
           //     .arg(format!("{prefix}/install.sh"))
-          //     .arg("x86_64")
           //     .output()?;
           //   if !cmd.status.success() {
           //     panic!("Failed to install toolchain");
@@ -124,7 +90,7 @@ impl Install for LinuxTargets {
           LinuxTargets::riscv64gc_unknown_none_elf => todo!(),
           LinuxTargets::riscv64imac_unknown_none_elf => todo!(),
           LinuxTargets::sparc64_unknown_linux_gnu => todo!(),
-          LinuxTargets::sparcv9_sun_solaris => todo!(),
+          // LinuxTargets::sparcv9_sun_solaris => todo!(),
           LinuxTargets::thumbv6m_none_eabi => todo!(),
           LinuxTargets::thumbv7em_none_eabi => todo!(),
           LinuxTargets::thumbv7em_none_eabihf => todo!(),

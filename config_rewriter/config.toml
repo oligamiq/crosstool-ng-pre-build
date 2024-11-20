@@ -1,5 +1,5 @@
 [llvm]
-targets = "AArch64;X86;ARM;LoongArch;PowerPC;RISCV;SystemZ"
+targets = "Sparc;AArch64;X86;ARM;LoongArch;PowerPC;RISCV;SystemZ"
 experimental-targets = ""
 
 [target.aarch64-unknown-linux-gnu]
@@ -127,3 +127,10 @@ cxx = "x86_64-illumos-g++"
 ar = "x86_64-illumos-ar"
 ranlib = "x86_64-illumos-ranlib"
 linker = "x86_64-illumos-gcc"
+
+[target.sparcv9-sun-solaris]
+cc = "sparcv9-sun-solaris-gcc"
+cxx = "sparcv9-sun-solaris-g++"
+ar = "sparcv9-sun-solaris-ar"
+ranlib = "sparcv9-sun-solaris-ranlib"
+linker = "sparcv9-sun-solaris-gcc"

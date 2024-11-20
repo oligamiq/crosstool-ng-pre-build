@@ -67,7 +67,7 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::riscv64gc_unknown_none_elf => todo!(),
       LinuxTargets::riscv64imac_unknown_none_elf => todo!(),
       LinuxTargets::sparc64_unknown_linux_gnu => todo!(),
-      LinuxTargets::sparcv9_sun_solaris => todo!(),
+      // LinuxTargets::sparcv9_sun_solaris => todo!(),
       LinuxTargets::thumbv6m_none_eabi => todo!(),
       LinuxTargets::thumbv7em_none_eabi => todo!(),
       LinuxTargets::thumbv7em_none_eabihf => todo!(),

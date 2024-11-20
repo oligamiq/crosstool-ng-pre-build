@@ -20,7 +20,7 @@ pub mod utils;
 // cargo run -- --target aarch64-unknown-linux-gnu --clean
 // cargo run -- -f config.toml --tier 1 --os linux --install -t aarch64-unknown-linux-musl
 // cargo run -- -f config.toml --tier 1 --tier 2-host --os linux --exclude powerpc64le-unknown-linux-gnu --clean
-// cargo run -- -f config.toml --tier 1 --tier 2-host --os linux --exclude powerpc64le-unknown-linux-gnu -t 
+// cargo run -- -f config.toml --tier 1 --tier 2-host --os linux -t sparcv9-sun-solaris --clean
 
 use color_eyre::eyre::{ContextCompat, Result};
 

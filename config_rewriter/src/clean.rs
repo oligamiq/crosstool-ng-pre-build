@@ -14,9 +14,6 @@ impl Clean for LinuxTargets {
       LinuxTargets::x86_64_unknown_linux_gnu => {
         log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
       }
-      LinuxTargets::powerpc64le_unknown_linux_gnu => {
-        log::warn!("Deletion has not been implemented because the toolchain is not isolated. If you are able to isolate the toolchain, I would greatly appreciate a pull request.")
-      }
       LinuxTargets::aarch64_unknown_fuchsia => todo!(),
       LinuxTargets::aarch64_linux_android => todo!(),
       LinuxTargets::aarch64_unknown_linux_ohos => todo!(),
@@ -55,7 +52,7 @@ impl Clean for LinuxTargets {
       LinuxTargets::riscv64gc_unknown_none_elf => todo!(),
       LinuxTargets::riscv64imac_unknown_none_elf => todo!(),
       LinuxTargets::sparc64_unknown_linux_gnu => todo!(),
-      LinuxTargets::sparcv9_sun_solaris => todo!(),
+      // LinuxTargets::sparcv9_sun_solaris => todo!(),
       LinuxTargets::thumbv6m_none_eabi => todo!(),
       LinuxTargets::thumbv7em_none_eabi => todo!(),
       LinuxTargets::thumbv7em_none_eabihf => todo!(),
