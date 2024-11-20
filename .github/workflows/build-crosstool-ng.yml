@@ -254,7 +254,7 @@ jobs:
           sudo apt install -y rpm2cpio cpio
           mkdir -p ~/build
           cd ~/build
-          bash ${{ github.workspace }}/toolchains/build-powerpc64le-toolchain.sh
+          bash ${{ github.workspace }}/scripts/build-powerpc64le-toolchain.sh
           cd /
           rm -rf ~/build/
 
