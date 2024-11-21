@@ -75,12 +75,6 @@ jobs:
           rm -rf build
           bash -x '${{ github.workspace }}/scripts/crosstool-ng-build.sh'
 
-      - name: Patch loongarch64-unknown-linux-musl
-        if: matrix.target == 'loongarch64-unknown-linux-musl'
-        run: |
-          cd /x-tools/loongarch64-unknown-linux-musl
-          sudo mv loongarch64-unknown-linux-musl loongarch64-linux-musl
-
       - name: Build toolchains for riscv64gc-unknown-linux-gnu
         if: matrix.target == 'riscv64gc-unknown-linux-gnu'
         run: |

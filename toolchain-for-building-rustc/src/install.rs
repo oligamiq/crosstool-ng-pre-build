@@ -268,13 +268,16 @@ impl Install for LinuxTargets {
                 }
               } else {
                 let prefix = name.replace("-unknown-", "-");
-                if !(check_musl_libc(&format!("/x-tools/{name}/{prefix}/lib/"))?) {
-                  if name != "loongarch64-unknown-linux-musl" {
-                    Err(color_eyre::eyre::eyre!(
-                      "Failed to find musl libc: {}",
-                      name
-                    ))?;
-                  }
+                let folder = if name == "loongarch64-unknown-linux-musl" {
+                  "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into()
+                } else {
+                  format!("/x-tools/{name}/{prefix}/lib/")
+                };
+                if !(check_musl_libc(&folder)?) {
+                  Err(color_eyre::eyre::eyre!(
+                    "Failed to find musl libc: {}",
+                    folder
+                  ))?;
                 }
                 crosstool_ng()?;
               }
