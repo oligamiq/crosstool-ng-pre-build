@@ -1,6 +1,6 @@
 use toml_edit::{DocumentMut, Item};
 
-use crate::targets::LinuxTargets;
+use crate::{install::check_musl_libc, targets::LinuxTargets};
 
 pub trait RewriteDoc {
   fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()>;
@@ -98,11 +98,28 @@ impl RewriteDoc for LinuxTargets {
         let target = &mut doc["target"][&name];
         let prefix = name.replace("-unknown-", "-");
         let place = format!("target.{name}");
-        target.check_and_rewrite(&place, "cc", format!("{prefix}-gcc").into())?;
-        target.check_and_rewrite(&place, "cxx", format!("{prefix}-g++").into())?;
-        target.check_and_rewrite(&place, "ar", format!("{prefix}-ar").into())?;
-        target.check_and_rewrite(&place, "ranlib", format!("{prefix}-ranlib").into())?;
-        target.check_and_rewrite(&place, "linker", format!("{prefix}-gcc").into())?;
+
+        let mut crosstool_ng = || -> color_eyre::Result<()> {
+          target.check_and_rewrite(&place, "cc", format!("{prefix}-gcc").into())?;
+          target.check_and_rewrite(&place, "cxx", format!("{prefix}-g++").into())?;
+          target.check_and_rewrite(&place, "ar", format!("{prefix}-ar").into())?;
+          target.check_and_rewrite(&place, "ranlib", format!("{prefix}-ranlib").into())?;
+          target.check_and_rewrite(&place, "linker", format!("{prefix}-gcc").into())?;
+          Ok(())
+        };
+
+        if name.find("musl").is_some() {
+          if check_musl_libc(&format!("/x-tools/{name}/lib/"))? {
+            log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
+
+            target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
+          } else {
+            crosstool_ng()?;
+          }
+        } else {
+          crosstool_ng()?;
+        }
+
       }
     }
 

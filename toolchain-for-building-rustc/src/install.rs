@@ -128,6 +128,11 @@ impl Install for LinuxTargets {
             if name.find("musl").is_some() {
               if check_musl_libc(&format!("/x-tools/{name}/lib/"))? {
                 log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
+
+                // let tool_prefix = name.replace("-unknown-", "-");
+                // let tool_prefix = tool_prefix.replace("musl", "gnu");
+
+                // todo!()
               } else {
                 crosstool_ng()?;
               }
@@ -179,7 +184,7 @@ fn install_fuchsia(
   Ok(())
 }
 
-fn check_musl_libc(folder: &str) -> color_eyre::Result<bool> {
+pub fn check_musl_libc(folder: &str) -> color_eyre::Result<bool> {
   let path = format!("{folder}/libc.a");
   let path = std::path::Path::new(&path);
 
