@@ -112,7 +112,6 @@ impl RewriteDoc for LinuxTargets {
           if musl_root::musl_require_root().contains(&name.as_str()) {
             log::warn!("musl libc detected, using musl-root");
 
-            target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
             let gnu_prefix = prefix.replace("musl", "gnu");
             target.check_and_rewrite(&place, "cc", format!("{gnu_prefix}-gcc").into())?;
             target.check_and_rewrite(&place, "cxx", format!("{gnu_prefix}-g++").into())?;
@@ -122,6 +121,9 @@ impl RewriteDoc for LinuxTargets {
           } else {
             crosstool_ng()?;
           }
+
+          // set musl-root
+          target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
         } else {
           crosstool_ng()?;
         }
