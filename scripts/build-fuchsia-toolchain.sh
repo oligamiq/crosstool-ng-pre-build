@@ -74,3 +74,17 @@ install_zircon_libs() {
 
 hide_output install_clang
 hide_output install_zircon_libs
+
+# CLANG_PATH="${PREFIX}/bin/${arch}-unknown-fuchsia-clang"
+# mv "$CLANG_PATH" "$CLANG_PATH-orig"
+# cat > "$CLANG_PATH" <<EOF
+# #!/bin/bash
+# exec "$CLANG_PATH.orig" "--target=${arch}-unknown-fuchsia" "--sysroot=${PREFIX}/core-linux-amd64-fuchsia-sdk/arch/x64/sysroot" "-I/${PREFIX}/core-linux-amd64-fuchsia-sdk/pkg/fdio/include" "\$@"
+# EOF
+
+# CLANGXX_PATH="${PREFIX}/bin/${arch}-unknown-fuchsia-clang++"
+# mv "$CLANGXX_PATH" "$CLANGXX_PATH-orig"
+# cat > "$CLANGXX_PATH" <<EOF
+# #!/bin/bash
+# exec "$CLANGXX_PATH.orig" "--target=${arch}-unknown-fuchsia" "--sysroot=${PREFIX}/core-linux-amd64-fuchsia-sdk/arch/x64/sysroot" "-I/${PREFIX}/core-linux-amd64-fuchsia-sdk/pkg/fdio/include" "\$@"
+# EOF

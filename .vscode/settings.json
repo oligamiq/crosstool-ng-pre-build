@@ -8,6 +8,7 @@
     "canonicalize",
     "canonicalized",
     "CFLAGS",
+    "CLANGXX",
     "crosstool",
     "cuda",
     "defconfig",
