@@ -38,69 +38,195 @@ impl Install for LinuxTargets {
             log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
             sender.send(())?;
           }
-          LinuxTargets::aarch64_unknown_fuchsia => {}
-          LinuxTargets::aarch64_linux_android => {}
-          LinuxTargets::aarch64_unknown_linux_ohos => {}
-          LinuxTargets::aarch64_unknown_none_softfloat => {}
-          LinuxTargets::aarch64_unknown_none => {}
-          LinuxTargets::aarch64_unknown_uefi => {}
-          LinuxTargets::arm_linux_androideabi => {}
-          LinuxTargets::arm_unknown_linux_musleabi => {}
-          LinuxTargets::arm_unknown_linux_musleabihf => {}
-          LinuxTargets::armebv7r_none_eabi => {}
-          LinuxTargets::armebv7r_none_eabihf => {}
-          LinuxTargets::armv5te_unknown_linux_gnueabi => {}
-          LinuxTargets::armv5te_unknown_linux_musleabi => {}
-          LinuxTargets::armv7_linux_androideabi => {}
-          LinuxTargets::armv7_unknown_linux_gnueabi => {}
-          LinuxTargets::armv7_unknown_linux_musleabi => {}
-          LinuxTargets::armv7_unknown_linux_musleabihf => {}
-          LinuxTargets::armv7_unknown_linux_ohos => {}
-          LinuxTargets::armv7a_none_eabi => {}
-          LinuxTargets::armv7r_none_eabi => {}
-          LinuxTargets::armv7r_none_eabihf => {}
-          LinuxTargets::i586_unknown_linux_gnu => {}
-          LinuxTargets::i586_unknown_linux_musl => {}
-          LinuxTargets::i686_linux_android => {}
-          LinuxTargets::i686_unknown_freebsd => {}
-          LinuxTargets::i686_unknown_linux_musl => {}
-          LinuxTargets::i686_unknown_uefi => {}
-          LinuxTargets::loongarch64_unknown_none => {}
-          LinuxTargets::loongarch64_unknown_none_softfloat => {}
-          LinuxTargets::nvptx64_nvidia_cuda => {}
-          LinuxTargets::riscv32imac_unknown_none_elf => {}
-          LinuxTargets::riscv32i_unknown_none_elf => {}
-          LinuxTargets::riscv32im_unknown_none_elf => {}
-          LinuxTargets::riscv32imc_unknown_none_elf => {}
-          LinuxTargets::riscv32imafc_unknown_none_elf => {}
-          LinuxTargets::riscv64gc_unknown_none_elf => {}
-          LinuxTargets::riscv64imac_unknown_none_elf => {}
-          LinuxTargets::sparc64_unknown_linux_gnu => {}
-          // LinuxTargets::sparcv9_sun_solaris => {},
-          LinuxTargets::thumbv6m_none_eabi => {}
-          LinuxTargets::thumbv7em_none_eabi => {}
-          LinuxTargets::thumbv7em_none_eabihf => {}
-          LinuxTargets::thumbv7m_none_eabi => {}
-          LinuxTargets::thumbv7neon_linux_androideabi => {}
-          LinuxTargets::thumbv7neon_unknown_linux_gnueabihf => {}
-          LinuxTargets::thumbv8m_base_none_eabi => {}
-          LinuxTargets::thumbv8m_main_none_eabi => {}
-          LinuxTargets::thumbv8m_main_none_eabihf => {}
-          LinuxTargets::wasm32_unknown_emscripten => {}
-          LinuxTargets::wasm32_unknown_unknown => {}
-          LinuxTargets::wasm32_wasip1 => {}
-          LinuxTargets::wasm32_wasip2 => {}
-          LinuxTargets::wasm32_wasip1_threads => {}
-          LinuxTargets::wasm32v1_none => {}
-          LinuxTargets::x86_64_fortanix_unknown_sgx => {}
-          LinuxTargets::x86_64_unknown_fuchsia => {}
-          LinuxTargets::x86_64_linux_android => {}
-          LinuxTargets::x86_64_pc_solaris => {}
-          LinuxTargets::x86_64_unknown_linux_gnux32 => {}
-          LinuxTargets::x86_64_unknown_linux_ohos => {}
-          LinuxTargets::x86_64_unknown_none => {}
-          LinuxTargets::x86_64_unknown_redox => {}
-          LinuxTargets::x86_64_unknown_uefi => {}
+          LinuxTargets::aarch64_unknown_fuchsia => {
+            sender.send(())?;
+          }
+          LinuxTargets::aarch64_linux_android => {
+            sender.send(())?;
+          }
+          LinuxTargets::aarch64_unknown_linux_ohos => {
+            sender.send(())?;
+          }
+          LinuxTargets::aarch64_unknown_none_softfloat => {
+            sender.send(())?;
+          }
+          LinuxTargets::aarch64_unknown_none => {
+            sender.send(())?;
+          }
+          LinuxTargets::aarch64_unknown_uefi => {
+            sender.send(())?;
+          }
+          LinuxTargets::arm_linux_androideabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::arm_unknown_linux_musleabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::arm_unknown_linux_musleabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::armebv7r_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armebv7r_none_eabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv5te_unknown_linux_gnueabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv5te_unknown_linux_musleabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7_linux_androideabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7_unknown_linux_gnueabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7_unknown_linux_musleabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7_unknown_linux_musleabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7_unknown_linux_ohos => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7a_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7r_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::armv7r_none_eabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::i586_unknown_linux_gnu => {
+            sender.send(())?;
+          }
+          LinuxTargets::i586_unknown_linux_musl => {
+            sender.send(())?;
+          }
+          LinuxTargets::i686_linux_android => {
+            sender.send(())?;
+          }
+          LinuxTargets::i686_unknown_freebsd => {
+            sender.send(())?;
+          }
+          LinuxTargets::i686_unknown_linux_musl => {
+            sender.send(())?;
+          }
+          LinuxTargets::i686_unknown_uefi => {
+            sender.send(())?;
+          }
+          LinuxTargets::loongarch64_unknown_none => {
+            sender.send(())?;
+          }
+          LinuxTargets::loongarch64_unknown_none_softfloat => {
+            sender.send(())?;
+          }
+          LinuxTargets::nvptx64_nvidia_cuda => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv32imac_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv32i_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv32im_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv32imc_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv32imafc_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv64gc_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::riscv64imac_unknown_none_elf => {
+            sender.send(())?;
+          }
+          LinuxTargets::sparc64_unknown_linux_gnu => {
+            sender.send(())?;
+          }
+          // LinuxTargets::sparcv9_sun_solaris => {
+          //     sender.send(())?;
+          // },
+          LinuxTargets::thumbv6m_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv7em_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv7em_none_eabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv7m_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv7neon_linux_androideabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv7neon_unknown_linux_gnueabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv8m_base_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv8m_main_none_eabi => {
+            sender.send(())?;
+          }
+          LinuxTargets::thumbv8m_main_none_eabihf => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32_unknown_emscripten => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32_unknown_unknown => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32_wasip1 => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32_wasip2 => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32_wasip1_threads => {
+            sender.send(())?;
+          }
+          LinuxTargets::wasm32v1_none => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_fortanix_unknown_sgx => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_fuchsia => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_linux_android => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_pc_solaris => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_linux_gnux32 => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_linux_ohos => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_none => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_redox => {
+            sender.send(())?;
+          }
+          LinuxTargets::x86_64_unknown_uefi => {
+            sender.send(())?;
+          }
           _ => {
             let name = sl.to_name();
             let url = format!("https://github.com/oligamiq/toolchain-for-building-rustc/releases/download/{CONTENT_VERSION}-release/{name}.tar.gz");

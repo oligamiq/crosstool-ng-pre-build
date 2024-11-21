@@ -1,0 +1,17 @@
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `i686-w64-mingw32-gcc` installed?
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `i686-w64-mingw32-g++` installed?
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `i686-w64-mingw32-g++` installed?
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `x86_64-w64-mingw32-gcc` installed?
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `x86_64-w64-mingw32-g++` installed?
+cargo:warning=Compiler family detection failed due to error: ToolNotFound: Failed to find tool. Is `x86_64-w64-mingw32-g++` installed?
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+cargo:warning=GNU compiler is not supported for this target
+thread 'main' panicked at src/core/sanity.rs:75:13:
+couldn't find required command: "i686-w64-mingw32-gcc"
