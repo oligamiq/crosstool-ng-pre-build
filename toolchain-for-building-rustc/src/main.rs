@@ -78,6 +78,9 @@ fn main() -> Result<()> {
     let file_data = std::fs::read_to_string(&file)?;
     let mut doc = file_data.parse::<DocumentMut>().expect("invalid doc");
 
+    doc["llvm"] = doc.get("llvm").cloned().unwrap_or_else(||
+      toml_edit::Item::Table(toml_edit::Table::new())
+    );
     doc["llvm"]["targets"] = llvm_targets
       .iter()
       .filter(|x| !x.is_experimental())
@@ -108,6 +111,15 @@ fn main() -> Result<()> {
       std::fs::write(&file, doc.to_string())?;
       return Ok(());
     }
+
+    doc["build"] = doc.get("build").cloned().unwrap_or_else(||
+      toml_edit::Item::Table(toml_edit::Table::new())
+    );
+    doc["build"]["target"] = targets
+      .iter()
+      .map(|x| x.to_string())
+      .collect::<Vec<String>>()
+      .to_item();
 
     for target in targets.iter() {
       match target {
@@ -171,6 +183,8 @@ fn main() -> Result<()> {
     //             .to_item();
     //         }
     //     }
+
+    log::info!("Writing to {:?}, {:?}", file, doc.to_string());
 
     std::fs::write(file, doc.to_string())?;
   }
