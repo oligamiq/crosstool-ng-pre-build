@@ -1,8 +1,8 @@
 [package]
-name = "config_rewriter"
+name = "toolchain-for-building-rustc"
 version = "0.1.0"
 edition = "2021"
-default-run = "config_rewriter"
+default-run = "toolchain-for-building-rustc"
 
 [dependencies]
 toml_edit = "0.22"
@@ -21,7 +21,7 @@ log = "0.4.22"
 color-eyre = "0.6.3"
 
 [[bin]]
-name = "config_rewriter"
+name = "toolchain-for-building-rustc"
 path = "src/main.rs"
 
 [profile.dev.package.backtrace]
