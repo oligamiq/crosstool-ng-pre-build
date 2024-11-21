@@ -32,6 +32,7 @@ cxx = "aarch64-linux-musl-g++"
 ar = "aarch64-linux-musl-ar"
 ranlib = "aarch64-linux-musl-ranlib"
 linker = "aarch64-linux-musl-gcc"
+musl-root = "/x-tools/aarch64-unknown-linux-musl/aarch64-linux-musl"
 
 [target.arm-unknown-linux-gnueabi]
 cc = "arm-linux-gnueabi-gcc"
@@ -67,6 +68,7 @@ cxx = "loongarch64-linux-musl-g++"
 ar = "loongarch64-linux-musl-ar"
 ranlib = "loongarch64-linux-musl-ranlib"
 linker = "loongarch64-linux-musl-gcc"
+musl-root = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-linux-musl"
 
 [target.powerpc-unknown-linux-gnu]
 cc = "powerpc-linux-gnu-gcc"
@@ -131,6 +133,7 @@ cxx = "x86_64-linux-musl-g++"
 ar = "x86_64-linux-musl-ar"
 ranlib = "x86_64-linux-musl-ranlib"
 linker = "x86_64-linux-musl-gcc"
+musl-root = "/x-tools/x86_64-unknown-linux-musl/x86_64-linux-musl"
 
 [target.x86_64-unknown-netbsd]
 cc = "x86_64-netbsd-gcc"

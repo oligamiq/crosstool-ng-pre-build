@@ -141,6 +141,10 @@ impl Install for LinuxTargets {
                   unreachable!("musl libc detected, using musl-root");
                 }
               } else {
+                let prefix = name.replace("-unknown-", "-");
+                if !(check_musl_libc(&format!("/x-tools/{name}/{prefix}/lib/"))?) {
+                  Err(color_eyre::eyre::eyre!("Failed to find musl libc: {}", name))?;
+                }
                 crosstool_ng()?;
               }
             } else {
