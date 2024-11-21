@@ -136,7 +136,6 @@ hide_output ../gcc-$GCC/configure \
   --disable-libada                \
   --disable-libsanitizer          \
   --disable-libquadmath-support   \
-  --disable-shared                \
   --prefix=$PREFIX                \
   --with-sysroot=$SYSROOT         \
   --enable-lto
