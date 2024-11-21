@@ -12,6 +12,9 @@ musl targets are copied from https://musl.cc/
 All file is installed in `/x-tools` directory.
 Place the symbolic link for bin in /usr/local/bin.
 
+## !! Caution !!
+Several musl targets are not tested yet and it depends on the gnu toolchain.
+
 ## compile check
 Compile check is done, but it is not guaranteed to work.
 Compile check on c, c++.
