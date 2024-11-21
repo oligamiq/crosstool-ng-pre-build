@@ -121,7 +121,27 @@ fn main() -> Result<()> {
     doc["build"]["target"] = targets
       .iter()
       .map(|x| x.to_string())
+      .chain(
+        doc["build"]
+          .get("target")
+          .map(|x| {
+            x.as_array()
+              .unwrap()
+              .iter()
+              .map(|x| x.as_str().unwrap().to_string())
+              .collect::<Vec<String>>()
+              .into_iter()
+          })
+          .unwrap_or_else(|| vec![].into_iter()),
+      )
       .collect::<Vec<String>>()
+      .into_iter()
+      .fold(vec![], |mut acc, x| {
+        if !acc.contains(&x) {
+          acc.push(x);
+        }
+        acc
+      })
       .to_item();
 
     for target in targets.iter() {
