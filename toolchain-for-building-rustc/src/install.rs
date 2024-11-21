@@ -38,69 +38,69 @@ impl Install for LinuxTargets {
             log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
             sender.send(())?;
           }
-          LinuxTargets::aarch64_unknown_fuchsia => {},
-          LinuxTargets::aarch64_linux_android => {},
-          LinuxTargets::aarch64_unknown_linux_ohos => {},
-          LinuxTargets::aarch64_unknown_none_softfloat => {},
-          LinuxTargets::aarch64_unknown_none => {},
-          LinuxTargets::aarch64_unknown_uefi => {},
-          LinuxTargets::arm_linux_androideabi => {},
-          LinuxTargets::arm_unknown_linux_musleabi => {},
-          LinuxTargets::arm_unknown_linux_musleabihf => {},
-          LinuxTargets::armebv7r_none_eabi => {},
-          LinuxTargets::armebv7r_none_eabihf => {},
-          LinuxTargets::armv5te_unknown_linux_gnueabi => {},
-          LinuxTargets::armv5te_unknown_linux_musleabi => {},
-          LinuxTargets::armv7_linux_androideabi => {},
-          LinuxTargets::armv7_unknown_linux_gnueabi => {},
-          LinuxTargets::armv7_unknown_linux_musleabi => {},
-          LinuxTargets::armv7_unknown_linux_musleabihf => {},
-          LinuxTargets::armv7_unknown_linux_ohos => {},
-          LinuxTargets::armv7a_none_eabi => {},
-          LinuxTargets::armv7r_none_eabi => {},
-          LinuxTargets::armv7r_none_eabihf => {},
-          LinuxTargets::i586_unknown_linux_gnu => {},
-          LinuxTargets::i586_unknown_linux_musl => {},
-          LinuxTargets::i686_linux_android => {},
-          LinuxTargets::i686_unknown_freebsd => {},
-          LinuxTargets::i686_unknown_linux_musl => {},
-          LinuxTargets::i686_unknown_uefi => {},
-          LinuxTargets::loongarch64_unknown_none => {},
-          LinuxTargets::loongarch64_unknown_none_softfloat => {},
-          LinuxTargets::nvptx64_nvidia_cuda => {},
-          LinuxTargets::riscv32imac_unknown_none_elf => {},
-          LinuxTargets::riscv32i_unknown_none_elf => {},
-          LinuxTargets::riscv32im_unknown_none_elf => {},
-          LinuxTargets::riscv32imc_unknown_none_elf => {},
-          LinuxTargets::riscv32imafc_unknown_none_elf => {},
-          LinuxTargets::riscv64gc_unknown_none_elf => {},
-          LinuxTargets::riscv64imac_unknown_none_elf => {},
-          LinuxTargets::sparc64_unknown_linux_gnu => {},
+          LinuxTargets::aarch64_unknown_fuchsia => {}
+          LinuxTargets::aarch64_linux_android => {}
+          LinuxTargets::aarch64_unknown_linux_ohos => {}
+          LinuxTargets::aarch64_unknown_none_softfloat => {}
+          LinuxTargets::aarch64_unknown_none => {}
+          LinuxTargets::aarch64_unknown_uefi => {}
+          LinuxTargets::arm_linux_androideabi => {}
+          LinuxTargets::arm_unknown_linux_musleabi => {}
+          LinuxTargets::arm_unknown_linux_musleabihf => {}
+          LinuxTargets::armebv7r_none_eabi => {}
+          LinuxTargets::armebv7r_none_eabihf => {}
+          LinuxTargets::armv5te_unknown_linux_gnueabi => {}
+          LinuxTargets::armv5te_unknown_linux_musleabi => {}
+          LinuxTargets::armv7_linux_androideabi => {}
+          LinuxTargets::armv7_unknown_linux_gnueabi => {}
+          LinuxTargets::armv7_unknown_linux_musleabi => {}
+          LinuxTargets::armv7_unknown_linux_musleabihf => {}
+          LinuxTargets::armv7_unknown_linux_ohos => {}
+          LinuxTargets::armv7a_none_eabi => {}
+          LinuxTargets::armv7r_none_eabi => {}
+          LinuxTargets::armv7r_none_eabihf => {}
+          LinuxTargets::i586_unknown_linux_gnu => {}
+          LinuxTargets::i586_unknown_linux_musl => {}
+          LinuxTargets::i686_linux_android => {}
+          LinuxTargets::i686_unknown_freebsd => {}
+          LinuxTargets::i686_unknown_linux_musl => {}
+          LinuxTargets::i686_unknown_uefi => {}
+          LinuxTargets::loongarch64_unknown_none => {}
+          LinuxTargets::loongarch64_unknown_none_softfloat => {}
+          LinuxTargets::nvptx64_nvidia_cuda => {}
+          LinuxTargets::riscv32imac_unknown_none_elf => {}
+          LinuxTargets::riscv32i_unknown_none_elf => {}
+          LinuxTargets::riscv32im_unknown_none_elf => {}
+          LinuxTargets::riscv32imc_unknown_none_elf => {}
+          LinuxTargets::riscv32imafc_unknown_none_elf => {}
+          LinuxTargets::riscv64gc_unknown_none_elf => {}
+          LinuxTargets::riscv64imac_unknown_none_elf => {}
+          LinuxTargets::sparc64_unknown_linux_gnu => {}
           // LinuxTargets::sparcv9_sun_solaris => {},
-          LinuxTargets::thumbv6m_none_eabi => {},
-          LinuxTargets::thumbv7em_none_eabi => {},
-          LinuxTargets::thumbv7em_none_eabihf => {},
-          LinuxTargets::thumbv7m_none_eabi => {},
-          LinuxTargets::thumbv7neon_linux_androideabi => {},
-          LinuxTargets::thumbv7neon_unknown_linux_gnueabihf => {},
-          LinuxTargets::thumbv8m_base_none_eabi => {},
-          LinuxTargets::thumbv8m_main_none_eabi => {},
-          LinuxTargets::thumbv8m_main_none_eabihf => {},
-          LinuxTargets::wasm32_unknown_emscripten => {},
-          LinuxTargets::wasm32_unknown_unknown => {},
-          LinuxTargets::wasm32_wasip1 => {},
-          LinuxTargets::wasm32_wasip2 => {},
-          LinuxTargets::wasm32_wasip1_threads => {},
-          LinuxTargets::wasm32v1_none => {},
-          LinuxTargets::x86_64_fortanix_unknown_sgx => {},
-          LinuxTargets::x86_64_unknown_fuchsia => {},
-          LinuxTargets::x86_64_linux_android => {},
-          LinuxTargets::x86_64_pc_solaris => {},
-          LinuxTargets::x86_64_unknown_linux_gnux32 => {},
-          LinuxTargets::x86_64_unknown_linux_ohos => {},
-          LinuxTargets::x86_64_unknown_none => {},
-          LinuxTargets::x86_64_unknown_redox => {},
-          LinuxTargets::x86_64_unknown_uefi => {},
+          LinuxTargets::thumbv6m_none_eabi => {}
+          LinuxTargets::thumbv7em_none_eabi => {}
+          LinuxTargets::thumbv7em_none_eabihf => {}
+          LinuxTargets::thumbv7m_none_eabi => {}
+          LinuxTargets::thumbv7neon_linux_androideabi => {}
+          LinuxTargets::thumbv7neon_unknown_linux_gnueabihf => {}
+          LinuxTargets::thumbv8m_base_none_eabi => {}
+          LinuxTargets::thumbv8m_main_none_eabi => {}
+          LinuxTargets::thumbv8m_main_none_eabihf => {}
+          LinuxTargets::wasm32_unknown_emscripten => {}
+          LinuxTargets::wasm32_unknown_unknown => {}
+          LinuxTargets::wasm32_wasip1 => {}
+          LinuxTargets::wasm32_wasip2 => {}
+          LinuxTargets::wasm32_wasip1_threads => {}
+          LinuxTargets::wasm32v1_none => {}
+          LinuxTargets::x86_64_fortanix_unknown_sgx => {}
+          LinuxTargets::x86_64_unknown_fuchsia => {}
+          LinuxTargets::x86_64_linux_android => {}
+          LinuxTargets::x86_64_pc_solaris => {}
+          LinuxTargets::x86_64_unknown_linux_gnux32 => {}
+          LinuxTargets::x86_64_unknown_linux_ohos => {}
+          LinuxTargets::x86_64_unknown_none => {}
+          LinuxTargets::x86_64_unknown_redox => {}
+          LinuxTargets::x86_64_unknown_uefi => {}
           _ => {
             let name = sl.to_name();
             let url = format!("https://github.com/oligamiq/toolchain-for-building-rustc/releases/download/{CONTENT_VERSION}-release/{name}.tar.gz");
@@ -143,7 +143,12 @@ impl Install for LinuxTargets {
               } else {
                 let prefix = name.replace("-unknown-", "-");
                 if !(check_musl_libc(&format!("/x-tools/{name}/{prefix}/lib/"))?) {
-                  Err(color_eyre::eyre::eyre!("Failed to find musl libc: {}", name))?;
+                  if name != "loongarch64-unknown-linux-musl" {
+                    Err(color_eyre::eyre::eyre!(
+                      "Failed to find musl libc: {}",
+                      name
+                    ))?;
+                  }
                 }
                 crosstool_ng()?;
               }

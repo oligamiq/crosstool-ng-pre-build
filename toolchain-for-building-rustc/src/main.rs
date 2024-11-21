@@ -127,8 +127,8 @@ fn main() -> Result<()> {
     for target in targets.iter() {
       match target {
         cmd::Target::LinuxTargets(linux_targets) => linux_targets.rewrite_doc(&mut doc)?,
-        cmd::Target::WindowsTargets(windows_targets) => {},
-        cmd::Target::MacTargets(mac_targets) => {},
+        cmd::Target::WindowsTargets(windows_targets) => {}
+        cmd::Target::MacTargets(mac_targets) => {}
       }
     }
 
@@ -227,12 +227,8 @@ fn main() -> Result<()> {
         cmd::Target::LinuxTargets(linux_targets) => {
           linux_targets.install(err_sender.clone(), no_cache)
         }
-        cmd::Target::WindowsTargets(windows_targets) => {
-          Ok(std::thread::spawn(move || {}))
-        },
-        cmd::Target::MacTargets(mac_targets) => {
-          Ok(std::thread::spawn(move || {}))
-        },
+        cmd::Target::WindowsTargets(windows_targets) => Ok(std::thread::spawn(move || {})),
+        cmd::Target::MacTargets(mac_targets) => Ok(std::thread::spawn(move || {})),
       }?);
 
       threads = check_err(threads)?;
@@ -251,12 +247,8 @@ fn main() -> Result<()> {
       .iter()
       .map(|x| match x {
         cmd::Target::LinuxTargets(linux_targets) => linux_targets.clean(),
-        cmd::Target::WindowsTargets(windows_targets) => {
-          Ok(())
-        },
-        cmd::Target::MacTargets(mac_targets) => {
-          Ok(())
-        },
+        cmd::Target::WindowsTargets(windows_targets) => Ok(()),
+        cmd::Target::MacTargets(mac_targets) => Ok(()),
       })
       .collect::<color_eyre::Result<Vec<_>>>()?;
 
