@@ -110,7 +110,7 @@ impl RewriteDoc for LinuxTargets {
 
         if name.find("musl").is_some() {
           if check_musl_libc(&format!("/x-tools/{name}/lib/"))? {
-            log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
+            log::warn!("musl libc detected, using musl-root");
 
             target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
             let gnu_prefix = prefix.replace("musl", "gnu");
