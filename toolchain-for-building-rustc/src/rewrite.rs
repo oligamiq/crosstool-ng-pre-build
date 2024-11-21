@@ -121,10 +121,15 @@ impl RewriteDoc for LinuxTargets {
             target.check_and_rewrite(&place, "linker", format!("{gnu_prefix}-gcc").into())?;
           } else {
             crosstool_ng()?;
+            let folder = if name == "loongarch64-unknown-linux-musl" {
+              "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into()
+            } else {
+              format!("/x-tools/{name}/{prefix}")
+            };
             target.check_and_rewrite(
               &place,
               "musl-root",
-              format!("/x-tools/{name}/{prefix}").into(),
+              folder.into(),
             )?;
           }
         } else {
