@@ -269,7 +269,7 @@ impl Install for LinuxTargets {
               } else {
                 let prefix = name.replace("-unknown-", "-");
                 let folder = if name == "loongarch64-unknown-linux-musl" {
-                  "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into()
+                  "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr/lib".into()
                 } else {
                   format!("/x-tools/{name}/{prefix}/lib/")
                 };
