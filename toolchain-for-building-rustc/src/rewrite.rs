@@ -113,6 +113,12 @@ impl RewriteDoc for LinuxTargets {
             log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
 
             target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
+            let gnu_prefix = name.replace("musl", "gnu");
+            target.check_and_rewrite(&place, "cc", format!("{gnu_prefix}-gcc").into())?;
+            target.check_and_rewrite(&place, "cxx", format!("{gnu_prefix}-g++").into())?;
+            target.check_and_rewrite(&place, "ar", format!("{gnu_prefix}-ar").into())?;
+            target.check_and_rewrite(&place, "ranlib", format!("{gnu_prefix}-ranlib").into())?;
+            target.check_and_rewrite(&place, "linker", format!("{gnu_prefix}-gcc").into())?;
           } else {
             crosstool_ng()?;
           }
