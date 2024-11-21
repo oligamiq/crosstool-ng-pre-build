@@ -1,0 +1,2 @@
+/* $FreeBSD: releng/12.3/lib/libc++/libc++.ldscript 305102 2016-08-31 00:11:35Z bapt $ */
+GROUP ( /usr/lib/libc++.so.1 /usr/lib/libcxxrt.so )

@@ -1,0 +1,2 @@
+/* $FreeBSD: releng/12.3/lib/libc/libc.ldscript 258283 2013-11-17 22:52:17Z peter $ */
+GROUP ( /lib/libc.so.7 /usr/lib/libc_nonshared.a /usr/lib/libssp_nonshared.a )
