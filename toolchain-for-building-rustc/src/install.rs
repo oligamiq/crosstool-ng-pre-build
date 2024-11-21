@@ -4,7 +4,7 @@ use std::{
 
 use pbr::ProgressBar;
 
-use crate::targets::LinuxTargets;
+use crate::{musl_root, targets::LinuxTargets};
 
 const CONTENT_VERSION: &str = "v0.1.0";
 
@@ -27,7 +27,11 @@ impl Install for LinuxTargets {
     let (sender, receiver) = std::sync::mpsc::channel::<()>();
 
     let thread = std::thread::spawn(move || {
-      fn install_inner(sl: &LinuxTargets, sender: Sender<()>, no_cache: bool) -> color_eyre::Result<()> {
+      fn install_inner(
+        sl: &LinuxTargets,
+        sender: Sender<()>,
+        no_cache: bool,
+      ) -> color_eyre::Result<()> {
         #[cfg(target_os = "linux")]
         match sl {
           LinuxTargets::x86_64_unknown_linux_gnu => {
@@ -127,12 +131,15 @@ impl Install for LinuxTargets {
 
             if name.find("musl").is_some() {
               if check_musl_libc(&format!("/x-tools/{name}/lib/"))? {
-                log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
+                if musl_root::musl_require_root().contains(&name.as_str()) {
+                  log::warn!("We currently do not support compile checks using sysroot, so we will skip the compile check");
+                  // let tool_prefix = name.replace("-unknown-", "-");
+                  // let tool_prefix = tool_prefix.replace("musl", "gnu");
 
-                // let tool_prefix = name.replace("-unknown-", "-");
-                // let tool_prefix = tool_prefix.replace("musl", "gnu");
-
-                // todo!()
+                  // todo!()
+                } else {
+                  unreachable!("musl libc detected, using musl-root");
+                }
               } else {
                 crosstool_ng()?;
               }
@@ -157,10 +164,7 @@ impl Install for LinuxTargets {
   }
 }
 
-fn install_fuchsia(
-  arch: &str,
-  sender: Sender<()>,
-) -> color_eyre::Result<()> {
+fn install_fuchsia(arch: &str, sender: Sender<()>) -> color_eyre::Result<()> {
   #[allow(non_camel_case_types)]
   #[derive(strum::EnumString)]
   enum FuchsiaArch {

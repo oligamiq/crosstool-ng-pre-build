@@ -1,6 +1,6 @@
 use toml_edit::{DocumentMut, Item};
 
-use crate::{install::check_musl_libc, targets::LinuxTargets};
+use crate::{install::check_musl_libc, musl_root, targets::LinuxTargets};
 
 pub trait RewriteDoc {
   fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()>;
@@ -109,7 +109,7 @@ impl RewriteDoc for LinuxTargets {
         };
 
         if name.find("musl").is_some() {
-          if check_musl_libc(&format!("/x-tools/{name}/lib/"))? {
+          if musl_root::musl_require_root().contains(&name.as_str()) {
             log::warn!("musl libc detected, using musl-root");
 
             target.check_and_rewrite(&place, "musl-root", format!("/x-tools/{name}").into())?;
@@ -125,7 +125,6 @@ impl RewriteDoc for LinuxTargets {
         } else {
           crosstool_ng()?;
         }
-
       }
     }
 

@@ -11,6 +11,7 @@ use tracing_subscriber::{layer::SubscriberExt as _, util::SubscriberInitExt as _
 pub mod clean;
 pub mod cmd;
 pub mod install;
+pub mod musl_root;
 pub mod rewrite;
 pub mod targets;
 pub mod utils;
@@ -78,9 +79,10 @@ fn main() -> Result<()> {
     let file_data = std::fs::read_to_string(&file)?;
     let mut doc = file_data.parse::<DocumentMut>().expect("invalid doc");
 
-    doc["llvm"] = doc.get("llvm").cloned().unwrap_or_else(||
-      toml_edit::Item::Table(toml_edit::Table::new())
-    );
+    doc["llvm"] = doc
+      .get("llvm")
+      .cloned()
+      .unwrap_or_else(|| toml_edit::Item::Table(toml_edit::Table::new()));
     doc["llvm"]["targets"] = llvm_targets
       .iter()
       .filter(|x| !x.is_experimental())
@@ -112,9 +114,10 @@ fn main() -> Result<()> {
       return Ok(());
     }
 
-    doc["build"] = doc.get("build").cloned().unwrap_or_else(||
-      toml_edit::Item::Table(toml_edit::Table::new())
-    );
+    doc["build"] = doc
+      .get("build")
+      .cloned()
+      .unwrap_or_else(|| toml_edit::Item::Table(toml_edit::Table::new()));
     doc["build"]["target"] = targets
       .iter()
       .map(|x| x.to_string())
@@ -221,7 +224,9 @@ fn main() -> Result<()> {
     let mut threads = vec![];
     for target in &targets {
       threads.push(match target {
-        cmd::Target::LinuxTargets(linux_targets) => linux_targets.install(err_sender.clone(), no_cache),
+        cmd::Target::LinuxTargets(linux_targets) => {
+          linux_targets.install(err_sender.clone(), no_cache)
+        }
         cmd::Target::WindowsTargets(windows_targets) => todo!(),
         cmd::Target::MacTargets(mac_targets) => todo!(),
       }?);

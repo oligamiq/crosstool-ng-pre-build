@@ -2,6 +2,9 @@
 targets = "Sparc;AArch64;X86;ARM;LoongArch;PowerPC;RISCV;SystemZ"
 experimental-targets = ""
 
+[build]
+target = ["sparcv9-sun-solaris", "aarch64-unknown-linux-gnu", "i686-unknown-linux-gnu", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-musl", "arm-unknown-linux-gnueabi", "arm-unknown-linux-gnueabihf", "armv7-unknown-linux-gnueabihf", "loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu", "powerpc64le-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu", "riscv64gc-unknown-linux-musl", "s390x-unknown-linux-gnu", "x86_64-unknown-freebsd", "x86_64-unknown-illumos", "x86_64-unknown-linux-musl", "x86_64-unknown-netbsd"]
+
 [target.sparcv9-sun-solaris]
 cc = "sparcv9-sun-solaris-gcc"
 cxx = "sparcv9-sun-solaris-g++"
@@ -94,12 +97,12 @@ ranlib = "riscv64gc-linux-gnu-ranlib"
 linker = "riscv64gc-linux-gnu-gcc"
 
 [target.riscv64gc-unknown-linux-musl]
+musl-root = "/x-tools/riscv64gc-unknown-linux-musl"
 cc = "riscv64gc-linux-gnu-gcc"
 cxx = "riscv64gc-linux-gnu-g++"
 ar = "riscv64gc-linux-gnu-ar"
 ranlib = "riscv64gc-linux-gnu-ranlib"
 linker = "riscv64gc-linux-gnu-gcc"
-musl-root = "/x-tools/riscv64gc-unknown-linux-musl"
 
 [target.s390x-unknown-linux-gnu]
 cc = "s390x-linux-gnu-gcc"
@@ -135,6 +138,3 @@ cxx = "x86_64-netbsd-g++"
 ar = "x86_64-netbsd-ar"
 ranlib = "x86_64-netbsd-ranlib"
 linker = "x86_64-netbsd-gcc"
-
-[build]
-target = ["sparcv9-sun-solaris", "aarch64-unknown-linux-gnu", "i686-unknown-linux-gnu", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-musl", "arm-unknown-linux-gnueabi", "arm-unknown-linux-gnueabihf", "armv7-unknown-linux-gnueabihf", "loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu", "powerpc64le-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu", "riscv64gc-unknown-linux-musl", "s390x-unknown-linux-gnu", "x86_64-unknown-freebsd", "x86_64-unknown-illumos", "x86_64-unknown-linux-musl", "x86_64-unknown-netbsd"]
