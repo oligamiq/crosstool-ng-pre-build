@@ -183,10 +183,10 @@ impl OS {
         }
       }
       OS::Windows => {
-        #[cfg(not(target_os = "linux"))]
-        {
-          Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
-        }
+        // #[cfg(not(target_os = "linux"))]
+        // {
+        //   Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
+        // }
       }
       OS::Mac => {
         #[cfg(not(target_os = "macos"))]
