@@ -418,13 +418,12 @@ pub mod normal {
   ) -> color_eyre::Result<()> {
     let decompressed = GzDecoder::new(std::io::Cursor::new(buffer));
     let mut archive = tar::Archive::new(decompressed);
-    let folder = format!("{folder}/{}", name);
-    let folder = std::path::Path::new(&folder);
-    if std::fs::exists(&folder)? {
-      log::warn!("{:?} already exists, but will be overwritten", folder);
-      std::fs::remove_dir_all(&folder)?;
+    let target_folder = format!("{folder}/{name}");
+    if std::fs::exists(&target_folder)? {
+      log::warn!("{:?} already exists, but will be overwritten", target_folder);
+      std::fs::remove_dir_all(&target_folder)?;
     }
-    std::fs::create_dir_all(&folder)?;
+    std::fs::create_dir_all(&target_folder)?;
     archive.unpack(folder)?;
 
     Ok(())
