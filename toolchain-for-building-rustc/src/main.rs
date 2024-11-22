@@ -1,4 +1,4 @@
-use std::{os::unix::thread, thread::JoinHandle};
+use std::thread::JoinHandle;
 
 use clean::Clean as _;
 use cmd::CanonicalArgs;
