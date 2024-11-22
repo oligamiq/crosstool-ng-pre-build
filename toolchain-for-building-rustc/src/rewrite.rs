@@ -193,11 +193,11 @@ impl RewriteDoc for WindowsTargets {
           let target = &mut doc["target"][&name];
           let place = format!("target.{name}");
 
-          target.check_and_rewrite(
-            &place,
-            "rustflags",
-            vec!["-C", "link-args=-Wl,--disable-large-address-aware"].to_item(),
-          )?;
+          // target.check_and_rewrite(
+          //   &place,
+          //   "rustflags",
+          //   vec!["-C", "link-args=-Wl,--disable-large-address-aware"].to_item(),
+          // )?;
         }
       }
     }
