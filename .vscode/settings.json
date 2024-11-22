@@ -44,6 +44,7 @@
     "thumbv7",
     "thumbv8",
     "uefi",
+    "wasi",
     "wasip1",
     "wasip2"
   ],

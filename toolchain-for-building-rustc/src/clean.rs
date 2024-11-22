@@ -2,7 +2,10 @@ use std::fs::symlink_metadata;
 
 use color_eyre::eyre::{Context, Ok};
 
-use crate::{targets::LinuxTargets, utils::TOOLS};
+use crate::{
+  targets::LinuxTargets,
+  utils::{get_wasi_sdk_name, TOOLS},
+};
 
 pub trait Clean {
   fn clean(&self) -> color_eyre::Result<()>;
@@ -56,7 +59,16 @@ impl Clean for LinuxTargets {
       LinuxTargets::thumbv8m_main_none_eabihf => {}
       LinuxTargets::wasm32_unknown_emscripten => {}
       LinuxTargets::wasm32_unknown_unknown => {}
-      LinuxTargets::wasm32_wasip1 => {}
+      LinuxTargets::wasm32_wasip1 => {
+        let sdk_name = get_wasi_sdk_name();
+        let path = format!("/x-tools/{sdk_name}");
+        let path = std::path::Path::new(&path);
+        if !(std::fs::exists(&path)?) {
+          log::warn!("{:?} doesn't exist, skipping", path);
+        } else {
+          std::fs::remove_dir_all(&path).with_context(|| format!("Failed to remove {:?}", path))?;
+        }
+      }
       LinuxTargets::wasm32_wasip2 => {}
       LinuxTargets::wasm32_wasip1_threads => {}
       LinuxTargets::wasm32v1_none => {}

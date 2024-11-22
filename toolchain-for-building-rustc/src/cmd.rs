@@ -183,10 +183,10 @@ impl OS {
   pub fn check_os(&self) -> color_eyre::Result<()> {
     match self {
       OS::Linux => {
-        #[cfg(not(target_os = "linux"))]
-        {
-          Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
-        }
+        // #[cfg(not(target_os = "linux"))]
+        // {
+        //   Err(eyre!("This is not a Linux system, Only Linux is supported",))?;
+        // }
       }
       OS::Windows => {
         // #[cfg(not(target_os = "linux"))]

@@ -4,7 +4,7 @@ use std::{
 
 use pbr::ProgressBar;
 
-use crate::{musl_root, targets::LinuxTargets};
+use crate::{musl_root, targets::LinuxTargets, utils::get_wasi_sdk_name};
 
 const CONTENT_VERSION: &str = "v0.1.0";
 
@@ -164,11 +164,18 @@ impl Install for LinuxTargets {
           LinuxTargets::wasm32_unknown_unknown => {
             sender.send(())?;
           }
-          LinuxTargets::wasm32_wasip1 => {
+          LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 => {
+            let sdk_name = get_wasi_sdk_name();
+            let url = format!("https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/{sdk_name}.tar.gz");
+            let body = download_from_url(&url)?;
             sender.send(())?;
-          }
-          LinuxTargets::wasm32_wasip2 => {
-            sender.send(())?;
+
+            if no_cache {
+              log::info!("Skipping cache saving");
+            } else {
+              save_cache(&body, &format!("{sdk_name}.tar.gz"))?;
+            }
+            normal::unpack_tarball_archive(body, &sdk_name)?;
           }
           LinuxTargets::wasm32_wasip1_threads => {
             sender.send(())?;
@@ -244,6 +251,7 @@ impl Install for LinuxTargets {
                 }
               } else {
                 let prefix = name.replace("-unknown-", "-");
+                // This musl target is built by crosstool-ng so this is a special case
                 let folder = if name == "loongarch64-unknown-linux-musl" {
                   "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr/lib".into()
                 } else {

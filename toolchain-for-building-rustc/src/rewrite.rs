@@ -1,9 +1,7 @@
 use toml_edit::{DocumentMut, Item};
 
 use crate::{
-  install::check_musl_libc,
-  musl_root,
-  targets::{LinuxTargets, MacTargets},
+  install::check_musl_libc, musl_root, targets::{LinuxTargets, MacTargets, WindowsTargets}, utils::get_wasi_sdk_name, ToItem as _
 };
 
 pub trait RewriteDoc {
@@ -75,8 +73,18 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::thumbv8m_main_none_eabihf => {}
       LinuxTargets::wasm32_unknown_emscripten => {}
       LinuxTargets::wasm32_unknown_unknown => {}
-      LinuxTargets::wasm32_wasip1 => {}
-      LinuxTargets::wasm32_wasip2 => {}
+      LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 => {
+        let sdk_name = get_wasi_sdk_name();
+        let path = format!("/x-tools/{sdk_name}");
+
+        let name = self.to_name();
+        inner_table(doc, "target", &name);
+        let target = &mut doc["target"][&name];
+        let place = format!("target.{name}");
+
+        target.check_and_rewrite(&place, "wasi-root", format!("{path}/share/wasi-sysroot").into())?;
+        target.check_and_rewrite(&place, "linker", format!("{path}/bin/clang").into())?;
+      }
       LinuxTargets::wasm32_wasip1_threads => {}
       LinuxTargets::wasm32v1_none => {}
       LinuxTargets::x86_64_fortanix_unknown_sgx => {}
@@ -169,6 +177,29 @@ impl CheckAndRewrite for Item {
     } else {
       log::warn!("[{place}]: {key} already exists, but will be overwritten");
       self[key] = item;
+    }
+
+    Ok(())
+  }
+}
+
+impl RewriteDoc for WindowsTargets {
+  fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()> {
+    match self {
+      _ => {
+        let name = self.to_name();
+        if name.ends_with("gnu") {
+          inner_table(doc, "target", &name);
+          let target = &mut doc["target"][&name];
+          let place = format!("target.{name}");
+
+          target.check_and_rewrite(
+            &place,
+            "rustflags",
+            vec!["-C", "link-args=-Wl,--disable-large-address-aware"].to_item(),
+          )?;
+        }
+      }
     }
 
     Ok(())
