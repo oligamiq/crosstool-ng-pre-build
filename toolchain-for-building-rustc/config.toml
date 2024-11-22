@@ -1,9 +1,9 @@
 [llvm]
-targets = "Sparc;AArch64;X86;ARM;LoongArch;PowerPC;RISCV;SystemZ"
+targets = "Sparc;ARM;X86;AArch64;LoongArch;PowerPC;RISCV;SystemZ"
 experimental-targets = ""
 
 [build]
-target = ["sparcv9-sun-solaris", "aarch64-unknown-linux-gnu", "i686-unknown-linux-gnu", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-musl", "arm-unknown-linux-gnueabi", "arm-unknown-linux-gnueabihf", "armv7-unknown-linux-gnueabihf", "loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu", "powerpc64le-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu", "riscv64gc-unknown-linux-musl", "s390x-unknown-linux-gnu", "x86_64-unknown-freebsd", "x86_64-unknown-illumos", "x86_64-unknown-linux-musl", "x86_64-unknown-netbsd"]
+target = ["sparcv9-sun-solaris", "arm-unknown-linux-musleabi", "arm-unknown-linux-musleabihf", "armv5te-unknown-linux-musleabi", "armv7-unknown-linux-musleabi", "armv7-unknown-linux-musleabihf", "i586-unknown-linux-gnu", "i586-unknown-linux-musl", "i686-unknown-linux-musl", "aarch64-unknown-linux-gnu", "i686-unknown-linux-gnu", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-musl", "arm-unknown-linux-gnueabi", "arm-unknown-linux-gnueabihf", "armv7-unknown-linux-gnueabihf", "loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu", "powerpc64le-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu", "riscv64gc-unknown-linux-musl", "s390x-unknown-linux-gnu", "x86_64-unknown-freebsd", "x86_64-unknown-illumos", "x86_64-unknown-linux-musl", "x86_64-unknown-netbsd"]
 
 [target.sparcv9-sun-solaris]
 cc = "sparcv9-sun-solaris-gcc"
@@ -68,7 +68,7 @@ cxx = "loongarch64-linux-musl-g++"
 ar = "loongarch64-linux-musl-ar"
 ranlib = "loongarch64-linux-musl-ranlib"
 linker = "loongarch64-linux-musl-gcc"
-musl-root = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-linux-musl"
+musl-root = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr"
 
 [target.powerpc-unknown-linux-gnu]
 cc = "powerpc-linux-gnu-gcc"
@@ -141,3 +141,66 @@ cxx = "x86_64-netbsd-g++"
 ar = "x86_64-netbsd-ar"
 ranlib = "x86_64-netbsd-ranlib"
 linker = "x86_64-netbsd-gcc"
+
+[target.arm-unknown-linux-musleabi]
+cc = "arm-linux-musleabi-gcc"
+cxx = "arm-linux-musleabi-g++"
+ar = "arm-linux-musleabi-ar"
+ranlib = "arm-linux-musleabi-ranlib"
+linker = "arm-linux-musleabi-gcc"
+musl-root = "/x-tools/arm-unknown-linux-musleabi/arm-linux-musleabi"
+
+[target.arm-unknown-linux-musleabihf]
+cc = "arm-linux-musleabihf-gcc"
+cxx = "arm-linux-musleabihf-g++"
+ar = "arm-linux-musleabihf-ar"
+ranlib = "arm-linux-musleabihf-ranlib"
+linker = "arm-linux-musleabihf-gcc"
+musl-root = "/x-tools/arm-unknown-linux-musleabihf/arm-linux-musleabihf"
+
+[target.armv5te-unknown-linux-musleabi]
+musl-root = "/x-tools/armv5te-unknown-linux-musleabi"
+cc = "armv5te-linux-gnueabi-gcc"
+cxx = "armv5te-linux-gnueabi-g++"
+ar = "armv5te-linux-gnueabi-ar"
+ranlib = "armv5te-linux-gnueabi-ranlib"
+linker = "armv5te-linux-gnueabi-gcc"
+
+[target.armv7-unknown-linux-musleabi]
+musl-root = "/x-tools/armv7-unknown-linux-musleabi"
+cc = "armv7-linux-gnueabi-gcc"
+cxx = "armv7-linux-gnueabi-g++"
+ar = "armv7-linux-gnueabi-ar"
+ranlib = "armv7-linux-gnueabi-ranlib"
+linker = "armv7-linux-gnueabi-gcc"
+
+[target.armv7-unknown-linux-musleabihf]
+musl-root = "/x-tools/armv7-unknown-linux-musleabihf"
+cc = "armv7-linux-gnueabihf-gcc"
+cxx = "armv7-linux-gnueabihf-g++"
+ar = "armv7-linux-gnueabihf-ar"
+ranlib = "armv7-linux-gnueabihf-ranlib"
+linker = "armv7-linux-gnueabihf-gcc"
+
+[target.i586-unknown-linux-gnu]
+cc = "i586-linux-gnu-gcc"
+cxx = "i586-linux-gnu-g++"
+ar = "i586-linux-gnu-ar"
+ranlib = "i586-linux-gnu-ranlib"
+linker = "i586-linux-gnu-gcc"
+
+[target.i586-unknown-linux-musl]
+musl-root = "/x-tools/i586-unknown-linux-musl"
+cc = "i586-linux-gnu-gcc"
+cxx = "i586-linux-gnu-g++"
+ar = "i586-linux-gnu-ar"
+ranlib = "i586-linux-gnu-ranlib"
+linker = "i586-linux-gnu-gcc"
+
+[target.i686-unknown-linux-musl]
+cc = "i686-linux-musl-gcc"
+cxx = "i686-linux-musl-g++"
+ar = "i686-linux-musl-ar"
+ranlib = "i686-linux-musl-ranlib"
+linker = "i686-linux-musl-gcc"
+musl-root = "/x-tools/i686-unknown-linux-musl/i686-linux-musl"

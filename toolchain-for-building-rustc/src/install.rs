@@ -59,12 +59,6 @@ impl Install for LinuxTargets {
           LinuxTargets::arm_linux_androideabi => {
             sender.send(())?;
           }
-          LinuxTargets::arm_unknown_linux_musleabi => {
-            sender.send(())?;
-          }
-          LinuxTargets::arm_unknown_linux_musleabihf => {
-            sender.send(())?;
-          }
           LinuxTargets::armebv7r_none_eabi => {
             sender.send(())?;
           }
@@ -74,19 +68,10 @@ impl Install for LinuxTargets {
           LinuxTargets::armv5te_unknown_linux_gnueabi => {
             sender.send(())?;
           }
-          LinuxTargets::armv5te_unknown_linux_musleabi => {
-            sender.send(())?;
-          }
           LinuxTargets::armv7_linux_androideabi => {
             sender.send(())?;
           }
           LinuxTargets::armv7_unknown_linux_gnueabi => {
-            sender.send(())?;
-          }
-          LinuxTargets::armv7_unknown_linux_musleabi => {
-            sender.send(())?;
-          }
-          LinuxTargets::armv7_unknown_linux_musleabihf => {
             sender.send(())?;
           }
           LinuxTargets::armv7_unknown_linux_ohos => {
@@ -101,19 +86,10 @@ impl Install for LinuxTargets {
           LinuxTargets::armv7r_none_eabihf => {
             sender.send(())?;
           }
-          LinuxTargets::i586_unknown_linux_gnu => {
-            sender.send(())?;
-          }
-          LinuxTargets::i586_unknown_linux_musl => {
-            sender.send(())?;
-          }
           LinuxTargets::i686_linux_android => {
             sender.send(())?;
           }
           LinuxTargets::i686_unknown_freebsd => {
-            sender.send(())?;
-          }
-          LinuxTargets::i686_unknown_linux_musl => {
             sender.send(())?;
           }
           LinuxTargets::i686_unknown_uefi => {
