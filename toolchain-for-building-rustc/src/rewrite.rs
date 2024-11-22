@@ -73,7 +73,7 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::thumbv8m_main_none_eabihf => {}
       LinuxTargets::wasm32_unknown_emscripten => {}
       LinuxTargets::wasm32_unknown_unknown => {}
-      LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 => {
+      LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
         let sdk_name = get_wasi_sdk_name();
         let path = format!("/x-tools/{sdk_name}");
 
@@ -85,7 +85,6 @@ impl RewriteDoc for LinuxTargets {
         target.check_and_rewrite(&place, "wasi-root", format!("{path}/share/wasi-sysroot").into())?;
         target.check_and_rewrite(&place, "linker", format!("{path}/bin/clang").into())?;
       }
-      LinuxTargets::wasm32_wasip1_threads => {}
       LinuxTargets::wasm32v1_none => {}
       LinuxTargets::x86_64_fortanix_unknown_sgx => {}
       LinuxTargets::x86_64_unknown_fuchsia => {}

@@ -164,7 +164,7 @@ impl Install for LinuxTargets {
           LinuxTargets::wasm32_unknown_unknown => {
             sender.send(())?;
           }
-          LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 => {
+          LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
             let sdk_name = get_wasi_sdk_name();
             let url = format!("https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/{sdk_name}.tar.gz");
             let body = download_from_url(&url)?;
@@ -176,9 +176,6 @@ impl Install for LinuxTargets {
               save_cache(&body, &format!("{sdk_name}.tar.gz"))?;
             }
             normal::unpack_tarball_archive(body, &sdk_name)?;
-          }
-          LinuxTargets::wasm32_wasip1_threads => {
-            sender.send(())?;
           }
           LinuxTargets::wasm32v1_none => {
             sender.send(())?;
