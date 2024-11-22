@@ -69,8 +69,8 @@ fn main() -> Result<()> {
       }
     }
 
-    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
-    unimplemented!("install is not implemented yet");
+    // #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    // unimplemented!("install is not implemented yet");
   }
 
   if !clean && file.is_some() {
