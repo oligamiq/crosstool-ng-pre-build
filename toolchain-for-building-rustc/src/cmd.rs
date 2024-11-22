@@ -39,6 +39,9 @@ pub struct Args {
 
   #[arg(long, help = "No cache")]
   pub no_cache: bool,
+
+  #[arg(long, help = "overwrite target")]
+  pub overwrite: bool,
 }
 
 pub struct CanonicalArgs {
@@ -49,6 +52,7 @@ pub struct CanonicalArgs {
   pub install: bool,
   pub clean: bool,
   pub no_cache: bool,
+  pub overwrite: bool,
 }
 
 impl CanonicalArgs {
@@ -61,6 +65,7 @@ impl CanonicalArgs {
       install,
       clean,
       no_cache,
+      overwrite,
       ..
     } = args;
 
@@ -145,6 +150,7 @@ impl CanonicalArgs {
       install,
       clean,
       no_cache,
+      overwrite,
     })
   }
 }

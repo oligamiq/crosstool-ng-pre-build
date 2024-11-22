@@ -45,6 +45,7 @@ fn main() -> Result<()> {
     install,
     clean,
     no_cache,
+    overwrite,
   } = cmd::CanonicalArgs::parse_and_check()?;
 
   if install || clean {
@@ -118,6 +119,11 @@ fn main() -> Result<()> {
       .get("build")
       .cloned()
       .unwrap_or_else(|| toml_edit::Item::Table(toml_edit::Table::new()));
+
+    if overwrite {
+      doc["build"]["target"] = Vec::<String>::new().to_item();
+    }
+
     doc["build"]["target"] = targets
       .iter()
       .map(|x| x.to_string())
