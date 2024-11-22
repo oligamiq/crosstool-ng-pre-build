@@ -1,206 +1,43 @@
+# Includes one of the default files in src/bootstrap/defaults
+profile = "compiler"
+change-id = 9999999
+
+[rust]
+codegen-backends = ["llvm"]
+deny-warnings = false
+llvm-bitcode-linker = false
+debug = false
+debuginfo-level = 0
+
 [llvm]
-targets = "Sparc;ARM;X86;AArch64;LoongArch;PowerPC;RISCV;SystemZ"
+static-libstdcpp = true
+ninja = false
+download-ci-llvm = false
+link-shared = false
+targets = "WebAssembly;X86"
 experimental-targets = ""
 
 [build]
-target = ["sparcv9-sun-solaris", "arm-unknown-linux-musleabi", "arm-unknown-linux-musleabihf", "armv5te-unknown-linux-musleabi", "armv7-unknown-linux-musleabi", "armv7-unknown-linux-musleabihf", "i586-unknown-linux-gnu", "i586-unknown-linux-musl", "i686-unknown-linux-musl", "aarch64-unknown-linux-gnu", "i686-unknown-linux-gnu", "x86_64-unknown-linux-gnu", "aarch64-unknown-linux-musl", "arm-unknown-linux-gnueabi", "arm-unknown-linux-gnueabihf", "armv7-unknown-linux-gnueabihf", "loongarch64-unknown-linux-gnu", "loongarch64-unknown-linux-musl", "powerpc-unknown-linux-gnu", "powerpc64-unknown-linux-gnu", "powerpc64le-unknown-linux-gnu", "riscv64gc-unknown-linux-gnu", "riscv64gc-unknown-linux-musl", "s390x-unknown-linux-gnu", "x86_64-unknown-freebsd", "x86_64-unknown-illumos", "x86_64-unknown-linux-musl", "x86_64-unknown-netbsd"]
+docs = false
+extended = false
+tools = []
+host = ["wasm32-wasip1-threads"]
+target = ["x86_64-unknown-linux-gnu", "wasm32-wasip1"]
+cargo-native-static = true
 
-[target.sparcv9-sun-solaris]
-cc = "sparcv9-sun-solaris-gcc"
-cxx = "sparcv9-sun-solaris-g++"
-ar = "sparcv9-sun-solaris-ar"
-ranlib = "sparcv9-sun-solaris-ranlib"
-linker = "sparcv9-sun-solaris-gcc"
+[install]
+prefix = "dist"
+sysconfdir = "etc"
 
-[target.aarch64-unknown-linux-gnu]
-cc = "aarch64-linux-gnu-gcc"
-cxx = "aarch64-linux-gnu-g++"
-ar = "aarch64-linux-gnu-ar"
-ranlib = "aarch64-linux-gnu-ranlib"
-linker = "aarch64-linux-gnu-gcc"
+[target.'wasm32-wasip1']
+wasi-root = "wasi-sdk-24.0-x86_64-linux/share/wasi-sysroot"
+linker = "wasi-sdk-24.0-x86_64-linux/bin/clang"
+codegen-backends = ["llvm"]
 
-[target.i686-unknown-linux-gnu]
-cc = "i686-linux-gnu-gcc"
-cxx = "i686-linux-gnu-g++"
-ar = "i686-linux-gnu-ar"
-ranlib = "i686-linux-gnu-ranlib"
-linker = "i686-linux-gnu-gcc"
+[target.'wasm32-wasip1-threads']
+wasi-root = "wasi-sdk-24.0-x86_64-linux/share/wasi-sysroot"
+linker = "wasi-sdk-24.0-x86_64-linux/bin/clang"
+codegen-backends = ["llvm"]
 
-[target.aarch64-unknown-linux-musl]
-cc = "aarch64-linux-musl-gcc"
-cxx = "aarch64-linux-musl-g++"
-ar = "aarch64-linux-musl-ar"
-ranlib = "aarch64-linux-musl-ranlib"
-linker = "aarch64-linux-musl-gcc"
-musl-root = "/x-tools/aarch64-unknown-linux-musl/aarch64-linux-musl"
-
-[target.arm-unknown-linux-gnueabi]
-cc = "arm-linux-gnueabi-gcc"
-cxx = "arm-linux-gnueabi-g++"
-ar = "arm-linux-gnueabi-ar"
-ranlib = "arm-linux-gnueabi-ranlib"
-linker = "arm-linux-gnueabi-gcc"
-
-[target.arm-unknown-linux-gnueabihf]
-cc = "arm-linux-gnueabihf-gcc"
-cxx = "arm-linux-gnueabihf-g++"
-ar = "arm-linux-gnueabihf-ar"
-ranlib = "arm-linux-gnueabihf-ranlib"
-linker = "arm-linux-gnueabihf-gcc"
-
-[target.armv7-unknown-linux-gnueabihf]
-cc = "armv7-linux-gnueabihf-gcc"
-cxx = "armv7-linux-gnueabihf-g++"
-ar = "armv7-linux-gnueabihf-ar"
-ranlib = "armv7-linux-gnueabihf-ranlib"
-linker = "armv7-linux-gnueabihf-gcc"
-
-[target.loongarch64-unknown-linux-gnu]
-cc = "loongarch64-linux-gnu-gcc"
-cxx = "loongarch64-linux-gnu-g++"
-ar = "loongarch64-linux-gnu-ar"
-ranlib = "loongarch64-linux-gnu-ranlib"
-linker = "loongarch64-linux-gnu-gcc"
-
-[target.loongarch64-unknown-linux-musl]
-cc = "loongarch64-linux-musl-gcc"
-cxx = "loongarch64-linux-musl-g++"
-ar = "loongarch64-linux-musl-ar"
-ranlib = "loongarch64-linux-musl-ranlib"
-linker = "loongarch64-linux-musl-gcc"
-musl-root = "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr"
-
-[target.powerpc-unknown-linux-gnu]
-cc = "powerpc-linux-gnu-gcc"
-cxx = "powerpc-linux-gnu-g++"
-ar = "powerpc-linux-gnu-ar"
-ranlib = "powerpc-linux-gnu-ranlib"
-linker = "powerpc-linux-gnu-gcc"
-
-[target.powerpc64-unknown-linux-gnu]
-cc = "powerpc64-linux-gnu-gcc"
-cxx = "powerpc64-linux-gnu-g++"
-ar = "powerpc64-linux-gnu-ar"
-ranlib = "powerpc64-linux-gnu-ranlib"
-linker = "powerpc64-linux-gnu-gcc"
-
-[target.powerpc64le-unknown-linux-gnu]
-cc = "powerpc64le-linux-gnu-gcc"
-cxx = "powerpc64le-linux-gnu-g++"
-ar = "powerpc64le-linux-gnu-ar"
-ranlib = "powerpc64le-linux-gnu-ranlib"
-linker = "powerpc64le-linux-gnu-gcc"
-
-[target.riscv64gc-unknown-linux-gnu]
-cc = "riscv64gc-linux-gnu-gcc"
-cxx = "riscv64gc-linux-gnu-g++"
-ar = "riscv64gc-linux-gnu-ar"
-ranlib = "riscv64gc-linux-gnu-ranlib"
-linker = "riscv64gc-linux-gnu-gcc"
-
-[target.riscv64gc-unknown-linux-musl]
-musl-root = "/x-tools/riscv64gc-unknown-linux-musl"
-cc = "riscv64gc-linux-gnu-gcc"
-cxx = "riscv64gc-linux-gnu-g++"
-ar = "riscv64gc-linux-gnu-ar"
-ranlib = "riscv64gc-linux-gnu-ranlib"
-linker = "riscv64gc-linux-gnu-gcc"
-
-[target.s390x-unknown-linux-gnu]
-cc = "s390x-linux-gnu-gcc"
-cxx = "s390x-linux-gnu-g++"
-ar = "s390x-linux-gnu-ar"
-ranlib = "s390x-linux-gnu-ranlib"
-linker = "s390x-linux-gnu-gcc"
-
-[target.x86_64-unknown-freebsd]
-cc = "x86_64-freebsd-gcc"
-cxx = "x86_64-freebsd-g++"
-ar = "x86_64-freebsd-ar"
-ranlib = "x86_64-freebsd-ranlib"
-linker = "x86_64-freebsd-gcc"
-
-[target.x86_64-unknown-illumos]
-cc = "x86_64-illumos-gcc"
-cxx = "x86_64-illumos-g++"
-ar = "x86_64-illumos-ar"
-ranlib = "x86_64-illumos-ranlib"
-linker = "x86_64-illumos-gcc"
-
-[target.x86_64-unknown-linux-musl]
-cc = "x86_64-linux-musl-gcc"
-cxx = "x86_64-linux-musl-g++"
-ar = "x86_64-linux-musl-ar"
-ranlib = "x86_64-linux-musl-ranlib"
-linker = "x86_64-linux-musl-gcc"
-musl-root = "/x-tools/x86_64-unknown-linux-musl/x86_64-linux-musl"
-
-[target.x86_64-unknown-netbsd]
-cc = "x86_64-netbsd-gcc"
-cxx = "x86_64-netbsd-g++"
-ar = "x86_64-netbsd-ar"
-ranlib = "x86_64-netbsd-ranlib"
-linker = "x86_64-netbsd-gcc"
-
-[target.arm-unknown-linux-musleabi]
-cc = "arm-linux-musleabi-gcc"
-cxx = "arm-linux-musleabi-g++"
-ar = "arm-linux-musleabi-ar"
-ranlib = "arm-linux-musleabi-ranlib"
-linker = "arm-linux-musleabi-gcc"
-musl-root = "/x-tools/arm-unknown-linux-musleabi/arm-linux-musleabi"
-
-[target.arm-unknown-linux-musleabihf]
-cc = "arm-linux-musleabihf-gcc"
-cxx = "arm-linux-musleabihf-g++"
-ar = "arm-linux-musleabihf-ar"
-ranlib = "arm-linux-musleabihf-ranlib"
-linker = "arm-linux-musleabihf-gcc"
-musl-root = "/x-tools/arm-unknown-linux-musleabihf/arm-linux-musleabihf"
-
-[target.armv5te-unknown-linux-musleabi]
-musl-root = "/x-tools/armv5te-unknown-linux-musleabi"
-cc = "armv5te-linux-gnueabi-gcc"
-cxx = "armv5te-linux-gnueabi-g++"
-ar = "armv5te-linux-gnueabi-ar"
-ranlib = "armv5te-linux-gnueabi-ranlib"
-linker = "armv5te-linux-gnueabi-gcc"
-
-[target.armv7-unknown-linux-musleabi]
-musl-root = "/x-tools/armv7-unknown-linux-musleabi"
-cc = "armv7-linux-gnueabi-gcc"
-cxx = "armv7-linux-gnueabi-g++"
-ar = "armv7-linux-gnueabi-ar"
-ranlib = "armv7-linux-gnueabi-ranlib"
-linker = "armv7-linux-gnueabi-gcc"
-
-[target.armv7-unknown-linux-musleabihf]
-musl-root = "/x-tools/armv7-unknown-linux-musleabihf"
-cc = "armv7-linux-gnueabihf-gcc"
-cxx = "armv7-linux-gnueabihf-g++"
-ar = "armv7-linux-gnueabihf-ar"
-ranlib = "armv7-linux-gnueabihf-ranlib"
-linker = "armv7-linux-gnueabihf-gcc"
-
-[target.i586-unknown-linux-gnu]
-cc = "i586-linux-gnu-gcc"
-cxx = "i586-linux-gnu-g++"
-ar = "i586-linux-gnu-ar"
-ranlib = "i586-linux-gnu-ranlib"
-linker = "i586-linux-gnu-gcc"
-
-[target.i586-unknown-linux-musl]
-musl-root = "/x-tools/i586-unknown-linux-musl"
-cc = "i586-linux-gnu-gcc"
-cxx = "i586-linux-gnu-g++"
-ar = "i586-linux-gnu-ar"
-ranlib = "i586-linux-gnu-ranlib"
-linker = "i586-linux-gnu-gcc"
-
-[target.i686-unknown-linux-musl]
-cc = "i686-linux-musl-gcc"
-cxx = "i686-linux-musl-g++"
-ar = "i686-linux-musl-ar"
-ranlib = "i686-linux-musl-ranlib"
-linker = "i686-linux-musl-gcc"
-musl-root = "/x-tools/i686-unknown-linux-musl/i686-linux-musl"
+[target.'x86_64-unknown-linux-gnu']
+cc = "gcc"

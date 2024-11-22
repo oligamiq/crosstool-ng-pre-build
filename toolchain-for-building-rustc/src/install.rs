@@ -32,7 +32,7 @@ impl Install for LinuxTargets {
         sender: Sender<()>,
         no_cache: bool,
       ) -> color_eyre::Result<()> {
-        #[cfg(target_os = "linux")]
+        // #[cfg(target_os = "linux")]
         match sl {
           LinuxTargets::x86_64_unknown_linux_gnu => {
             log::warn!("x86_64_unknown_linux_gnu is the default target, skipping");
