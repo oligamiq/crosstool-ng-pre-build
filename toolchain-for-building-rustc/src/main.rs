@@ -154,7 +154,7 @@ fn main() -> Result<()> {
       match target {
         cmd::Target::LinuxTargets(linux_targets) => linux_targets.rewrite_doc(&mut doc)?,
         cmd::Target::WindowsTargets(windows_targets) => {}
-        cmd::Target::MacTargets(mac_targets) => {}
+        cmd::Target::MacTargets(mac_targets) => mac_targets.rewrite_doc(&mut doc)?,
       }
     }
 
