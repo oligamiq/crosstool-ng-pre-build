@@ -8,7 +8,7 @@ musl targets are copied from https://musl.cc/
 ## Usage
 ```bash
 cargo install --git https://github.com/oligamiq/toolchain-for-building-rustc
-toolchain-for-building-rustc --tier 1 --tier 2-host --os linux -t sparcv9-sun-solaris -t arm-unknown-linux-musleabi -t arm-unknown-linux-musleabihf -t armv5te-unknown-linux-musleabi -t armv7-unknown-linux-musleabi -t armv7-unknown-linux-musleabihf -t i586-unknown-linux-gnu -t i586-unknown-linux-musl -t i686-unknown-linux-musl --install --no-cache -f config.llvm.toml
+toolchain-for-building-rustc --tier 1 --tier 2-host --os linux -t sparcv9-sun-solaris -t arm-unknown-linux-musleabi -t arm-unknown-linux-musleabihf -t armv7-unknown-linux-musleabihf -t i586-unknown-linux-gnu -t i586-unknown-linux-musl -t i686-unknown-linux-musl --install --no-cache -f config.llvm.toml
 ```
 Currently, only these are supported. For more details, please refer to: `https://github.com/oligamiq/rust_wasm/blob/82e56231caf29dbba4c28a719bfef1ac89772234/.github/workflows/rustc_llvm_with_lld.yml`.
 
