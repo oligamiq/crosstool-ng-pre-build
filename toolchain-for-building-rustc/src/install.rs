@@ -164,25 +164,32 @@ impl Install for LinuxTargets {
           LinuxTargets::wasm32_unknown_unknown => {
             sender.send(())?;
           }
-          LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
-            static IS_FIRST: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(true);
+          LinuxTargets::wasm32_wasip1
+          | LinuxTargets::wasm32_wasip2
+          | LinuxTargets::wasm32_wasip1_threads => {
+            static IS_FIRST: std::sync::atomic::AtomicBool =
+              std::sync::atomic::AtomicBool::new(true);
 
             if IS_FIRST.load(std::sync::atomic::Ordering::Relaxed) {
-            let sdk_name = get_wasi_sdk_name();
-            let url = format!("https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/{sdk_name}.tar.gz");
-            let body = download_from_url(&url)?;
-            sender.send(())?;
+              let sdk_name = get_wasi_sdk_name();
+              let url = format!("https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/{sdk_name}.tar.gz");
+              let body = download_from_url(&url)?;
+              sender.send(())?;
 
-            if no_cache {
-              log::info!("Skipping cache saving");
+              if no_cache {
+                log::info!("Skipping cache saving");
+              } else {
+                save_cache(&body, &format!("{sdk_name}.tar.gz"))?;
+              }
+              normal::unpack_tarball_archive_inner(
+                body,
+                &sdk_name,
+                &std::env::temp_dir().display().to_string(),
+              )?;
+              IS_FIRST.store(false, std::sync::atomic::Ordering::Relaxed);
             } else {
-              save_cache(&body, &format!("{sdk_name}.tar.gz"))?;
+              sender.send(())?;
             }
-            normal::unpack_tarball_archive_inner(body, &sdk_name, &std::env::temp_dir().display().to_string())?;
-            IS_FIRST.store(false, std::sync::atomic::Ordering::Relaxed);
-          } else {
-            sender.send(())?;
-          }
           }
           LinuxTargets::wasm32v1_none => {
             sender.send(())?;
@@ -403,7 +410,11 @@ pub mod normal {
     Ok(())
   }
 
-  pub fn unpack_tarball_archive_inner(buffer: Vec<u8>, name: &str, folder: &str) -> color_eyre::Result<()> {
+  pub fn unpack_tarball_archive_inner(
+    buffer: Vec<u8>,
+    name: &str,
+    folder: &str,
+  ) -> color_eyre::Result<()> {
     let decompressed = GzDecoder::new(std::io::Cursor::new(buffer));
     let mut archive = tar::Archive::new(decompressed);
     let folder = format!("{folder}/{}", name);

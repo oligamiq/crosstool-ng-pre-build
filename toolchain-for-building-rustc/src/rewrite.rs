@@ -1,7 +1,11 @@
 use toml_edit::{DocumentMut, Item};
 
 use crate::{
-  install::check_musl_libc, musl_root, targets::{LinuxTargets, MacTargets, WindowsTargets}, utils::get_wasi_sdk_name, ToItem as _
+  install::check_musl_libc,
+  musl_root,
+  targets::{LinuxTargets, MacTargets, WindowsTargets},
+  utils::get_wasi_sdk_name,
+  ToItem as _,
 };
 
 pub trait RewriteDoc {
@@ -73,7 +77,9 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::thumbv8m_main_none_eabihf => {}
       LinuxTargets::wasm32_unknown_emscripten => {}
       LinuxTargets::wasm32_unknown_unknown => {}
-      LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
+      LinuxTargets::wasm32_wasip1
+      | LinuxTargets::wasm32_wasip2
+      | LinuxTargets::wasm32_wasip1_threads => {
         let sdk_name = get_wasi_sdk_name();
         let folder = std::env::temp_dir().display().to_string();
         let path = format!("{folder}/{sdk_name}");
@@ -83,7 +89,11 @@ impl RewriteDoc for LinuxTargets {
         let target = &mut doc["target"][&name];
         let place = format!("target.{name}");
 
-        target.check_and_rewrite(&place, "wasi-root", format!("{path}/share/wasi-sysroot").into())?;
+        target.check_and_rewrite(
+          &place,
+          "wasi-root",
+          format!("{path}/share/wasi-sysroot").into(),
+        )?;
         target.check_and_rewrite(&place, "linker", format!("{path}/bin/clang").into())?;
       }
       LinuxTargets::wasm32v1_none => {}

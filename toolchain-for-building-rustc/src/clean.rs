@@ -59,7 +59,9 @@ impl Clean for LinuxTargets {
       LinuxTargets::thumbv8m_main_none_eabihf => {}
       LinuxTargets::wasm32_unknown_emscripten => {}
       LinuxTargets::wasm32_unknown_unknown => {}
-      LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
+      LinuxTargets::wasm32_wasip1
+      | LinuxTargets::wasm32_wasip2
+      | LinuxTargets::wasm32_wasip1_threads => {
         let sdk_name = get_wasi_sdk_name();
         let folder = std::env::temp_dir().display().to_string();
         let path = format!("{folder}/{sdk_name}");
