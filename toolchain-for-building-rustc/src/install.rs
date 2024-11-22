@@ -171,6 +171,8 @@ impl Install for LinuxTargets {
               std::sync::atomic::AtomicBool::new(true);
 
             if IS_FIRST.load(std::sync::atomic::Ordering::Relaxed) {
+              IS_FIRST.store(false, std::sync::atomic::Ordering::Relaxed);
+
               let sdk_name = get_wasi_sdk_name();
               let url = format!("https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-24/{sdk_name}.tar.gz");
               let body = download_from_url(&url)?;
@@ -186,7 +188,6 @@ impl Install for LinuxTargets {
                 &sdk_name,
                 &std::env::temp_dir().display().to_string(),
               )?;
-              IS_FIRST.store(false, std::sync::atomic::Ordering::Relaxed);
             } else {
               sender.send(())?;
             }
