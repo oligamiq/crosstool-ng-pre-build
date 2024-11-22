@@ -1,6 +1,10 @@
 use toml_edit::{DocumentMut, Item};
 
-use crate::{install::check_musl_libc, musl_root, targets::LinuxTargets};
+use crate::{
+  install::check_musl_libc,
+  musl_root,
+  targets::{LinuxTargets, MacTargets},
+};
 
 pub trait RewriteDoc {
   fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()>;
@@ -114,15 +118,12 @@ impl RewriteDoc for LinuxTargets {
           } else {
             crosstool_ng()?;
             let folder = if name == "loongarch64-unknown-linux-musl" {
-              "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr".into()
+              "/x-tools/loongarch64-unknown-linux-musl/loongarch64-unknown-linux-musl/sysroot/usr"
+                .into()
             } else {
               format!("/x-tools/{name}/{prefix}")
             };
-            target.check_and_rewrite(
-              &place,
-              "musl-root",
-              folder.into(),
-            )?;
+            target.check_and_rewrite(&place, "musl-root", folder.into())?;
           }
         } else {
           crosstool_ng()?;
@@ -171,5 +172,30 @@ impl CheckAndRewrite for Item {
     }
 
     Ok(())
+  }
+}
+
+impl RewriteDoc for MacTargets {
+  fn rewrite_doc(&self, doc: &mut DocumentMut) -> color_eyre::Result<()> {
+    match self {
+      MacTargets::aarch64_apple_ios => todo!(),
+      MacTargets::aarch64_apple_ios_macabi => todo!(),
+      MacTargets::aarch64_apple_ios_sim => todo!(),
+      MacTargets::x86_64_apple_ios => todo!(),
+      MacTargets::x86_64_apple_ios_macabi => todo!(),
+      _ => {
+        let name = self.to_name();
+        inner_table(doc, "target", &name);
+        let target = &mut doc["target"][&name];
+        let place = format!("target.{name}");
+
+        target.check_and_rewrite(&place, "cc", format!("clang").into())?;
+        target.check_and_rewrite(&place, "cxx", format!("clang++").into())?;
+        target.check_and_rewrite(&place, "ar", format!("ar").into())?;
+        target.check_and_rewrite(&place, "linker", format!("clang").into())?;
+
+        Ok(())
+      }
+    }
   }
 }
