@@ -75,7 +75,8 @@ impl RewriteDoc for LinuxTargets {
       LinuxTargets::wasm32_unknown_unknown => {}
       LinuxTargets::wasm32_wasip1 | LinuxTargets::wasm32_wasip2 | LinuxTargets::wasm32_wasip1_threads => {
         let sdk_name = get_wasi_sdk_name();
-        let path = format!("/x-tools/{sdk_name}");
+        let folder = std::env::temp_dir().display().to_string();
+        let path = format!("{folder}/{sdk_name}");
 
         let name = self.to_name();
         inner_table(doc, "target", &name);

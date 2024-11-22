@@ -175,7 +175,7 @@ impl Install for LinuxTargets {
             } else {
               save_cache(&body, &format!("{sdk_name}.tar.gz"))?;
             }
-            normal::unpack_tarball_archive(body, &sdk_name)?;
+            normal::unpack_tarball_archive_inner(body, &sdk_name, &std::env::temp_dir().display().to_string())?;
           }
           LinuxTargets::wasm32v1_none => {
             sender.send(())?;
@@ -391,15 +391,21 @@ pub mod normal {
   use flate2::read::GzDecoder;
 
   pub fn unpack_tarball_archive(buffer: Vec<u8>, name: &str) -> color_eyre::Result<()> {
+    unpack_tarball_archive_inner(buffer, name, "/x-tools")?;
+
+    Ok(())
+  }
+
+  pub fn unpack_tarball_archive_inner(buffer: Vec<u8>, name: &str, folder: &str) -> color_eyre::Result<()> {
     let decompressed = GzDecoder::new(std::io::Cursor::new(buffer));
     let mut archive = tar::Archive::new(decompressed);
-    let folder = format!("/x-tools/{}", name);
+    let folder = format!("{folder}/{}", name);
     if std::fs::exists(&folder)? {
       log::warn!("{:?} already exists, but will be overwritten", folder);
       std::fs::remove_dir_all(&folder)?;
     }
     std::fs::create_dir_all(&folder)?;
-    archive.unpack("/x-tools")?;
+    archive.unpack(format!("{folder}"))?;
 
     Ok(())
   }
